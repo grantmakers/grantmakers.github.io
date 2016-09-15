@@ -23,6 +23,12 @@ $orange: #c54e00;
 
 /***Landing***/
 
+.logo {
+	height: 125px;
+	width: 125px;
+	margin-bottom: 0.5rem; //Match h1
+}
+
 a.link-dark-bg {
 	color: inherit;
 	border-bottom: 1px dashed $orange;

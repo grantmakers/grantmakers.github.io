@@ -42,21 +42,8 @@
   <link rel="shortcut icon" href="{{ site.baseurl }}/favicon.ico" />
   <!-- CSS -->
   <link rel="stylesheet" type="text/css" href="{{ site.base-url }}/assets/css/main.css">
-  <!-- Left Block Image for Posts -->
-  {% if page.image %}
-  {% capture image %}{{ page.image }}{% endcapture %}
-  {% unless image contains 'http://' or image contains 'https://' %}{% capture image %}{{ site.baseurl }}/{{ image }}{% endcapture %}{% endunless %}
+  <!-- Left Block Image -->
   <style type="text/css">
-    #posts.inner-post-page .block-left {background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url({{ image }}) no-repeat;background-size: cover;}
-  </style>
-  {% else %}
-  <style type="text/css">
-    #posts.inner-post-page .block-left {background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url({{ site.baseurl }}/{{ site.background.default-post }}) no-repeat;background-size: cover;}
-  </style>
-  {% endif %}
-  <!-- Left Block Images for Home and Pages -->
-  <style type="text/css">
-    #posts .block-left {background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url({{ site.baseurl }}/{{ site.background.post-list }}) no-repeat;background-size: cover, cover;}
     .block-left {background: linear-gradient(rgba(44,45,51,0.9), rgba(44,45,51,0.9)), url({{ site.baseurl }}/{{ site.background.homepage }}) no-repeat;background-size: cover;}
   </style>
 </head>
