@@ -25,7 +25,7 @@ sass:
   style:            compressed
 
 # Google Analytics
-#google-analytics: UA-XXXXX-Y
+google-analytics: UA-84268197-1
 
 # Social Links
 #email:             email
