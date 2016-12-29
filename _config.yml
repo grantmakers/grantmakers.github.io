@@ -1,64 +1,26 @@
-# Site
+# Site settings
+# Meta tags
 title: Grantmakers.io
-description: An open source project from SmarterGiving
-baseurl: 
-url: https://www.grantmakers.io
-logo: logo.png                                       # Site logo
-locale: en_US
+description: Quickly find data on 67,000 grantmaking institutions in the US. An open source project from your friends at SmarterGiving.
 
-# Left Block Images
-background:
-  homepage: images/home.jpg                           # this image will be shown on homepage's left block
-
-# Jekyll
-permalink:          /:title/
-markdown:           kramdown
-highlighter:        rouge
-kramdown:
-  auto_ids:         true
-  footnote_nr:      1
-  entity_output:    as_char
-  toc_levels:       1..6
-  enable_coderay:   false
+# Jekyll settings
+baseurl: # Leave this blank unless your site is located on a subpath, e.g. /blog
+url: https://www.grantmakers.io # Typically http://www.yourdomain.org
 sass:
-  sass_dir:         assets/_sass
-  style:            compressed
+  sass_dir: assets/css/_sass
 
 # Google Analytics
-google-analytics: UA-84268197-1
+google-analytics: #UA-84268197-1
 
-# Social Links
-#email:             email
-#google.plus:        username
-twitter:            smartergiving
-#facebook:           username
-github:             grantmakers
-#stackoverflow:     123456/username   from a "http://stackoverflow.com/users/123456/username" link
-#linkedin:          username
-#xing:              username
-#instagram:          username
-#lastfm:            username
-#tumblr:            username
-#pinterest:         username
-#foursquare:        username
-#steam:              username
-#dribbble:          username
-#youtube:           username
-#soundcloud:        username
-#weibo:             username
-#flickr:            username
-#codepen:           username
-#keybase:           username
-#xmpp:              username@server.com
-#hackernews:        username
-#behance:           username
-
-# Gems
-gems:
-  #- jekyll-feed
-  #- jekyll-sitemap
-  #- jekyll-gist
-
-# Exclude list
-include: [_pages]
-exclude: [README.md, Gemfile, Gemfile.lock, _site, src, vendor, CNAME, LICENSE, Rakefile, .sass-cache, .DS_Store]
+# Build settings
+markdown: kramdown
+kramdown:
+  input: GFM
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - LICENSE
+  - README.md
+  - node_modules
+  - algolia/
+  - data/ #Note: does not affect _data folder

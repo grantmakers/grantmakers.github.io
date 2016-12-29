@@ -1,0 +1,248 @@
+---
+---
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<link rel="apple-touch-icon" sizes="76x76" href="assets/img/apple-icon.png">
+	<link rel="icon" type="image/png" href="{{ site.baseurl }}/assets/img/favicon.png">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+	<title>Grantmakers.io - A Community Project</title>
+
+	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+
+	<!-- Progress Bar - Initial load -->
+  	<script data-pace-options='{
+      "elements": {
+        "selectors": ["#stats-template"]
+      },
+      "restartOnPushState": false,
+      "restartOnRequestAfter": false
+    }' src="{{ site.baseurl }}/assets/js/pace.min.js">
+    </script>
+  <link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/assets/css/pace.css">
+
+	<!-- Fonts and icons     -->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" />
+  <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.ion.rangeslider/2.0.12/css/ion.rangeSlider.css">
+  <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.ion.rangeslider/2.0.12/css/ion.rangeSlider.skinNice.css">
+
+	<!-- CSS Files -->
+  <link href="{{ site.baseurl }}/assets/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="{{ site.baseurl }}/assets/css/main.css" rel="stylesheet">
+
+</head>
+
+<body class="index-page">
+
+<!-- Navbar -->
+<nav class="navbar navbar-transparent navbar-fixed-top navbar-color-on-scroll navbar-search" data-spy="affix" data-offset-top="60">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-3">
+				<div class="navbar-header">
+			  	<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation-index">
+		      	<span class="sr-only">Toggle navigation</span>
+		      	<span class="icon-bar"></span>
+		      	<span class="icon-bar"></span>
+		      	<span class="icon-bar"></span>
+			  	</button>
+			  	<a href="https://www.grantmakers.io">
+			    	<div class="logo-container">
+			        <div class="logo">
+			           <img src="{{ site.baseurl }}/assets/img/logo.png" alt="Grantmakers Logo" rel="tooltip" title="<b>Grantmakers.io</b> is a free tool from your friends at <b>SmarterGiving</b>" data-placement="bottom" data-html="true">
+			        </div>
+			        <div class="brand brand-name">
+			           Grantmakers.io
+			        </div>
+						</div>
+			    </a>
+		    </div>
+			</div>
+			<div class="col-sm-6">
+				<div class="form-group form-group-lg">
+				  <div class="input-group center-block">
+						<input id="search-input" class="form-control" type="text" autocomplete="off" spellcheck="false" autocorrect="off" placeholder="Search..." autofocus/>
+						<span class="input-group-addon input-group-addon-close">
+							<div id="search-input-icon" class="empty"></div>
+				    </span>
+				  </div>
+				</div>
+			</div>
+			<div class="col-sm-3">
+				<ul class="nav navbar-nav navbar-right">
+					<li class="algolia-logo">
+						<!-- Dark background -->
+			    	<a class="algolia-dark-bg" href="https://www.algolia.com">Search powered by<br><img src="{{ site.baseurl }}/assets/img/algolia-dark-bg.svg" alt="Powered by Algolia"></a>
+			    	<!-- Light background -->
+			    	<a class="algolia-light-bg" href="https://www.algolia.com">Search powered by<br><img src="{{ site.baseurl }}/assets/img/algolia-light-bg.svg" alt="Powered by Algolia"></a>
+			    </li>
+	    	</ul>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-10 col-md-offset-1 text-center try-it-wrapper">
+        <ul class="list-inline try-it">
+		      <li>Try:</li>
+		      <li><a href="{{ site.baseurl }}/?q=novo%20foundation&" class="btn btn-simple">Novo Foundation</a></li>
+		      <li><a href="{{ site.baseurl }}/?q=bend%2C%20or&" class="btn btn-simple">Bend, OR</a></li>
+		      <li><a href="{{ site.baseurl }}/?q=510381959&" class="btn btn-simple">51-0381959</a></li>
+			  </ul>
+      </div>
+		</div>
+	</div>
+</nav>
+<!-- End Navbar -->
+
+<div class="wrapper">
+
+	<div class="header header-filter">
+		<div id="intro" class="container">
+			<div class="row">
+
+				<div class="col-md-8 col-md-offset-2">
+					<div class="header-intro">
+						<h1>Grantmaker Search</h1>
+						<h3>Data from electronic tax filings of<br> 67,000 US grantmaking institutions</h3>
+					</div>
+				</div>
+
+				<div class="col-md-2 col-md-offset-5" style="display: none;">
+					<div class="header-intro-list">
+						<ul class="fa-ul">
+							<li><i class="fa-li fa fa-search"></i> Board Members</li>
+							<li><i class="fa-li fa fa-search"></i> Recent Grants</li>
+							<li><i class="fa-li fa fa-check"></i> Community Built</li>
+							<li><i class="fa-li fa fa-check"></i> Open Source</li>
+							<li><i class="fa-li fa fa-check"></i> Free</li>
+						</ul>
+					</div>
+				</div>
+
+			</div>
+		</div>
+		<canvas></canvas>
+	</div>
+
+	<div class="main main-raised">
+		<div class="section section-results">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<main>
+
+						  <!-- Left Column -->
+						  <div id="left-column-affix-parent" class="col-md-2">
+						  	<div id="left-column">
+						    	<div id="facets"></div>
+						    	<div id="clear"></div>
+						  	</div>
+						  </div>					  
+
+						  <!-- Right Column -->
+							<div class="col-md-9 col-md-offset-1">
+								<div id="right-column">
+							    <!-- 
+							    <div id="sort-by">Sort by:
+							      <select dir="rtl" id="sort-by-select">
+							        <option value="" selected>Most relevant</option>
+							        <option value="_TaxPeriod_asc">Lowest Price</option>
+							        <option value="_TaxPeriod_desc">Highest Price</option>
+							      </select>
+							      <span class="caret"></span>
+							    </div>
+							    -->
+							    <div id="stats"><h5><div class="pace-activity-not-fixed"></div><span class="algolia-loading"> Fetching returns</span></h5></div>
+							    <div id="hits"></div>
+							    <div id="pagination" class="text-center"></div>
+							  </div>
+							</div>
+						</main>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+  {% include footer.html %}
+
+</div>
+
+<!-- Hogan.js Search Template -->
+  {% include search.html %}
+<!-- /Hogan.js Search Template -->
+
+<!-- Tax Filings Modal -->
+<div class="modal modal-tax-filings">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">Select Your 990 Preference</h4>
+      </div>
+      <div class="modal-body">
+			  <div class="radio text-center">
+			    <label class="js-tax-filings-preference btn btn-simple btn-danger" data-tax-filings-preference="pdf">
+			      <i class="material-icons">picture_as_pdf</i><br>PDF<!--<br><small class="text-muted">Read</small>-->
+			    </label>
+			    <label class="js-tax-filings-preference btn btn-simple btn-danger" data-tax-filings-preference="xml">
+			      <i class="material-icons">code</i><br>XML<!--<br><small class="text-muted">Analyze</small>-->
+			    </label>
+			  </div>
+			  <div class="modal-sources text-center">
+			   	<hr>
+			   	<ul class="list-inline">
+			   		<li>Sources:</li>
+			   		<li><small><a class="text-muted" href="http://990finder.foundationcenter.org/" target="_blank">Foundation Center (PDF)</a></small></li>
+			   		<li><small><a class="text-muted" href="https://aws.amazon.com/public-datasets/irs-990/" target="_blank">IRS Electronic Filings (XML)</a></small></li>
+			   	</ul>
+			   </div>
+      </div>
+      <!--
+      <div class="modal-footer">
+      	<p class="text-center small">Download the free <a href="https://chrome.google.com/webstore/detail/irs-form-990-pf-viewer/mkdlgildlkgnabibkmckjlggcpenmiln">XML Viewer</a></p>
+      </div>
+      -->
+    </div>
+  </div>
+</div>
+<!-- /Tax Filings Modal -->
+
+</body>
+	<!--   Core JS Files   -->
+	<script src="{{ site.baseurl }}/assets/js/jquery.min.js" type="text/javascript"></script>
+	<script src="{{ site.baseurl }}/assets/js/bootstrap.min.js" type="text/javascript"></script>
+	<script src="{{ site.baseurl }}/assets/js/material.min.js"></script>
+
+	<!-- Plugin for Canvas.js, which creates the floating dots effect -->
+	<script src="{{ site.baseurl }}/assets/js/canvas.js" type="text/javascript"></script>
+
+	<!-- Control Center for Material Kit: activating the ripples, parallax effects, scripts from the example pages etc -->
+	<script src="{{ site.baseurl }}/assets/js/material-kit.js" type="text/javascript"></script>
+
+	<!-- Search and Algolia-related scripts -->
+	<script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=Object.assign,Intl.~locale.en"></script>
+	<script src="//cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
+	<script src="//cdn.jsdelivr.net/algoliasearch.helper/2/algoliasearch.helper.min.js"></script>
+	<script src="//cdn.jsdelivr.net/hogan.js/3.0.2/hogan.min.common.js"></script>
+	<script src="//cdn.jsdelivr.net/jquery.ion.rangeslider/2.0.12/js/ion.rangeSlider.min.js"></script>
+	<script src="{{ site.baseurl }}/assets/js/search.js"></script>
+
+	<script type="text/javascript">
+		$().ready(function(){
+			// the body of this function is in assets/material-kit.js
+			//materialKit.initSliders();
+        window_width = $(window).width();
+
+        if (window_width >= 992){
+            big_image = $('.wrapper > .header');
+
+				$(window).on('scroll', materialKitDemo.checkScrollForParallax);
+			}
+
+		});
+	</script>
+	
+</html>

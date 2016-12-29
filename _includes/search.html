@@ -1,0 +1,187 @@
+{% raw %}
+  <!-- Hit template -->
+  <script type="text/template" id="hit-template">
+    {{#hits}}
+      <div class="card">
+        <div class="content">
+          <div class="tab-content">
+            <div class="row">
+              <div class="col-md-6">
+                <ul class="list-inline hit-summary-icons"> 
+                  <li class="pull-left">
+                    <i class="material-icons {{#GrantMedian}}material-icons-active{{/GrantMedian}}">monetization_on</i>
+                  </li>  
+                  <li class="pull-left">
+                    <i class="material-icons {{#isLikelyStaffed}}material-icons-active{{/isLikelyStaffed}}">account_circle</i>
+                  </li>             
+                  {{#Website}}
+                    <li class="pull-left">
+                      <a href="{{ Website }}" target="_blank"><i class="material-icons material-icons-active">public</i></a>
+                    </li>
+                  {{/Website}}
+                  {{^Website}}
+                    <li class="pull-left">
+                      <i class="material-icons">public</i>
+                    </li>
+                  {{/Website}}
+                </ul>
+              </div>
+              <div class="col-md-6">
+                <h6 class="text-right"><span class="hit-ein">{{ EIN }}</span></h6>
+              </div>
+              
+              <div class="col-md-9">
+                <h3 class="hit-name"><a href="https://grantmakers.io/profiles/{{ EIN }}" title="Visit Website">{{{ _highlightResult.OrganizationName.value }}}</a><br><small>{{{ _highlightResult.City.value }}}, {{{ _highlightResult.State.value }}}</small></h3>
+              </div>
+              <div class="col-md-3">
+                <div class="hit-grants-wrapper">
+                  <h4 class="text-muted text-right">GRANTS</h4>
+                  <ul class="list-unstyled list-profile-items text-right">
+                    <li><span data-toggle="tooltip" data-placement="top" title="# of grants made in {{Filings.0.TaxYear}} (tax year)" class="hit-format-number">{{ GrantCount }}</span></li>
+                    <li>min <span class="hit-format-currency">{{ GrantMin }}</span></li>
+                    <!-- 
+                    <li>median <b><span class="hit-format-currency" data-toggle="tooltip" data-placement="left" title="Median">{{ GrantMedian }}</span></b></li> 
+                    -->
+                    <li>max <span class="hit-format-currency">{{ GrantMax }}</span></li>
+                  </ul>
+                </div>
+              </div>
+              <div class="tab-pane active" data-pane="detail" id="profile-{{ EIN }}" role="tabpanel">
+                <div class="col-md-6 progress-assets-wrapper">
+                  <h4 class="text-muted"><span class="hit-format-currency">{{ Assets }}</span><br><small>Total Assets</small></h4>
+                  <div class="progress">
+                    <div class="progress-bar progress-bar-warning progress-bar-assets" role="progressbar" data-assets="{{ Assets }}" aria-valuenow="{{ Assets }}" aria-valuemin="0" aria-valuemax="100000000">
+                      <span class="sr-only"></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 progress-grants-wrapper">
+                  <h4 class="text-muted"><span class="hit-format-currency">{{ GrantMedian }}</span><br><small>Median Grant</small></h4>
+                  <div class="progress">
+                    <div class="progress-bar progress-bar-warning progress-bar-grants" role="progressbar" data-grants="{{ GrantMedian }}" aria-valuenow="{{ GrantMedian }}" aria-valuemin="0" aria-valuemax="1000000">
+                      <span class="sr-only"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--
+              <div class="tab-pane" data-pane="detail" id="data-{{ EIN }}" role="tabpanel">
+                <div class="col-md-12">
+                  <div class="hit-filings-wrapper">
+                    <ul class="list-inline">
+                      {{#Filings}}
+                        <li><a class="js-filings btn btn-default btn-sm" target="_blank" data-tax-period="{{ TaxPeriod }}" data-ein="{{ EIN }}" data-url-xml="{{ URL }}" title="View 990-PF">{{ TaxYear }}</a></li>
+                      {{/Filings}}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              -->
+            </div>             
+          </div>
+        </div>
+      </div>
+    {{/hits}}
+  </script>
+
+  <!-- Stats template -->
+  <script type="text/template" id="stats-template">
+    <div class="navbar navbar-transparent navbar-stats">
+
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <h5><span class="format-number">{{ nbHits }}</span> Grantmaker{{#nbHits_plural}}s{{/nbHits_plural}}  <small>Found in {{ processingTimeMS }}ms</small></h5>
+      </div>
+
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul id="view-selector" class="nav navbar-nav navbar-right" role="tablist">
+          <!--
+          <li>
+            <a href="#people-{{ EIN }}" class="btn btn-simple btn-sm" data-toggle="tab">
+              <i class="material-icons">people</i> People
+            </a>
+          </li>
+          <li>
+            <a href="#grants-{{ EIN }}" class="btn btn-simple btn-sm" data-toggle="tab">
+              <i class="material-icons">attach_money</i> Grants
+            </a>
+          </li>
+          -->
+          <li id="tab-detail" class="active">
+            <a href="#profile-{{ EIN }}" class="btn btn-simple btn-sm active" data-toggle="tab">
+              <i class="material-icons">assessment</i> Detail
+            </a>
+          </li>
+          <li id="tab-summary" class="">
+            <a href="#summary-{{ EIN }}" class="btn btn-simple btn-sm" data-toggle="tab">
+              <i class="material-icons">view_list</i> Summary
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </script>
+
+  <!-- Facet template -->
+  <script type="text/template" id="facet-template">
+    <div class="facet">
+      <h5>{{ title }} <small><span data-facet-tooltip="{{ facet }}"><i class="facet-info material-icons md-18">info</i></span></small></h5>
+      <ul class="list-unstyled">
+        {{#values}}
+        <li>
+          <a href="" class="facet-link toggle-refine {{#disjunctive}}facet-disjunctive{{/disjunctive}} {{#isRefined}}facet-refined{{/isRefined}}" data-facet="{{ facet }}" data-value="{{ name }}">
+            <span class="facet-value">{{ name }}</span>
+            <span class="pull-right facet-count format-number-facet">{{ count }}</span>
+          </a>
+        </li>
+        {{/values}}
+      </ul>
+    </div>
+  </script>
+
+  <!-- Slider template -->
+  <script type="text/template" id="slider-template">
+    <div class="facet">
+      <h5>{{ title }} <small><span data-facet-tooltip="GrantMedian" rel="tooltip" title="Median grant size for latest tax year" data-placement="top"><i class="facet-info material-icons md-18">info</i></span></small></h5>
+      <input type="text" id="{{ facet }}-slider" data-min="{{ min }}" data-max="{{ max }}" data-from="{{ from }}" data-to="{{ to }}" class="format-number-facet" />
+    </div>
+  </script>
+
+  <script type="text/template" id="clear-template">
+    <div class="facet facet-clear-all">
+      <a class='clear-all clear-all-full-width btn btn-default btn-block btn-sm'>Clear All</a>
+    </div>
+  </script>
+
+  <!-- Pagination template -->
+  <script type="text/template" id="pagination-template">
+    <ul class="pagination pagination-danger">
+      <li {{^prev_page}}class="disabled"{{/prev_page}}><a href="#" {{#prev_page}}class="go-to-page" data-page="{{ prev_page }}"{{/prev_page}}>&#60;</a></li>
+      {{#pages}}
+      <li class="{{#current}}active{{/current}} {{#disabled}}disabled{{/disabled}}"><a href="#" {{^disabled}} class="go-to-page" data-page="{{ number }}" {{/disabled}}>{{ number }}</a></li>
+      {{/pages}}
+      <li {{^next_page}}class="disabled"{{/next_page}}><a href="#" {{#next_page}}class="go-to-page" data-page="{{ next_page }}"{{/next_page}}>&#62;</a></li>
+    </ul>
+  </script>
+
+  <!-- No-Results template -->
+  <script type="text/template" id="no-results-template">
+    <div id="no-results-message" class="text-center">
+      <h3>We didn't find any results for the search <em>"{{ query }}"</em>.</h3>
+      <ul class="list-inline">
+        {{#filters}}
+        <li class="{{ class }}" data-facet="{{ facet }}" data-value="{{ facet_value }}"><h5 class="btn btn-default"><small>{{ label }}</small><span class="value">{{ label_value }}</span> <a class="remove"><i class="material-icons">remove_circle</i></a></h5>
+          
+        </li>
+        {{/filters}}
+        <br>
+        <a class='btn btn-danger btn-sm clear-all'>Clear all</a>
+      </ul>
+    </div>
+  </script>
+{% endraw %}

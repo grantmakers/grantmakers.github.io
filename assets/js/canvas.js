@@ -4,10 +4,12 @@ $(function() {
   var canvas = document.querySelector('canvas'),
     context = canvas.getContext('2d'),
     color = '#c54e00',
+    //color = '#772F00',
     count = 250,
     flakes = [];
 
-  canvas.width = window.innerWidth / 2;
+  //canvas.width = window.innerWidth / 2;
+  canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
   canvas.style.display = 'block';
 
