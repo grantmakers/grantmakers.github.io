@@ -13,15 +13,15 @@
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
 
 	<!-- Progress Bar - Initial load -->
-  	<script data-pace-options='{
-      "elements": {
-        "selectors": ["#stats-template"]
-      },
-      "restartOnPushState": false,
-      "restartOnRequestAfter": false
-    }' src="{{ site.baseurl }}/assets/js/pace.min.js">
-    </script>
-  <link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/assets/css/pace.css">
+	<link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/assets/css/pace.css">
+	<script data-pace-options='{
+    "elements": {
+      "selectors": ["#stats-template"]
+    },
+    "restartOnPushState": false,
+    "restartOnRequestAfter": false
+  }' src="{{ site.baseurl }}/assets/js/pace.min.js">
+  </script>
 
 	<!-- Fonts and icons     -->
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
@@ -43,12 +43,14 @@
 		<div class="row">
 			<div class="col-sm-3">
 				<div class="navbar-header">
+					<!--
 			  	<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation-index">
 		      	<span class="sr-only">Toggle navigation</span>
 		      	<span class="icon-bar"></span>
 		      	<span class="icon-bar"></span>
 		      	<span class="icon-bar"></span>
 			  	</button>
+			  	-->
 			  	<a href="https://www.grantmakers.io">
 			    	<div class="logo-container">
 			        <div class="logo">
@@ -62,7 +64,7 @@
 		    </div>
 			</div>
 			<div class="col-sm-6">
-				<div class="form-group form-group-lg">
+				<div class="form-group form-group-lg search-input-wrapper">
 				  <div class="input-group center-block">
 						<input id="search-input" class="form-control" type="text" autocomplete="off" spellcheck="false" autocorrect="off" placeholder="Search..." autofocus/>
 						<span class="input-group-addon input-group-addon-close">

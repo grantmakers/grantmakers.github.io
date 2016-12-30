@@ -153,6 +153,18 @@ canvas {
     	display: block;
     }
   }
+  /* mobile - phones */
+  @media (max-width: $screen-xs-max) {
+  	.search-input-wrapper {
+  		margin-top: 20px !important;
+  	}
+  	.try-it {
+  		display: none;
+  	}
+  	&.affix .navbar-header, .algolia-logo, .try-it {
+  		display: none;
+  	}
+  }
 	/* initial navbar style */
   @media (min-width:768px) {
     &.affix-top {
@@ -280,18 +292,24 @@ canvas {
 .header-default {
   background: linear-gradient(60deg, $grey-400, $grey-500);
 }
-.section-results {
-	background-color: #eee;
-}
 
 
 /****************************
 Search Results
 *****************************/
 
+.section-results {
+	background-color: #eee;
+}
+
 #left-column.affix {
 	top: 100px;
 	//min-width: 100%;
+}
+@media (max-width: $screen-sm-max) {
+	#left-column, .hit-grants-wrapper {
+		display: none;
+	}
 }
 .section-results main {
 	min-height: 750px;
@@ -315,6 +333,11 @@ Search Results
 	li.active a {
 		color: $gray;
 		cursor: default;
+	}
+	@media (max-width: $screen-sm-max) {
+		.navbar-transparent {
+			background-color: transparent;
+		}
 	}
 }
 

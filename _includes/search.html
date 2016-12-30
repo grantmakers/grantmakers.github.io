@@ -89,16 +89,18 @@
     <div class="navbar navbar-transparent navbar-stats">
 
       <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <!--
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#stats-header-collapse">
           <span class="sr-only">Toggle navigation</span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
+        -->
         <h5><span class="format-number">{{ nbHits }}</span> Grantmaker{{#nbHits_plural}}s{{/nbHits_plural}}  <small>Found in {{ processingTimeMS }}ms</small></h5>
       </div>
 
-      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <div class="collapse navbar-collapse" id="stats-header-collapse">
         <ul id="view-selector" class="nav navbar-nav navbar-right" role="tablist">
           <!--
           <li>
