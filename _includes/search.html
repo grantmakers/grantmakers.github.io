@@ -9,19 +9,19 @@
               <div class="col-md-6">
                 <ul class="list-inline hit-summary-icons"> 
                   <li class="pull-left">
-                    <i class="material-icons {{#GrantMedian}}material-icons-active{{/GrantMedian}}">monetization_on</i>
+                    <i class="material-icons {{#GrantMedian}}material-icons-active{{/GrantMedian}}" data-toggle="tooltip"{{#GrantMedian}} title="Has recent grants"{{/GrantMedian}}{{^GrantMedian}} title="No recent grants"{{/GrantMedian}}>monetization_on</i>
                   </li>  
                   <li class="pull-left">
-                    <i class="material-icons {{#isLikelyStaffed}}material-icons-active{{/isLikelyStaffed}}">account_circle</i>
+                    <i class="material-icons {{#isLikelyStaffed}}material-icons-active{{/isLikelyStaffed}}" data-toggle="tooltip"{{#isLikelyStaffed}} title="Is likely staffed"{{/isLikelyStaffed}}{{^isLikelyStaffed}} title="No paid staff"{{/isLikelyStaffed}}>account_circle</i>
                   </li>             
                   {{#Website}}
                     <li class="pull-left">
-                      <a href="{{ Website }}" target="_blank"><i class="material-icons material-icons-active">public</i></a>
+                      <a href="{{ Website }}" target="_blank" data-toggle="tooltip" title="Click to visit website"><i class="material-icons material-icons-active">public</i></a>
                     </li>
                   {{/Website}}
                   {{^Website}}
                     <li class="pull-left">
-                      <i class="material-icons">public</i>
+                      <i class="material-icons" data-toggle="tooltip" title="No website listed">public</i>
                     </li>
                   {{/Website}}
                 </ul>
