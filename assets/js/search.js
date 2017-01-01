@@ -382,7 +382,6 @@ $(document).ready(function() {
   });
   $(document).on('click', '.go-to-page', function(e) {
     e.preventDefault();
-    console.log('scrollAnchor: ' + scrollAnchor);
     $('html, body').animate({scrollTop: scrollAnchor}, '500', 'swing');
     algoliaHelper.setCurrentPage(+$(this).data('page') - 1).search();
   });
