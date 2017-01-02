@@ -116,6 +116,15 @@ a, a:hover {
 	color: $grantmakers;
 }
 
+/***********************
+Mobile Safari Scroll Fix
+************************/
+//http://stackoverflow.com/questions/29001977/safari-in-ios8-is-scrolling-screen-when-fixed-elements-get-focus
+html,body{
+  -webkit-overflow-scrolling : touch !important;
+  overflow: auto !important;
+  //height: 100% !important;
+}
 
 /****************************
 Landing Header
@@ -166,7 +175,7 @@ canvas {
   	}
   }
 	/* initial navbar style */
-  @media (min-width:768px) {
+  @media (min-width: $screen-sm-min) {
     &.affix-top {
       background-color:transparent;
       border-color:transparent;
@@ -238,6 +247,14 @@ canvas {
 	}
 	h2, h3, h4 {
 		margin-top: 10px;
+	}
+	@media (max-width: $screen-xs-max) {
+		h1 {
+			font-size: 3.8em;
+		}
+		h3 {
+			font-size: 1.5em;
+		}
 	}
 	.narrow {
 		max-width: 400px;
