@@ -430,32 +430,6 @@ $(document).ready(function() {
   $(document).on('click', '#tab-summary a', function(e) {
     $('[data-pane="detail"]').removeClass('active').css('display', 'none');
   });
-  $('.modal-tax-filings').on('show.bs.modal', function(e) {
-
-    //get attributes from clicked element
-    var urlXML = $(e.relatedTarget).data('url-xml');
-    var urlPDF = $(e.relatedTarget).data('url-pdf'); //TODO PDF does not yet exist
-
-    //set attributes in modal
-    $(e.currentTarget).attr('data-url-xml', urlXML);
-    $(e.currentTarget).attr('data-url-pdf', urlPDF);
-
-  });
-  $(document).on('click', '.js-tax-filings-preference', function(e) {
-    var preference = $(this).attr('data-tax-filings-preference');
-    if(localStorage){
-      localStorage.setItem('tax_filings_preference', preference);
-      removeModalsIfFilingsPreferenceSet();
-      $('.modal-tax-filings').modal('hide');
-      //Add proper link to all filing buttons
-      $('.js-filings').each(function () {
-        addFilingURL($(this));
-      });
-      //Open filing in new window
-      //TODO window.open(url);
-    }
-
-  });
 
 
 
