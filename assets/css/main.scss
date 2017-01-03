@@ -125,6 +125,10 @@ html,body{
   overflow: auto !important;
   //height: 100% !important;
 }
+.safari-scroll-hack {
+	position: fixed;
+	top: 450px;
+}
 
 /****************************
 Landing Header

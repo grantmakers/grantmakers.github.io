@@ -375,7 +375,29 @@ $(document).ready(function() {
   // ==============
 
   var scrollAnchor = $('.section-results').offset().top - 50;
+  var isMobile = window.matchMedia('only screen and (max-width: 768px)');
 
+  $searchInput.on('focusin', function(e) { //HACK Mobile Safari
+    if (isMobile.matches) {
+      e.preventDefault();
+      e.stopPropagation();
+      $('html, body').animate({scrollTop: scrollAnchor}, '500', 'swing');
+      $('.navbar-search').addClass('safari-scroll-hack');
+    }
+  });
+  $searchInput.on('focusout', function(e) { //HACK Mobile Safari
+    if (isMobile.matches) {
+      e.preventDefault();
+      e.stopPropagation();
+      $('html, body').animate({scrollTop: scrollAnchor}, '500', 'swing');
+      $('.navbar-search').removeClass('safari-scroll-hack');
+    }
+  });
+  $(document).on('input', $searchInput, function(e) {
+    if (!isMobile.matches) {
+      $('html, body').animate({scrollTop: scrollAnchor}, '500', 'swing');
+    }
+  });
   $(document).on('click', '.toggle-refine', function(e) {
     e.preventDefault();
     algoliaHelper.toggleRefine($(this).data('facet'), $(this).data('value')).search();
@@ -413,9 +435,6 @@ $(document).ready(function() {
     e.preventDefault();
     $searchInput.focus();
     algoliaHelper.setQuery('').clearRefinements().search();
-  });
-  $(document).on('input', $searchInput, function(e) {
-    $('html, body').animate({scrollTop: scrollAnchor}, '500', 'swing'); //TODO Only trigger if needed
   });
   $(document).on('click', '.try-it li a', function(e) {
     e.preventDefault();
