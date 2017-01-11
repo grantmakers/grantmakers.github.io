@@ -1,6 +1,6 @@
 # Site settings
 # Meta tags
-title: Grantmakers.io
+title: Grantmakers.io - A Community Project
 description: Quickly find data on 67,000 grantmaking institutions in the US. An open source project from your friends at SmarterGiving.
 
 # Jekyll settings
@@ -10,7 +10,7 @@ sass:
   sass_dir: assets/css/_sass
 
 # Google Analytics
-google-analytics: #UA-84268197-1
+google-analytics: UA-84268197-1
 
 # Build settings
 markdown: kramdown

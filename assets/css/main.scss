@@ -751,3 +751,18 @@ About / Learn More
 .features {
 	padding-top: 30px;
 }
+
+/****************************
+Footers
+*****************************/
+
+.footer-terms {
+	background-color: $gray;
+	color: $gray-light;
+	ul {
+		margin: 5px 0;
+	}
+	a {
+		color: $gray-light;
+	}
+}
