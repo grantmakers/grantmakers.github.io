@@ -11,7 +11,7 @@
 	    <div class="col-md-3">
 	      <ul class="list-inline text-right">
 	      	<li>
-	      		<a href="#" data-toggle="modal" data-target="#modal-terms-of-use">Terms of Service</a>
+	      		<a href="{{ site.baseurl }}/terms/">Terms of Service</a>
 	      	</li>
 	        <li>
 	        	<a href="//www.iubenda.com/privacy-policy/7996402" class="iubenda-nostyle no-brand iub-legal-only iubenda-embed" title="Privacy Policy">Privacy Policy</a><script type="text/javascript">(function (w,d) {var loader = function () {var s = d.createElement("script"), tag = d.getElementsByTagName("script")[0]; s.src = "//cdn.iubenda.com/iubenda.js"; tag.parentNode.insertBefore(s,tag);}; if(w.addEventListener){w.addEventListener("load", loader, false);}else if(w.attachEvent){w.attachEvent("onload", loader);}else{w.onload = loader;}})(window, document);</script>
@@ -21,18 +21,3 @@
 	  </div>
 	</div>
 </div>
-
-<!-- Terms of Use Modal -->
-<div id="modal-terms-of-use" class="modal fade">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 class="modal-title">Terms of Service (&quot;Terms&quot;)</h3>
-      </div>
-      <div class="modal-body">
-				{% include terms.html %}
-    </div>
-  </div>
-</div>
-<!-- /Terms of Use Modal -->

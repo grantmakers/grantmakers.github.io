@@ -753,6 +753,32 @@ About / Learn More
 }
 
 /****************************
+Simple Page Layout
+*****************************/
+
+.simple-no-hero {
+	.header-filter:after {
+		background: rgba(44,45,51,0.9);
+    background: linear-gradient(rgba(44,45,51,0.9), rgba(44,45,51,0.9));
+    background: -moz-linear-gradient(rgba(44,45,51,0.9), rgba(44,45,51,0.9));
+    background: -webkit-linear-gradient(rgba(44,45,51,0.9), rgba(44,45,51,0.9));
+	}
+	.header {
+		min-height: 380px;
+		.container {
+			padding-top: 16vh;
+    	color: #FFFFFF;
+		}
+	}
+	.title {
+		color: #ffffff;
+	}
+	.section-faq p {
+		margin-bottom: 20px;
+	}
+}
+
+/****************************
 Footers
 *****************************/
 
