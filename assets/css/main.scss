@@ -751,6 +751,12 @@ About / Learn More
 .features {
 	padding-top: 30px;
 }
+//TODO - remove 'team' and 'team-player' references
+@media (max-width: $screen-sm-max) {
+	.team-player {
+		padding-bottom: 80px;
+	}
+}
 
 /****************************
 Simple Page Layout
@@ -772,6 +778,11 @@ Simple Page Layout
 	}
 	.title {
 		color: #ffffff;
+	}
+	@media (max-width: $screen-xs-max) {
+		h1.title {
+			font-size: 2.8em;
+		}
 	}
 	.section-faq p {
 		margin-bottom: 20px;
