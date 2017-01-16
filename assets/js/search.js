@@ -33,6 +33,7 @@ $(document).ready(function() {
   var $facets = $('#facets');
   var $clear = $('#clear');
   var $pagination = $('#pagination');
+  var $rateLimit = $('#rate-limit');
 
   // Hogan templates binding
   var hitTemplate = Hogan.compile($('#hit-template').text());
@@ -42,6 +43,7 @@ $(document).ready(function() {
   var clearTemplate = Hogan.compile($('#clear-template').text());
   var paginationTemplate = Hogan.compile($('#pagination-template').text());
   var noResultsTemplate = Hogan.compile($('#no-results-template').text());
+  var rateLimitTemplate = Hogan.compile($('#rate-limit-template').text());
 
 
 
@@ -51,7 +53,6 @@ $(document).ready(function() {
   // Input binding
   $searchInput
   .on('input propertychange', function(e) {
-    //var query = e.currentTarget.value;
     var query = e.currentTarget.value.replace('-',''); //Handle EINs entered with a hyphen
     if ($('#search-input').val().length > 0) {
       $searchInputIcon.removeClass('empty');
@@ -59,7 +60,6 @@ $(document).ready(function() {
       $searchInputIcon.addClass('empty');
     }
     
-    //toggleIconEmptyInput(query);
     algoliaHelper.setQuery(query).search();
   })
   .focus();
@@ -67,6 +67,11 @@ $(document).ready(function() {
   // Search errors
   algoliaHelper.on('error', function(error) {
     console.log(error);
+    if (error.statusCode == 429) {
+      $('#stats').css('visibility', 'hidden');
+      renderRateLimit();
+      console.log('Rate limit reached');
+    }
   });
 
   // Update URL
@@ -319,6 +324,10 @@ $(document).ready(function() {
       next_page: content.page + 1 < content.nbPages ? content.page + 2 : false
     };
     $pagination.html(paginationTemplate.render(pagination));
+  }
+
+  function renderRateLimit(content) {
+    $rateLimit.html(rateLimitTemplate.render(content));
   }
 
 
