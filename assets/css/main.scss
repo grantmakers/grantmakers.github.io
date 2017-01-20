@@ -579,6 +579,9 @@ Search Results
 		}
 	}
 }
+.no-results #pagination, .no-results #sort-by, .no-results #facets, .no-results #clear {
+	display: none;
+}
 #no-results-message {
 	small, a i {
 		color: $gray-lightest;
