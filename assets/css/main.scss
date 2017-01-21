@@ -579,13 +579,26 @@ Search Results
 		}
 	}
 }
+#tips {
+	display: none;
+}
 .no-results #pagination, .no-results #sort-by, .no-results #facets, .no-results #clear {
 	display: none;
 }
+.no-results #tips {
+	display: block;
+}
 #no-results-message {
+	margin-top: 50px;
 	small, a i {
 		color: $gray-lightest;
 	}
+	p {
+		margin-top: 50px;
+	}
+}
+#tips ul li {
+	margin-bottom: 20px;
 }
 .pagination a.go-to-page:hover {
 	background-color: #fff;
