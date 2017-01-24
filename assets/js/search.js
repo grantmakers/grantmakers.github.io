@@ -390,7 +390,7 @@ $(document).ready(function() {
     if (isMobile.matches) {
       e.preventDefault();
       e.stopPropagation();
-      $('html, body').animate({scrollTop: scrollAnchor}, '500', 'swing');
+      readyToSearchScrollPosition();
       $('.navbar-search').addClass('safari-scroll-hack');
     }
   });
@@ -398,13 +398,20 @@ $(document).ready(function() {
     if (isMobile.matches) {
       e.preventDefault();
       e.stopPropagation();
-      $('html, body').animate({scrollTop: scrollAnchor}, '500', 'swing');
+      readyToSearchScrollPosition();
       $('.navbar-search').removeClass('safari-scroll-hack');
     }
   });
   $(document).on('input', $searchInput, function(e) {
+    var page = $('html, body');
     if (!isMobile.matches) {
-      $('html, body').animate({scrollTop: scrollAnchor}, '500', 'swing');
+      page.on('scroll mousedown wheel DOMMouseScroll mousewheel touchmove', function(){
+        page.stop();
+      });
+
+      readyToSearchScrollPosition();
+
+      return false; 
     }
   });
   $(document).on('click', '.toggle-refine', function(e) {
@@ -413,7 +420,7 @@ $(document).ready(function() {
   });
   $(document).on('click', '.go-to-page', function(e) {
     e.preventDefault();
-    $('html, body').animate({scrollTop: scrollAnchor}, '500', 'swing');
+    readyToSearchScrollPosition();
     algoliaHelper.setCurrentPage(+$(this).data('page') - 1).search();
   });
   $sortBySelect.on('change', function(e) {
@@ -425,6 +432,7 @@ $(document).ready(function() {
     $searchInput.val('').keyup().focus();
     algoliaHelper.setQuery('').search();
     $searchInputIcon.addClass('empty');
+    readyToSearchScrollPosition();
   });
   $(document).on('click', '.remove-numeric-refine', function(e) {
     e.preventDefault();
@@ -450,7 +458,7 @@ $(document).ready(function() {
     var target = $(this).text();
     $searchInput.val(target.replace('-','')); //Handle hyphen in EIN
     algoliaHelper.setQuery(target.replace('-','')).search();
-    $('html, body').animate({scrollTop: scrollAnchor}, '500', 'swing');
+    readyToSearchScrollPosition();
   });
   $(document).on('click', '#tab-detail a', function(e) {
     $('[data-pane="detail"]').addClass('active').css('display', 'block');
@@ -551,6 +559,10 @@ $(document).ready(function() {
         d = c < 0 ? c : Math.abs(c), // enforce -0 is 0
         e = d + ['', 'K', 'M', 'B', 'T'][k]; // append power
     return e;
+  }
+
+  function readyToSearchScrollPosition() {
+    $('html, body').animate({scrollTop: scrollAnchor}, '500', 'swing');
   }
 
   // FORMATTING
