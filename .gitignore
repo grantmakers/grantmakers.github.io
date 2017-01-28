@@ -3,4 +3,5 @@ _site/
 .jekyll-metadata
 .DS_Store
 /algolia/secrets.js
+/algolia/node_modules/
 /data/
