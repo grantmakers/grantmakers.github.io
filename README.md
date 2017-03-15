@@ -1,17 +1,34 @@
 # Grantmakers.io - A Community Project
 
-See also [Grantmakers.io Profiles repo](https://github.com/grantmakers/profiles)
+The Grantmakers.io project is spread across three repos:  
+1. Foundation Search (this repo)
+1. [Foundation Profiles](https://github.com/grantmakers/profiles)
+1. [Grant Search](https://github.com/grantmakers/charity-search)    
 
+## Goal  
+Demonstrate how open source technologies + hosted microservices can be leveraged to minimize the cost of hosting and sharing philanthropic data.
+
+Grantmakers.io was built at zero cost and has zero ongoing costs.  
+
+## Search  
+The search functionality is fully hosted by [Algolia](https://www.algolia.com/). See [`/assets/js/search.js`](https://github.com/grantmakers/grantmakers.github.io/blob/master/assets/js/search.js).  
+
+## Data  
+All data is pulled directly from machine-readable IRS Form 990PF. These files are [hosted publicly by Amazon Web Services](https://aws.amazon.com/public-datasets/irs-990/).
+
+A copy of the normalized data we sync with Algolia is publicly available [here](https://drive.google.com/open?id=0B_ODHXi37sCcTEFhWmdvX3V3MzA).
+
+## Feature Requests
 If you have a question, feature request, find a bug, or just want to say hi, please open an [issue on GitHub](https://github.com/grantmakers/grantmakers.github.io/issues).
 
-# Credits
+## Credits
 - Material Kit: [Creative Tim](https://github.com/timcreative/material-kit) *License required
 - Bootstrap Material Design: [Federico Zivolo](https://github.com/FezVrasta/bootstrap-material-design)
 - Electronic Tax Filings: [Amazon Web Services](https://aws.amazon.com/public-datasets/irs-990/)
 - PDF Links: [Foundation Center PDF Archives](http://990finder.foundationcenter.org/)
 - Images: [Unsplash](https://unsplash.com/)
 
-# License
+## License
 Copyright 2016, 2017 Chad Kruse, SmarterGiving
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
