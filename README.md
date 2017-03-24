@@ -16,7 +16,11 @@ The search functionality is fully hosted by [Algolia](https://www.algolia.com/).
 ## Data  
 All data is pulled directly from machine-readable IRS Form 990PF. These files are [hosted publicly by Amazon Web Services](https://aws.amazon.com/public-datasets/irs-990/).
 
-A copy of the normalized data we sync with Algolia is publicly available [here](https://drive.google.com/open?id=0B_ODHXi37sCcTEFhWmdvX3V3MzA).
+Download link for the normalized data we sync with Algolia:  
+[JSON | 166MB](https://drive.google.com/open?id=0B_ODHXi37sCcTEFhWmdvX3V3MzA)
+
+Download link for the entire MongoDB database (includes index data, filing data, and normalized data:  
+[BSON | 5GB - please email us for a link](mailto:opensource@grantmakers.io)
 
 ## Feature Requests
 If you have a question, feature request, find a bug, or just want to say hi, please open an [issue on GitHub](https://github.com/grantmakers/grantmakers.github.io/issues).
