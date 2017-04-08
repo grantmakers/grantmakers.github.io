@@ -1,7 +1,7 @@
 // Splits the Algolia JSON file into individual JSON files per EIN
 var fs = require('fs');
 
-fs.readFile('algolia_all_fields.json', 'utf8', function (err, data) {
+fs.readFile('algolia.json', 'utf8', function (err, data) {
   if (err) {
     return console.log(err);
   }
