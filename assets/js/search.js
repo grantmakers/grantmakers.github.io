@@ -53,7 +53,20 @@ $(document).ready(function() {
   // Input binding
   $searchInput
   .on('input propertychange', function(e) {
-    var query = e.currentTarget.value.replace('-',''); //Handle EINs entered with a hyphen
+    var query;
+    // Handle EINs entered with a hyphen
+    // Base Regex: /^[0-9]{2}\-\d{7}$/g;
+    // Assume query is an EIN as soon as 2 digits entered after hyphen
+    var regexEIN = /^[0-9]{2}\-\d{2}/g;
+    var target = e.currentTarget.value;
+    var isEIN = regexEIN.test(target);
+    if (target.includes('-') && isEIN){
+      // TODO Will remove hyphen if queryy also includes prohibit string (e.g. -foo)
+      query = target.replace('-','');
+    } else {
+      query = e.currentTarget.value;
+    }
+    
     if ($('#search-input').val().length > 0) {
       $searchInputIcon.removeClass('empty');
     } else {
@@ -181,6 +194,7 @@ $(document).ready(function() {
     });
 
     //Filings
+    /*
     $('.js-filings').each(function () {
       if (window.localStorage && window.localStorage.tax_filings_preference){
         addFilingURL($(this));
@@ -189,6 +203,7 @@ $(document).ready(function() {
         $(this).attr('data-target', '.modal-tax-filings');
       }
     });
+    */
     
   }
 
