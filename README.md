@@ -1,5 +1,7 @@
 # Grantmakers.io - A Community Project
 
+[![Stories in Ready](https://badge.waffle.io/grantmakers/grantmakers.github.io.png?label=ready&title=Ready)](http://waffle.io/grantmakers/grantmakers.github.io)
+
 The Grantmakers.io project is spread across three repos:  
 1. Foundation Search (this repo)
 1. [Foundation Profiles](https://github.com/grantmakers/profiles)
@@ -24,6 +26,9 @@ Download link for the entire MongoDB database (includes index data, filing data,
 
 ## Feature Requests
 If you have a question, feature request, find a bug, or just want to say hi, please open an [issue on GitHub](https://github.com/grantmakers/grantmakers.github.io/issues).
+
+## Roadmap  
+The roadmap is [openly available](https://waffle.io/grantmakers/grantmakers.github.io)
 
 ## Credits
 - Material Kit: [Creative Tim](https://github.com/timcreative/material-kit) *License required
