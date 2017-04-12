@@ -20,9 +20,11 @@ fs.readFile('algolia.json', 'utf8', function (err, json) {
     return console.log(err);
   }
   var data = _.chunk(JSON.parse(json), [size=10000]);
+  // TODO - change to update
   return index.clearIndex(function(err, content) {
     index.waitTask(content.taskID, function() {
       async.each(data, function(batch, callback) {
+        // TODO - change to update
         index.addObjects(batch, function gotTaskID(error, content) {
           console.log('write operation received: ' + content.taskID);
           index.waitTask(content.taskID, function contentIndexed() {
