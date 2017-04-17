@@ -1,7 +1,8 @@
-// Splits the Algolia JSON file into individual JSON files per EIN
+// Splits the aggregated JSON file into individual JSON files per EIN
+// Files are then available to Jekyll in the _data folder
 var fs = require('fs');
 
-fs.readFile('algolia.json', 'utf8', function (err, data) {
+fs.readFile('aggregated.json', 'utf8', function (err, data) {
   if (err) {
     return console.log(err);
   }
@@ -11,7 +12,7 @@ fs.readFile('algolia.json', 'utf8', function (err, data) {
 
     var doc = JSON.stringify(item, null, 4);
 
-    fs.writeFileSync('../_json/' + ein + '.json', doc, 'utf-8');
+    fs.writeFileSync('EIN/' + ein + '.json', doc, 'utf-8');
     console.log('File saved for ' + ein);
   });
   
