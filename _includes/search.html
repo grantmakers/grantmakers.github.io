@@ -9,69 +9,69 @@
               <div class="col-md-6">
                 <ul class="list-inline hit-summary-icons"> 
                   <li class="pull-left">
-                    <i class="material-icons {{#has_recent_grants}}material-icons-active{{/has_recent_grants}}" data-toggle="tooltip"{{#has_recent_grants}} title="Has recent grants"{{/has_recent_grants}}{{^has_recent_grants}} title="No recent grants"{{/has_recent_grants}}>monetization_on</i>
+                    <i class="material-icons {{#hasRecentGrants}}material-icons-active{{/hasRecentGrants}}" data-toggle="tooltip"{{#hasRecentGrants}} title="Has recent grants"{{/hasRecentGrants}}{{^hasRecentGrants}} title="No recent grants"{{/hasRecentGrants}}>monetization_on</i>
                   </li>  
                   <li class="pull-left">
-                    <i class="material-icons {{#is_likely_staffed}}material-icons-active{{/is_likely_staffed}}" data-toggle="tooltip"{{#is_likely_staffed}} title="Is likely staffed"{{/is_likely_staffed}}{{^is_likely_staffed}} title="No paid staff"{{/is_likely_staffed}}>account_circle</i>
+                    <i class="material-icons {{#isLikelyStaffed}}material-icons-active{{/isLikelyStaffed}}" data-toggle="tooltip"{{#isLikelyStaffed}} title="Is likely staffed"{{/isLikelyStaffed}}{{^isLikelyStaffed}} title="No paid staff"{{/isLikelyStaffed}}>account_circle</i>
                   </li>             
-                  {{#website}}
+                  {{#Website}}
                     <li class="pull-left">
-                      <a href="{{ website }}" target="_blank" data-toggle="tooltip" title="Click to visit website"><i class="material-icons material-icons-active">public</i></a>
+                      <a href="{{ Website }}" target="_blank" data-toggle="tooltip" title="Click to visit website"><i class="material-icons material-icons-active">public</i></a>
                     </li>
-                  {{/website}}
-                  {{^website}}
+                  {{/Website}}
+                  {{^Website}}
                     <li class="pull-left">
                       <i class="material-icons" data-toggle="tooltip" title="No website listed">public</i>
                     </li>
-                  {{/website}}
+                  {{/Website}}
                 </ul>
               </div>
               <div class="col-md-6">
-                <h6 class="text-right"><span class="hit-ein">{{ ein }}</span></h6>
+                <h6 class="text-right"><span class="hit-ein">{{ EIN }}</span></h6>
               </div>
               
               <div class="col-md-9">
-                <h3 class="hit-name"><a href="https://grantmakers.io/profiles/{{ ein }}" title="View Profile">{{{ _highlightResult.organization_name.value }}}</a><br><small>{{{ _highlightResult.city.value }}}, {{{ _highlightResult.state.value }}}</small></h3>
+                <h3 class="hit-name"><a href="https://grantmakers.io/profiles/{{ EIN }}" title="View Profile">{{{ _highlightResult.OrganizationName.value }}}</a><br><small>{{{ _highlightResult.City.value }}}, {{{ _highlightResult.State.value }}}</small></h3>
               </div>
               <div class="col-md-3">
                 <div class="hit-grants-wrapper">
                   <h4 class="text-muted text-right">GRANTS</h4>
                   <ul class="list-unstyled list-profile-items text-right">
-                    <li><span data-toggle="tooltip" data-placement="top" title="# of grants made in {{filings.0.tax_year}} (tax year)" class="hit-format-number">{{ grant_count }}</span></li>
-                    <li>min <span class="hit-format-currency">{{ grant_min }}</span></li>
+                    <li><span data-toggle="tooltip" data-placement="top" title="# of grants made in {{Filings.0.TaxYear}} (tax year)" class="hit-format-number">{{ GrantCount }}</span></li>
+                    <li>min <span class="hit-format-currency">{{ GrantMin }}</span></li>
                     <!-- 
-                    <li>median <b><span class="hit-format-currency" data-toggle="tooltip" data-placement="left" title="Median">{{ grant_median }}</span></b></li> 
+                    <li>median <b><span class="hit-format-currency" data-toggle="tooltip" data-placement="left" title="Median">{{ GrantMedian }}</span></b></li> 
                     -->
-                    <li>max <span class="hit-format-currency">{{ grant_max }}</span></li>
+                    <li>max <span class="hit-format-currency">{{ GrantMax }}</span></li>
                   </ul>
                 </div>
               </div>
-              <div class="tab-pane active" data-pane="detail" id="profile-{{ ein }}" role="tabpanel">
+              <div class="tab-pane active" data-pane="detail" id="profile-{{ EIN }}" role="tabpanel">
                 <div class="col-md-6 progress-assets-wrapper">
-                  <h4 class="text-muted"><span class="hit-format-currency">{{ assets }}</span><br><small>Total Assets</small></h4>
+                  <h4 class="text-muted"><span class="hit-format-currency">{{ Assets }}</span><br><small>Total Assets</small></h4>
                   <div class="progress">
-                    <div class="progress-bar progress-bar-warning progress-bar-assets" role="progressbar" data-assets="{{ assets }}" aria-valuenow="{{ assets }}" aria-valuemin="0" aria-valuemax="100000000">
+                    <div class="progress-bar progress-bar-warning progress-bar-assets" role="progressbar" data-assets="{{ Assets }}" aria-valuenow="{{ Assets }}" aria-valuemin="0" aria-valuemax="100000000">
                       <span class="sr-only"></span>
                     </div>
                   </div>
                 </div>
                 <div class="col-md-6 progress-grants-wrapper">
-                  <h4 class="text-muted"><span class="hit-format-currency">{{ grant_median }}</span><br><small>Median Grant</small></h4>
+                  <h4 class="text-muted"><span class="hit-format-currency">{{ GrantMedian }}</span><br><small>Median Grant</small></h4>
                   <div class="progress">
-                    <div class="progress-bar progress-bar-warning progress-bar-grants" role="progressbar" data-grants="{{ grant_median }}" aria-valuenow="{{ grant_median }}" aria-valuemin="0" aria-valuemax="1000000">
+                    <div class="progress-bar progress-bar-warning progress-bar-grants" role="progressbar" data-grants="{{ GrantMedian }}" aria-valuenow="{{ GrantMedian }}" aria-valuemin="0" aria-valuemax="1000000">
                       <span class="sr-only"></span>
                     </div>
                   </div>
                 </div>
               </div>
               <!--
-              <div class="tab-pane" data-pane="detail" id="data-{{ ein }}" role="tabpanel">
+              <div class="tab-pane" data-pane="detail" id="data-{{ EIN }}" role="tabpanel">
                 <div class="col-md-12">
                   <div class="hit-filings-wrapper">
                     <ul class="list-inline">
-                      {{#filings}}
-                        <li><a class="js-filings btn btn-default btn-sm" target="_blank" data-tax-period="{{ tax_period }}" data-ein="{{ ein }}" data-url-xml="{{ url }}" title="View 990-PF">{{ tax_year }}</a></li>
-                      {{/filings}}
+                      {{#Filings}}
+                        <li><a class="js-filings btn btn-default btn-sm" target="_blank" data-tax-period="{{ TaxPeriod }}" data-ein="{{ EIN }}" data-url-xml="{{ URL }}" title="View 990-PF">{{ TaxYear }}</a></li>
+                      {{/Filings}}
                     </ul>
                   </div>
                 </div>
@@ -104,23 +104,23 @@
         <ul id="view-selector" class="nav navbar-nav navbar-right" role="tablist">
           <!--
           <li>
-            <a href="#people-{{ ein }}" class="btn btn-simple btn-sm" data-toggle="tab">
+            <a href="#people-{{ EIN }}" class="btn btn-simple btn-sm" data-toggle="tab">
               <i class="material-icons">people</i> People
             </a>
           </li>
           <li>
-            <a href="#grants-{{ ein }}" class="btn btn-simple btn-sm" data-toggle="tab">
+            <a href="#grants-{{ EIN }}" class="btn btn-simple btn-sm" data-toggle="tab">
               <i class="material-icons">attach_money</i> Grants
             </a>
           </li>
           -->
           <li id="tab-detail" class="active">
-            <a href="#profile-{{ ein }}" class="btn btn-simple btn-sm active" data-toggle="tab">
+            <a href="#profile-{{ EIN }}" class="btn btn-simple btn-sm active" data-toggle="tab">
               <i class="material-icons">assessment</i> Detail
             </a>
           </li>
           <li id="tab-summary" class="">
-            <a href="#summary-{{ ein }}" class="btn btn-simple btn-sm" data-toggle="tab">
+            <a href="#summary-{{ EIN }}" class="btn btn-simple btn-sm" data-toggle="tab">
               <i class="material-icons">view_list</i> Summary
             </a>
           </li>
