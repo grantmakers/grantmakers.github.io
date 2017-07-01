@@ -7,17 +7,17 @@ $(document).ready(function() {
   // Replace with your own values
   var APPLICATION_ID = 'KDWVSZVS1I';
   var SEARCH_ONLY_API_KEY = 'ce4d584b0de36ca3f8b4727fdb83c658';
-  var INDEX_NAME = 'filings_pf_grouped_by_ein';
+  var INDEX_NAME = 'grantmakers_io';
   var PARAMS = {
     hitsPerPage: 10,
     maxValuesPerFacet: 8,
-    facets: ['GrantMedian'],
-    disjunctiveFacets: ['City', 'State'],
+    facets: ['grant_median'],
+    disjunctiveFacets: ['city', 'state'],
     index: INDEX_NAME
   };
   var FACETS_SLIDER = [];
-  var FACETS_ORDER_OF_DISPLAY = ['City', 'State', 'isLikelyStaffed', 'hasGrants', 'hasWebsite'];
-  var FACETS_LABELS = {'GrantMedian': 'Grant Size', 'City': 'City', 'State': 'State', 'isLikelyStaffed': 'Staff', 'hasGrants': 'Grants', 'hasWebsite': 'Website'};
+  var FACETS_ORDER_OF_DISPLAY = ['city', 'state'];
+  var FACETS_LABELS = {'city': 'City', 'state': 'State'};
 
   // Client + Helper initialization
   var algolia = algoliasearch(APPLICATION_ID, SEARCH_ONLY_API_KEY);
