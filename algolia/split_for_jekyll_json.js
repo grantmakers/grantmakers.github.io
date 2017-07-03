@@ -12,7 +12,7 @@ fs.readFile('aggregated.json', 'utf8', function(err, data) {
 
     const doc = JSON.stringify(item, null, 4);
 
-    fs.writeFileSync('EIN/' + ein + '.json', doc, 'utf-8');
+    fs.writeFileSync('ein/' + ein + '.json', doc, 'utf-8');
     console.log('File saved for ' + ein);
   });
 });
