@@ -30,6 +30,10 @@ If you have a question, feature request, find a bug, or just want to say hi, ple
 ## Roadmap  
 The roadmap is [openly available](https://waffle.io/grantmakers/grantmakers.github.io)
 
+## Tools  
+Cross-browser compatibility provided by [BrowserStack](https://browserstack.com)  
+![browserstack](https://assets-github.s3.amazonaws.com/repo/progcode/img/browserstack-logo-footer.png)
+
 ## Credits
 - Material Kit: [Creative Tim](https://github.com/timcreative/material-kit) *License required
 - Bootstrap Material Design: [Federico Zivolo](https://github.com/FezVrasta/bootstrap-material-design)
