@@ -35,7 +35,7 @@ Cross-browser compatibility provided by [BrowserStack](https://browserstack.com)
 ![browserstack](https://assets-github.s3.amazonaws.com/repo/progcode/img/browserstack-logo-footer.png)
 
 ## Credits
-- Material Kit: [Creative Tim](https://github.com/timcreative/material-kit) *License required
+- Material Kit: [Creative Tim](https://github.com/timcreative/material-kit)
 - Bootstrap Material Design: [Federico Zivolo](https://github.com/FezVrasta/bootstrap-material-design)
 - Electronic Tax Filings: [Amazon Web Services](https://aws.amazon.com/public-datasets/irs-990/)
 - PDF Links: [Foundation Center PDF Archives](http://990finder.foundationcenter.org/)
