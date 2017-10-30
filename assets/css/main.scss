@@ -2,6 +2,8 @@
 ---
 
 @import 'material-kit';
+@import 'materialize/materialize-z-depth';
+@import 'materialize/color';
 
 
 /****************************
@@ -187,7 +189,88 @@ Navbars
 }
 
 /****************************
-Landing Header
+Landing
+*****************************/
+.landing-page {
+	.header h4 a {
+		border-bottom: 1px dotted white
+	}
+}
+.main-landing {
+	.card-feature {
+		margin-top: 40px;
+		margin-bottom: 70px;
+		@media (max-width: $screen-xs-max) {
+			text-align: left;
+			h6.category {
+				margin-top: 32px;
+			}
+		}
+		&:first-child {
+			margin-top: 0px;
+		}
+		.card-image {
+			overflow: inherit;
+		}
+		// Reset all card image styling
+		.card .card-image img {
+			width: inherit;
+			height: inherit;
+			border-top-left-radius: inherit;
+			border-top-right-radius: inherit;
+			pointer-events: inherit;
+		}
+	}
+}
+.algolia-logo-inline {
+	width: 6rem;
+	vertical-align: sub;
+}
+.section-feature-grants-search {
+	background: 
+	linear-gradient(
+		rgba(0, 0, 0, 0.8), 
+		rgba(0, 0, 0, 0.2)
+	),
+	url('{{ site.url }}/{{ site.baseurl }}/assets/img/bridge.jpg');
+	background-size: cover;  
+	h2 img {
+		width: 165px;
+    vertical-align: sub;
+	}
+}
+.section-closing {
+	padding: 10rem 0;
+	background: 
+	linear-gradient(
+		rgba(0, 0, 0, 0.8), 
+		rgba(0, 0, 0, 0.2)
+	),
+	url('{{ site.url }}/{{ site.baseurl }}/assets/img/colors.jpg');
+	background-size: cover;  
+	background-position: center center;
+	h4:first-child {
+		margin-bottom: 34px;
+	}
+	h2 img {
+		width: 165px;
+    vertical-align: sub;
+	}
+	.panel {
+		border-radius: 3px;
+	}
+}
+h2.title {
+	position: relative;
+}
+h2.title .label-beta {
+	position: absolute;
+	border-radius: 30px 30px 30px 30px;
+	font-size: 10px;
+}
+
+/****************************
+Search Header
 *****************************/
 
 /* Navbar */
@@ -764,8 +847,11 @@ About / Learn More
 .about-headline .row:first-child {
 	margin-bottom: 60px;
 }
+.about-closing img {
+	width: 300px;
+}
 .features {
-	padding-top: 30px;
+	padding-top: 0px;
 }
 //TODO - remove 'team' and 'team-player' references
 @media (max-width: $screen-sm-max) {

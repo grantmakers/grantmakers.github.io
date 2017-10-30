@@ -10,10 +10,13 @@ sass:
   sass_dir: assets/css/_sass
 
 # Google Analytics
-google-analytics: UA-84268197-1
+google_analytics: UA-84268197-1
 
 # Algolia Link
-algolia-link: http://goto.algolia.com/l/139121/2017-10-24/26gc84
+algolia_link: http://goto.algolia.com/l/139121/2017-10-24/26gc84
+
+# Sitewide helpers
+last_updated: '2017-10-02T22:28:47.000Z'
 
 # Build settings
 markdown: kramdown
