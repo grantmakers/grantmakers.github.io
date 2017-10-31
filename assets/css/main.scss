@@ -904,4 +904,9 @@ Footers
 	a {
 		color: $gray-light;
 	}
+	ul.list-inline.text-right {
+		@media (max-width: $screen-sm-max) {
+			text-align: center;
+		}
+	}
 }
