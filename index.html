@@ -158,10 +158,10 @@
 									<div class="col-sm-7">
 										<h6 class="category text-info">Research</h6>
 										<h3 class="card-title">
-											Search through 3.4 million grants
+											Search through {{ site.number_of_grants | divided_by: 1000000 }}.{{ site.number_of_grants | modulo: 1000000 | divided_by: 100000 }} million grants
 										</h3>
 										<p class="card-description">
-											Thanks to our partnership with <a href="{{ site.algolia_link }}">Algolia</a>, we've developed an incredible search tool allowing anyone to search across all 3.4 million grants contained in the IRS dataset.
+											Thanks to our partnership with <a href="{{ site.algolia_link }}">Algolia</a>, we've developed an incredible search tool allowing anyone to search across all {{ site.number_of_grants | divided_by: 1000000 }}.{{ site.number_of_grants | modulo: 1000000 | divided_by: 100000 }} million grants contained in the IRS dataset.
 										</p>
 									</div>
 									<div class="col-sm-5">
@@ -218,7 +218,7 @@
 									<h3 class="panel-title">Filings</h3>
 								</div>
 								<div class="panel-body">
-									<h1>269k</h1>
+									<h1>{{ site.number_of_filings | divided_by: 1000 | append: "k" }}</h1>
 								</div>
 							</div>
 						</div>
@@ -228,7 +228,7 @@
 									<h3 class="panel-title">Foundations</h3>
 								</div>
 								<div class="panel-body">
-									<h1>73k</h1>
+									<h1>{{ site.number_of_foundations | divided_by: 1000 | append: "k" }}</h1>
 								</div>
 							</div>
 						</div>
@@ -238,7 +238,7 @@
 									<h3 class="panel-title">Grants</h3>
 								</div>
 								<div class="panel-body">
-									<h1>3.4m</h1>
+									<h1>{{ site.number_of_grants | divided_by: 1000000 }}.{{ site.number_of_grants | modulo: 1000000 | divided_by: 100000 | append: "m" }}</h1>
 								</div>
 							</div>
 						</div>
