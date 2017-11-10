@@ -361,11 +361,13 @@ canvas {
 .header-intro {
 	  margin-top: 30vh;
 	  color: $gray-light;
-	  text-align: center;
+		text-align: center;
+	h1, h3 {
+		color: #fff;
+	}
 	h1 {
 		font-size: 4.8em;
     font-weight: 600;
-		color: #fff;
 	}
 	h2, h3, h4 {
 		margin-top: 10px;
