@@ -59,31 +59,34 @@
 					</div>
 				</div>
 				<hr class="container">
-				<div class="section container">
-					<div class="row">
-						<div class="col-md-10 col-md-offset-1">
-							<div class="card card-plain card-feature">
-								<div class="row">
-									<div class="col-sm-5">
-										<div class="card-image">
-											<img class="img img-rounded img-raised img-responsive" src="{{ site.baseurl }}/assets/img/screenshot-summary-zoom.png">
+				<div class="section">
+					<div class="container">
+						<div class="row">
+							<div class="col-md-10 col-md-offset-1">
+								<div class="card card-plain card-feature">
+									<div class="row">
+										<div class="col-sm-5">
+											<div class="card-image">
+												<img class="img img-rounded img-raised img-responsive" src="{{ site.baseurl }}/assets/img/screenshot-summary-zoom.png">
+											</div>
 										</div>
-									</div>
-									<div class="col-sm-7">
-										<h6 class="category text-info">Summary Info</h6>
-										<h3 class="card-title">
-											Fast information at your fingertips
-										</h3>
-										<p class="card-description">
-											What's the average grant size? Is the foundation professionally managed? Get a quick snapshot of every foundation.
-										</p>
+										<div class="col-sm-7">
+											<h6 class="category text-info">Summary Info</h6>
+											<h3 class="card-title">
+												Fast information at your fingertips
+											</h3>
+											<p class="card-description">
+												What's the average grant size? Is the foundation professionally managed? Get a quick snapshot of every foundation.
+											</p>
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="section container">
+				<div class="section">
+					<div class="container">
 						<div class="row">
 							<div class="col-md-10 col-md-offset-1">
 								<div class="card card-plain card-feature">
@@ -106,33 +109,36 @@
 									</div>
 								</div>
 							</div>
-						</div>	
+						</div>
+					</div>	
 				</div>
-				<div class="section container">
-					<div class="row">
-						<div class="col-md-10 col-md-offset-1">
-							<div class="card card-plain card-feature">
-								<div class="row">
-									<div class="col-sm-5">
-										<div class="card-image">
-											<img class="img img-raised" src="{{ site.baseurl }}/assets/img/screenshot-search-zoom.png">
+				<div class="section">
+					<div class="container">
+						<div class="row">
+							<div class="col-md-10 col-md-offset-1">
+								<div class="card card-plain card-feature">
+									<div class="row">
+										<div class="col-sm-5">
+											<div class="card-image">
+												<img class="img img-raised" src="{{ site.baseurl }}/assets/img/screenshot-search-zoom.png">
+											</div>
+										</div>
+										<div class="col-sm-7">
+											<h6 class="category text-info">Giving trends</h6>
+											<h3 class="card-title">
+												Understand giving priorities
+											</h3>
+											<p class="card-description">
+												View a foundation's historical giving trends to see if your organization is a match.
+											</p>
 										</div>
 									</div>
-									<div class="col-sm-7">
-										<h6 class="category text-info">Giving trends</h6>
-										<h3 class="card-title">
-											Understand giving priorities
-										</h3>
-										<p class="card-description">
-											View a foundation's historical giving trends to see if your organization is a match.
-										</p>
-									</div>
 								</div>
-							</div>
-							<hr>
-							<div class="section">
-								<h4>Open source and forever free</h4>
-								<a href="{{ site.baseurl }}/profiles-search/" class="btn btn-danger btn-lg">Start your search</a>
+								<hr>
+								<div class="section">
+									<h4>Open source and forever free</h4>
+									<a href="{{ site.baseurl }}/profiles-search/" class="btn btn-danger btn-lg">Start your search</a>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -150,23 +156,25 @@
 					</div>
 				</div>
 				<hr class="container">
-				<div class="section container">
-					<div class="row">
-						<div class="col-md-10 col-md-offset-1">
-							<div class="card card-plain card-feature">
-								<div class="row">
-									<div class="col-sm-7">
-										<h6 class="category text-info">Research</h6>
-										<h3 class="card-title">
-											Search through {{ site.number_of_grants | divided_by: 1000000 }}.{{ site.number_of_grants | modulo: 1000000 | divided_by: 100000 }} million grants
-										</h3>
-										<p class="card-description">
-											Thanks to our partnership with <a href="{{ site.algolia_link }}">Algolia</a>, we've developed an incredible search tool allowing anyone to search across all {{ site.number_of_grants | divided_by: 1000000 }}.{{ site.number_of_grants | modulo: 1000000 | divided_by: 100000 }} million grants contained in the IRS dataset.
-										</p>
-									</div>
-									<div class="col-sm-5">
-										<div class="card-image">
-											<img class="img img-raised" src="{{ site.baseurl }}/assets/img/screenshot-count.png">
+				<div class="section">
+					<div class="container">
+						<div class="row">
+							<div class="col-md-10 col-md-offset-1">
+								<div class="card card-plain card-feature">
+									<div class="row">
+										<div class="col-sm-7">
+											<h6 class="category text-info">Research</h6>
+											<h3 class="card-title">
+												Search through {{ site.number_of_grants | divided_by: 1000000 }}.{{ site.number_of_grants | modulo: 1000000 | divided_by: 100000 }} million grants
+											</h3>
+											<p class="card-description">
+												Thanks to our partnership with <a href="{{ site.algolia_link }}">Algolia</a>, we've developed an incredible search tool allowing anyone to search across all {{ site.number_of_grants | divided_by: 1000000 }}.{{ site.number_of_grants | modulo: 1000000 | divided_by: 100000 }} million grants contained in the IRS dataset.
+											</p>
+										</div>
+										<div class="col-sm-5">
+											<div class="card-image">
+												<img class="img img-raised" src="{{ site.baseurl }}/assets/img/screenshot-count.png">
+											</div>
 										</div>
 									</div>
 								</div>
@@ -174,25 +182,27 @@
 						</div>
 					</div>
 				</div>
-				<div class="section container">
-					<div class="row">
-						<div class="col-md-10 col-md-offset-1">
-							<div class="card card-plain card-feature">
-								<div class="row">
-									<div class="col-sm-5">
-										<div class="card-image">
-											<img class="img img-raised" src="{{ site.baseurl }}/assets/img/screenshot-similar.png">
+				<div class="section">
+					<div class="container">
+						<div class="row">
+							<div class="col-md-10 col-md-offset-1">
+								<div class="card card-plain card-feature">
+									<div class="row">
+										<div class="col-sm-5">
+											<div class="card-image">
+												<img class="img img-raised" src="{{ site.baseurl }}/assets/img/screenshot-similar.png">
+											</div>
 										</div>
-									</div>
-									<div class="col-sm-7">
-										<h6 class="category text-info">Prospecting</h6>
-										<h3 class="card-title">
-											Find foundations that fund similar organizations
-										</h3>
-										<p class="card-description">
-											Live search allows you to quickly cover all relevant search terms. One funder's gender equality is another's gender parity.
-										</p>
-										<p><a href="{{ site.url }}/grants-search/" class="btn btn-round btn-info">Search all grants</a></p>
+										<div class="col-sm-7">
+											<h6 class="category text-info">Prospecting</h6>
+											<h3 class="card-title">
+												Find foundations that fund similar organizations
+											</h3>
+											<p class="card-description">
+												Live search allows you to quickly cover all relevant search terms. One funder's gender equality is another's gender parity.
+											</p>
+											<p><a href="{{ site.url }}/grants-search/" class="btn btn-round btn-info">Search all grants</a></p>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -208,42 +218,44 @@
 					</div>
 				</div>
 				<div class="section section-closing">
-					<div class="row">
-						<div class="col-sm-12">
-							<h4 class="white-text">Current stats</h4>
-						</div>
-						<div class="col-sm-4 col-lg-2 col-lg-offset-3">
-							<div class="panel panel-danger">
-								<div class="panel-heading">
-									<h3 class="panel-title">Foundations</h3>
-								</div>
-								<div class="panel-body">
-									<h1>{{ site.number_of_foundations | divided_by: 1000 | append: "k" }}</h1>
+					<div class="container">
+						<div class="row">
+							<div class="col-sm-12">
+								<h4 class="white-text">Current stats</h4>
+							</div>
+							<div class="col-sm-4 col-lg-2 col-lg-offset-3">
+								<div class="panel panel-danger">
+									<div class="panel-heading">
+										<h3 class="panel-title">Foundations</h3>
+									</div>
+									<div class="panel-body">
+										<h1>{{ site.number_of_foundations | divided_by: 1000 | append: "k" }}</h1>
+									</div>
 								</div>
 							</div>
-						</div>
-						<div class="col-sm-4 col-lg-2">
-							<div class="panel panel-danger">
-								<div class="panel-heading">
-									<h3 class="panel-title">Filings</h3>
-								</div>
-								<div class="panel-body">
-									<h1>{{ site.number_of_filings | divided_by: 1000 | append: "k" }}</h1>
-								</div>
-							</div>
-						</div>
-						<div class="col-sm-4 col-lg-2">
-							<div class="panel panel-danger">
-								<div class="panel-heading">
-									<h3 class="panel-title">Grants</h3>
-								</div>
-								<div class="panel-body">
-									<h1>{{ site.number_of_grants | divided_by: 1000000 }}.{{ site.number_of_grants | modulo: 1000000 | divided_by: 100000 | append: "m" }}</h1>
+							<div class="col-sm-4 col-lg-2">
+								<div class="panel panel-danger">
+									<div class="panel-heading">
+										<h3 class="panel-title">Filings</h3>
+									</div>
+									<div class="panel-body">
+										<h1>{{ site.number_of_filings | divided_by: 1000 | append: "k" }}</h1>
+									</div>
 								</div>
 							</div>
-						</div>
-						<div class="col-sm-12 white-text">
-							<h6>Last updated {{ site.last_updated | date: "%b %d, %Y" }} </h6>
+							<div class="col-sm-4 col-lg-2">
+								<div class="panel panel-danger">
+									<div class="panel-heading">
+										<h3 class="panel-title">Grants</h3>
+									</div>
+									<div class="panel-body">
+										<h1>{{ site.number_of_grants | divided_by: 1000000 }}.{{ site.number_of_grants | modulo: 1000000 | divided_by: 100000 | append: "m" }}</h1>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-12 white-text">
+								<h6>Last updated {{ site.last_updated | date: "%b %d, %Y" }} </h6>
+							</div>
 						</div>
 					</div>
 				</div>
