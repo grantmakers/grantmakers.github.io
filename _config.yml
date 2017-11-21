@@ -16,11 +16,11 @@ google_analytics: UA-84268197-1
 algolia_link: http://goto.algolia.com/l/139121/2017-10-24/26gc84
 
 # Sitewide helpers
-last_updated: '2017-11-01T15:00:00.000Z'
+last_updated: '2017-11-21T16:23:38.785Z'
 
-number_of_filings: 284951
-number_of_foundations: 74166
-number_of_grants: 3590885
+number_of_filings: 286490
+number_of_foundations: 74339
+number_of_grants: 3606449
 
 # Build settings
 markdown: kramdown
