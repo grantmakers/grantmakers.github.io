@@ -7,10 +7,7 @@ let count = 0;
 db.algolia.find().forEach(function(obj) {
   ++count;
 
-  // Convert dates to strings
-  // const convertDateGrantmakers = parseInt((new Date(obj.last_updated).getTime() / 1000).toFixed(0), 10);
-  // const convertDateIrs = parseInt((new Date(obj.last_updated_irs).getTime() / 1000).toFixed(0), 10);
-
+  // Convert dates strings to timestamps
   const convertDateGrantmakers = Date.parse(obj.last_updated_grantmakers) / 1000;
   const convertDateIrs = Date.parse(obj.last_updated_irs) / 1000;
 
