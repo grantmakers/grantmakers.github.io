@@ -39,6 +39,16 @@ $grantmakers-darker: #772F00;
 
 $gray-lightest: #f5f5f5;
 
+.grantmakers {
+	color: $grantmakers;
+}
+.grantmakers-bg {
+	background-color: $grantmakers;
+}
+.blue-grey-bg {
+	background-color: #607D8B;
+}
+
 
 /****************************
 Buttons
@@ -274,6 +284,12 @@ Search Header
 *****************************/
 
 /* Navbar */
+#navigation-example {
+	i.material-icons {
+		color: transparent;
+		border-radius: 50%;
+	}
+}
 .form-group-header-search {
 	display: none;
 }

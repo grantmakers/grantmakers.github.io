@@ -25,6 +25,8 @@ db.normalized.aggregate(
       'grant_count_all_years': { '$sum': '$normalized.grant_count' },
       'grants_to_preselected_only': { '$first': '$normalized.grants_to_preselected_only' },
       'grants_application_info': { '$first': '$normalized.grants_application_info' },
+      'grants_application_deadlines': { '$first': '$normalized.grants_application_deadlines' },
+      'grants_application_restrictions': { '$first': '$normalized.grants_application_restrictions' },
       'filings': {
         '$push': {
           'object_id_irs': '$normalized.object_id_irs',
@@ -59,6 +61,8 @@ db.normalized.aggregate(
       'grant_count': 1,
       'grants_to_preselected_only': 1,
       'grants_application_info': 1,
+      'grants_application_deadlines': 1,
+      'grants_application_restrictions': 1,
       'filings': 1,
       'grants': 1,
       'people': 1,
