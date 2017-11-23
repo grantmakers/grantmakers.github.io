@@ -138,7 +138,10 @@ db.normalized.find().forEach(function(u) {
   let hasRecentGrants = false;
   let eachGrant;
   let grantsToPreselectedOnly = null;
+  let grantsApplicationArray = null;
   let grantsApplicationInfo = null;
+  let grantsApplicationDeadlines = null;
+  let grantsApplicationRestrictions = null;
   if (grantsArray) {
     // Pull grants
     eachGrant = grantsArray.GrantOrContributionPdDurYrGrp || grantsArray.GrantOrContriPaidDuringYear || null;
@@ -150,7 +153,12 @@ db.normalized.find().forEach(function(u) {
     if (grantsToPreselectedOnly === 'X') {
       grantsToPreselectedOnly = true;
     }
-    grantsApplicationInfo = grantsArray.ApplicationSubmissionInfoGrp || grantsArray.ApplicationSubmissionInfo || null;
+    grantsApplicationArray = grantsArray.ApplicationSubmissionInfoGrp || grantsArray.ApplicationSubmissionInfo || null;
+    if (grantsApplicationArray) {
+      grantsApplicationInfo = grantsApplicationArray.FormAndInfoAndMaterialsTxt || grantsApplicationArray.FormAndInfoAndMaterials || null;
+      grantsApplicationDeadlines = grantsApplicationArray.SubmissionDeadlinesTxt || grantsApplicationArray.SubmissionDeadlines || null;
+      grantsApplicationRestrictions = grantsApplicationArray.RestrictionsOnAwardsTxt || grantsApplicationArray.RestrictionsOnAwards || null;
+    }
   }
 
   if (grantsArray && eachGrant instanceof Array) {
@@ -257,6 +265,9 @@ db.normalized.find().forEach(function(u) {
     'grant_count': grantCount,
     'grants_to_preselected_only': grantsToPreselectedOnly,
     'grants_application_info': grantsApplicationInfo,
+    'grants_application_deadlines': grantsApplicationDeadlines,
+    'grants_application_restrictions': grantsApplicationRestrictions,
+    // 'grants_application_array': grantsApplicationArray,
     'grants': grants,
     'people': people,
   };
