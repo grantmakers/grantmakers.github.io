@@ -45,6 +45,7 @@ db.normalized.aggregate(
       'ein': 1,
       'organization_name': 1,
       'organization_name_prior_year': { '$arrayElemAt': ['$names.organization_name', 1]},
+      'organization_name_second_prior_year': { '$arrayElemAt': ['$names.organization_name', 2]},
       'assets': 1,
       'website': 1,
       'city': 1,
