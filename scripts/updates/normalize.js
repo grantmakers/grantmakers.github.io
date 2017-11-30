@@ -153,7 +153,8 @@ db.normalized.find().forEach(function(u) {
     if (grantsToPreselectedOnly === 'X') {
       grantsToPreselectedOnly = true;
     }
-    grantsApplicationArray = grantsArray.ApplicationSubmissionInfoGrp || grantsArray.ApplicationSubmissionInfo || null;
+    // Note: misspelling below is correct - IRS schema contains the misspelling
+    grantsApplicationArray = grantsArray.ApplicationSubmissionInfoGrp || grantsArray.AppicationSubmissionInfo || null;
     if (grantsApplicationArray) {
       grantsApplicationInfo = grantsApplicationArray.FormAndInfoAndMaterialsTxt || grantsApplicationArray.FormAndInfoAndMaterials || null;
       grantsApplicationDeadlines = grantsApplicationArray.SubmissionDeadlinesTxt || grantsApplicationArray.SubmissionDeadlines || null;
