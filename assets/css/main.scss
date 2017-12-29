@@ -625,6 +625,9 @@ Search Results
 		//background-color: $gray-lighter;
 		//border-radius: 3px;
 		border-left: 1px solid $gray-light;
+		h4 i {
+			vertical-align: text-top;
+		}
 	}
 	.hit-summary-items {
 		h6 span {

@@ -35,7 +35,7 @@
               </div>
               <div class="col-md-3">
                 <div class="hit-grants-wrapper">
-                  <h4 class="text-muted text-right">GRANTS</h4>
+                  <h4 class="text-muted text-right">{{^grants_to_preselected_only}}<i class="material-icons md-18 grantmakers" data-toggle="tooltip" data-title="Possibly accepts unsolicited applications">lock_open</i> {{/grants_to_preselected_only}} GRANTS</h4>
                   <ul class="list-unstyled list-profile-items text-right">
                     <li><span data-toggle="tooltip" data-placement="top" title="# of grants made in {{filings.0.tax_year}} (tax year)" class="hit-format-number">{{ grant_count }}</span></li>
                     <li>min <span class="hit-format-currency">{{ grant_min }}</span></li>
