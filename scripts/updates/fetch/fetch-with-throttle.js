@@ -1,3 +1,6 @@
+// USAGE: node fetch-with-throttle.js 2015  (with year parameter)
+//        node fetch-with-throttle.js (withouth year paramter; defaults to 2017)
+
 const eventStream = require('event-stream');
 const Promise = require('bluebird');
 const JSONStream = require('JSONStream');
@@ -6,7 +9,7 @@ const when = require('when');
 const guard = require("when/guard");
 
 // IRS Indexes
-const targetYear = '2017'; // Enter the year to fetch
+const targetYear = process.argv[2] || '2017'; // The year to fetch
 const index = 'https://s3.amazonaws.com/irs-form-990/index_' + targetYear + '.json';
 
 // Dates & Timestamps
@@ -115,7 +118,6 @@ var guardedProcessFiling = guard(condition, function processFiling(data) {
          // Write the JS object to Mongo
         mycollection.save(obj)
         .then(function(resultArr) {
-          logMessage("saved to db");
           processed++;
         })
         .catch(function(err) {

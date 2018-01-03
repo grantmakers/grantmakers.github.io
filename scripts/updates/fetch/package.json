@@ -12,6 +12,8 @@
     "JSONStream": "^1.3.2",
     "bluebird": "^3.5.1",
     "event-stream": "^3.3.4",
+    "mongodb": "^2.2.33",
+    "mongodb-pool": "^2.0.2",
     "mongodb-promises": "^0.2.0",
     "when": "^3.7.8",
     "xml2js": "^0.4.19"
