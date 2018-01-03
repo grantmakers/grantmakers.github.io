@@ -103,7 +103,7 @@ function processFiling(data) {
     // Fetch XML using AWS SDK
     const targetKey = data.ObjectId + '_public.xml';
     const paramsXML = {'Bucket': 'irs-form-990', 'Key': targetKey};
-    
+
     s3.makeUnauthenticatedRequest('getObject', paramsXML).promise()
       .then(function(resultXML) {
         // Parse the XML file
