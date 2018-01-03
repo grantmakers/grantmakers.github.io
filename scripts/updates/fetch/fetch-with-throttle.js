@@ -1,4 +1,3 @@
-// const request = require('request');
 const eventStream = require('event-stream');
 const Promise = require('bluebird');
 const JSONStream = require('JSONStream');
@@ -74,9 +73,6 @@ var logMessage = function(message, messageType) {
   }
 
 };
-
-logMessage("connected to db");
-logMessage(mycollection);
 
 var promisedParseXml = function(resultXML, parserOptions){
   return new Promise(function(resolve, reject) {
