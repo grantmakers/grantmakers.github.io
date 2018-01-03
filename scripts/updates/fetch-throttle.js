@@ -1,4 +1,4 @@
-const request = require('request');
+// const request = require('request');
 const es = require('event-stream');
 const Promise = require('bluebird');
 const JSONStream = require('JSONStream');
@@ -19,6 +19,7 @@ const previousUpdate = new Date('2017-11-21T16:23:38.785Z');
 // AWS
 const AWS = require('aws-sdk');
 AWS.config.update({'region': 'us-east-1'});
+AWS.config.httpOptions.timeout = 0; // Default is 2 minutes
 const s3 = new AWS.S3();
 
 // Mongo
@@ -69,13 +70,12 @@ s3Stream
     console.error('-----JSONParse Error-----');
     console.error(err);
   })
-  // .pipe(es.mapSync(function(data) {
-  .pipe(es.map(function(data, callback) {
+  .pipe(es.mapSync(function(data) {
     records++;
     console.log('Records: ' + records + ' | Matches: ' + matches + ' | Processed: ' + processed + ' | Skipped: ' + skipped);
+    s3Stream.pause();
     throttleCheck();
     processFiling(data);
-    callback(null, data);
     return;
   }))
   .on('error', function(err) {
@@ -90,9 +90,7 @@ s3Stream
   });
 
 function throttleCheck() {
-  if (matches - processed > limit) {
-    s3Stream.pause();
-  } else {
+  if (matches - processed <= limit) {
     s3Stream.resume();
   }
 }
@@ -100,7 +98,7 @@ function throttleCheck() {
 function processFiling(data) {
   // Filter results to only foundations w/ data available
   // if (data.URL && data.URL.length > 0 && data.FormType === '990PF' && new Date(data.LastUpdated) > previousUpdate) {
-  if (data.URL && data.URL.length > 0 && data.FormType !== '990PF') {
+  if (data.URL && data.URL.length > 0 && data.FormType === '990PF') {
     matches++;
     // Fetch XML using AWS SDK
     const targetKey = data.ObjectId + '_public.xml';
@@ -134,7 +132,6 @@ function processFiling(data) {
           .then(function(resultArr) {
             processed++;
             throttleCheck();
-            // s3Stream.resume();
           })
           .catch(function(err) {
             console.error('-----Mongo Insertion Error-----');
@@ -142,7 +139,6 @@ function processFiling(data) {
           });
       })
       .catch(function(err) {
-        // errorCount++;
         console.error('-----XML Request Error-----');
         console.error(err);
       });
