@@ -100,7 +100,7 @@ const guardedProcessFiling = guard(condition, function processFiling(data) {
     const targetKey = data.ObjectId + '_public.xml';
     const paramsXml = {'Bucket': 'irs-form-990', 'Key': targetKey};
 
-    s3.makeUnauthenticatedRequest('getObject', paramsXml).promise()
+    return s3.makeUnauthenticatedRequest('getObject', paramsXml).promise()
       .then(function(resultXml) {
         return promisedParseXml(resultXml, xmlParserOptions);
       })
@@ -127,7 +127,7 @@ const guardedProcessFiling = guard(condition, function processFiling(data) {
         logMessage(err, 'xml_request');
       });
   } else {
-    skipped++;
+    return skipped++;
   }
 });
 
