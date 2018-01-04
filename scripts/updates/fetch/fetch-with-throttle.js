@@ -1,6 +1,8 @@
 // USAGE: node fetch-with-throttle.js 2015  (with year parameter)
 //        node fetch-with-throttle.js (withouth year paramter; defaults to 2017)
-
+// If javascript heap error occurs, run with the following:
+//  node --max-old-space-size=4096 fetch-with-throttle.js
+//
 const eventStream = require('event-stream');
 const Promise = require('bluebird');
 const JSONStream = require('JSONStream');
