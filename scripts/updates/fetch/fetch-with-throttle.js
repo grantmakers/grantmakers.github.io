@@ -6,18 +6,17 @@ const Promise = require('bluebird');
 const JSONStream = require('JSONStream');
 const xml2jsParser = require('xml2js').parseString;
 const when = require('when');
-const guard = require("when/guard");
+const guard = require('when/guard');
 
-// IRS Indexes
+// IRS Index
 const targetYear = process.argv[2] || '2017'; // The year to fetch
-const index = 'https://s3.amazonaws.com/irs-form-990/index_' + targetYear + '.json';
 
 // Dates & Timestamps
 const dateObj = new Date();
 const month = (dateObj.getUTCMonth() + 1 < 10 ? '0' : '') + (dateObj.getUTCMonth() + 1);
 const day = (dateObj.getUTCDate() < 10 ? '0' : '') + dateObj.getUTCDate();
 const year = dateObj.getFullYear().toString().substr(2, 2);
-const previousUpdate = new Date('2017-11-21T16:23:38.785Z');
+// const previousUpdate = new Date('2017-11-21T16:23:38.785Z'); // Used for incremental updates
 
 // AWS
 const AWS = require('aws-sdk');
@@ -25,20 +24,19 @@ AWS.config.update({'region': 'us-east-1'});
 AWS.config.httpOptions.timeout = 0; // Default is 2 minutes
 const s3 = new AWS.S3();
 
-const dbHostPort = '127.0.0.1:27017';
-
-// const dbHostPort = 'localhost:27017';
-
 // MongoDB settings
 const dbName  = 'grantmakers';
 const dbCollection = 'irs' + targetYear + '_' + month + day + year;
+const dbHostPort = '127.0.0.1:27017';
 const db = require('mongodb-promises').db(dbHostPort, dbName);
 const mycollection = db.collection(dbCollection);
 
 // xml2js
-const parserOptions = {'explicitArray': false,
-                       'emptyTag': undefined,
-                       'attrkey': 'attributes'};
+const xmlParserOptions = {
+  'explicitArray': false,
+  'emptyTag': undefined,
+  'attrkey': 'attributes',
+};
 
 // Throttling helpers
 const limit = 500;
@@ -47,39 +45,38 @@ let skipped = 0;
 let matches = 0;
 let processed = 0;
 
-// helper functions
-var logMessage = function(message, messageType) {
+// Helper functions
+function logMessage(message, messageType) {
   // TODO: add a config setting to turn this off/on
-  switch(messageType) {
-    case "error":
+  switch (messageType) {
+    case 'error':
       console.error('-----Index Request Error-----');
       console.error(message);
       break;
-    case "parseError":
+    case 'parseError':
       console.error('-----JSONParse Error-----');
       console.error(message);
       break;
-    case "mapSync":
+    case 'mapSync':
       console.error('-----mapSync Error-----');
       console.error(message);
       break;
-     case "mongo":
+    case 'mongo':
       console.error('-----Mongo Insertion Error-----');
       console.error(message);
       break;
-    case "xml_request":
+    case 'xml_request':
       console.error('-----XML Request Error-----');
       console.error(message);
       break;
     default:
       console.error(message);
   }
+}
 
-};
-
-var promisedParseXml = function(resultXML, parserOptions){
+function promisedParseXml(resultXml, parserOptions) {
   return new Promise(function(resolve, reject) {
-    xml2jsParser(resultXML.Body, parserOptions, function(err, result) {
+    xml2jsParser(resultXml.Body, parserOptions, function(err, result) {
       if (err) {
         return reject(err);
       } else {
@@ -88,75 +85,74 @@ var promisedParseXml = function(resultXML, parserOptions){
     });
   });
 }
-// only let 500
-var condition = guard.n(limit);
+// Only let 500
+const condition = guard.n(limit);
 
-// we'll guard this method and control how many times it can be used in flight.
-// this should suffice for throttle control.
-var guardedProcessFiling = guard(condition, function processFiling(data) {
+// We'll guard this method and control how many times it can be used in flight.
+// This should suffice for throttle control.
+const guardedProcessFiling = guard(condition, function processFiling(data) {
   // TODO - not sure if this should be here now...
   if (data.URL && data.URL.length > 0 && data.FormType === '990PF') {
-     matches++;
+    matches++;
     // Fetch XML using AWS SDK
     const targetKey = data.ObjectId + '_public.xml';
-    const paramsXML = {'Bucket': 'irs-form-990', 'Key': targetKey};
+    const paramsXml = {'Bucket': 'irs-form-990', 'Key': targetKey};
 
-     s3.makeUnauthenticatedRequest('getObject', paramsXML).promise()
-      .then(function(resultXML) {
-        return promisedParseXml(resultXML, parserOptions);
+    s3.makeUnauthenticatedRequest('getObject', paramsXml).promise()
+      .then(function(resultXml) {
+        return promisedParseXml(resultXml, xmlParserOptions);
       })
-      .then(function(resultJS) {
-        // should save to db be in another method?
+      .then(function(resultJs) {
+        // Should save to db be in another method?
         let obj = {};
 
         obj = {
           '_id': data.ObjectId,
           'last_updated_grantmakers': dateObj.toISOString(),
           'Index': data,
-          'Return': resultJS.Return,
+          'Return': resultJs.Return,
         };
          // Write the JS object to Mongo
         mycollection.save(obj)
-        .then(function(resultArr) {
-          processed++;
-        })
-        .catch(function(err) {
-          logMessage(err, "mongo");
-        });
+          .then(function() {
+            processed++;
+          })
+          .catch(function(err) {
+            logMessage(err, 'mongo');
+          });
       })
       .catch(function(err) {
-        logMessage(err, "xml_request");
+        logMessage(err, 'xml_request');
       });
   } else {
-     skipped++;
+    skipped++;
   }
 });
 
 // Main function
-const paramsJSON = {'Bucket': 'irs-form-990', 'Key': 'index_2017.json'};
+const paramsJSON = {'Bucket': 'irs-form-990', 'Key': 'index_' + targetYear + '.json'};
 const s3Stream = s3.makeUnauthenticatedRequest('getObject', paramsJSON).createReadStream();
 s3Stream
   .on('error', function(err) {
-    logMessage(err, "error");
+    logMessage(err, 'error');
   })
   .pipe(JSONStream.parse(['Filings' + targetYear, true]))
   .on('error', function(err) {
-    logMessage(err, "parseError");
+    logMessage(err, 'parseError');
   })
   .pipe(eventStream.mapSync(function(data) {
     records++;
     logMessage('Records: ' + records + ' | Matches: ' + matches + ' | Processed: ' + processed + ' | Skipped: ' + skipped);
-    // no need to manual pause and stop the stream - i hope.
-    // this is a guarded method...so we can control how many times its inflight.
+    // This is a guarded method...so we can control how many times it's inflight.
     guardedProcessFiling(data);
     return;
   }))
   .on('error', function(err) {
-    logMessage(err, "mapSync");
+    logMessage(err, 'mapSync');
   })
   .on('end', function() {
     // Readable stream is finished
-    logMessage('-----JSON Request is Finished-----')
+    logMessage('-----JSON Request is Finished-----');
     // Close down db connection
     db.close();
   });
