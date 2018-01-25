@@ -1,0 +1,25 @@
+{
+  "name": "irs-990-fetch",
+  "version": "0.0.2",
+  "description": "Lightweight scripts to fetch, parse, and store machine readable IRS Form 990PFs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Chad Kruse, SmarterGiving",
+  "license": "MIT",
+  "dependencies": {
+    "JSONStream": "^1.1.3",
+    "event-stream": "^3.3.4",
+    "request": "^2.74.0"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/smartergiving/irs-990-fetch.git"
+  },
+  "bugs": {
+    "url": "https://github.com/smartergiving/irs-990-fetch/issues"
+  },
+  "homepage": "https://github.com/smartergiving/irs-990-fetch#readme"
+}

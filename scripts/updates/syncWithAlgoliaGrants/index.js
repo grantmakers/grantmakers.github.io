@@ -22,7 +22,7 @@ const url = f('mongodb://%s:%s@%s:27017/%s?authSource=%s',
   user, password, host, database, authSource);
   */
 // Sync local db 
-const url = f('mongodb://localhost:27017/irs');
+const url = f('mongodb://localhost:27017/grantmakers');
 
 exports.syncWithAlgolia = function syncWithAlgolia(req, res) {
   // Open a db connection
