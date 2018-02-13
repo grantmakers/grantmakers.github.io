@@ -6,7 +6,7 @@ const xml2jsParser = require('xml2js').parseString;
 // const secrets = require('./secrets');
 
 // IRS Indexes
-const targetYear = '2017'; // Enter the year to fetch
+const targetYear = '2018'; // Enter the year to fetch
 const index = 'https://s3.amazonaws.com/irs-form-990/index_' + targetYear + '.json';
 
 // Dates & Timestamps
@@ -14,7 +14,7 @@ const dateObj = new Date();
 const month = (dateObj.getUTCMonth() + 1 < 10 ? '0' : '') + (dateObj.getUTCMonth() + 1);
 const day = (dateObj.getUTCDate() < 10 ? '0' : '') + dateObj.getUTCDate();
 const year = dateObj.getFullYear().toString().substr(2, 2);
-const previousUpdate = new Date('2017-11-21T16:23:38.785Z');
+const previousUpdate = new Date('2018-01-01T01:01:01.000Z');
 
 // AWS
 const AWS = require('aws-sdk');
