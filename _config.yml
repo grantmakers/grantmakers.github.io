@@ -18,9 +18,9 @@ algolia_link: http://goto.algolia.com/l/139121/2017-10-24/26gc84
 # Sitewide helpers
 last_updated: '2018-02-13T16:02:11.854Z'
 
-number_of_filings: 311406
-number_of_foundations: 77248
-number_of_grants: 3939627
+number_of_filings: 318790
+number_of_foundations: 78013
+number_of_grants: 4046342
 
 # Build settings
 markdown: kramdown
