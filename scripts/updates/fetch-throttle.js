@@ -6,7 +6,7 @@ const xml2jsParser = require('xml2js').parseString;
 // const secrets = require('./secrets');
 
 // IRS Indexes
-const targetYear = '2017'; // Enter the year to fetch
+const targetYear = '2018'; // Enter the year to fetch
 const index = 'https://s3.amazonaws.com/irs-form-990/index_' + targetYear + '.json';
 
 // Dates & Timestamps

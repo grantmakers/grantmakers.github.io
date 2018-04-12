@@ -11,14 +11,14 @@ const when = require('when');
 const guard = require('when/guard');
 
 // IRS Index
-const targetYear = process.argv[2] || '2017'; // The year to fetch
+const targetYear = process.argv[2] || '2018'; // The year to fetch
 
 // Dates & Timestamps
 const dateObj = new Date();
 const month = (dateObj.getUTCMonth() + 1 < 10 ? '0' : '') + (dateObj.getUTCMonth() + 1);
 const day = (dateObj.getUTCDate() < 10 ? '0' : '') + dateObj.getUTCDate();
 const year = dateObj.getFullYear().toString().substr(2, 2);
-// const previousUpdate = new Date('2017-11-21T16:23:38.785Z'); // Used for incremental updates
+const previousUpdate = new Date('2018-02-13T16:02:11.854Z'); // Used for incremental updates
 
 // AWS
 const AWS = require('aws-sdk');
@@ -94,7 +94,7 @@ const condition = guard.n(limit);
 // This should suffice for throttle control.
 const guardedProcessFiling = guard(condition, function processFiling(data) {
   // TODO - not sure if this should be here now...
-  if (data.URL && data.URL.length > 0 && data.FormType === '990PF') {
+  if (data.URL && data.URL.length > 0 && data.FormType === '990PF' && new Date(data.LastUpdated) > previousUpdate) {
     matches++;
     // Fetch XML using AWS SDK
     const targetKey = data.ObjectId + '_public.xml';

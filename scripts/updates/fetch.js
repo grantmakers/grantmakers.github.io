@@ -14,7 +14,7 @@ const dateObj = new Date();
 const month = (dateObj.getUTCMonth() + 1 < 10 ? '0' : '') + (dateObj.getUTCMonth() + 1);
 const day = (dateObj.getUTCDate() < 10 ? '0' : '') + dateObj.getUTCDate();
 const year = dateObj.getFullYear().toString().substr(2, 2);
-const previousUpdate = new Date('2018-01-01T01:01:01.000Z');
+const previousUpdate = new Date('2018-02-13T16:02:11.854Z');
 
 // AWS
 const AWS = require('aws-sdk');
