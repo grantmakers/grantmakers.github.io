@@ -1,7 +1,7 @@
 // CamelCase for js
 // Underscore for MongoDB keys
 // IRS uses PascalCase
-db.irs2011_2017_latest.aggregate([ { '$match': {} }, { '$out': 'normalized' } ]);
+// db.pf_2011_to_current.aggregate([ { '$match': {} }, { '$out': 'normalized' } ]);
 db.normalized.find().forEach(function(u) {
   const ein = u.Index.EIN;
   const organizationName = u.Index.OrganizationName;
