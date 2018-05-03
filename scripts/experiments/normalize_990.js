@@ -1,8 +1,8 @@
 // CamelCase for js
 // Underscore for MongoDB keys
 // IRS uses PascalCase
-db.getCollection('990_combined').aggregate([ { '$match': {} }, { '$out': 'normalized_990' } ]);
-db.normalized_990.find().forEach(function(u) {
+db.getCollection('990_combined').aggregate([ { '$match': {} }, { '$out': '990_normalized' } ]);
+db.getCollection('990_normalized').find().forEach(function(u) {
   const ein = u.Index.EIN;
   const organizationName = u.Index.OrganizationName;
   const taxPeriod = u.Index.TaxPeriod;
@@ -128,7 +128,7 @@ db.normalized_990.find().forEach(function(u) {
   }
 
   /** Update documents **/
-  db.normalized_990.update(
+  db.getCollection('990_normalized').update(
     {'_id': u._id},
     {
       '$unset': {'Index': 1, 'Return': 1, 'last_updated_grantmakers': 1},
