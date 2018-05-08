@@ -30,7 +30,7 @@ const s3 = new AWS.S3();
 
 // MongoDB settings
 const dbName  = 'grantmakers';
-const dbCollection = 'irs' + targetYear + '_' + month + day + year;
+const dbCollection = 'pf_' + targetYear + '_' + month + day + year + '_updates';
 
 // local db
 // const dbHostPort = '127.0.0.1:27017';

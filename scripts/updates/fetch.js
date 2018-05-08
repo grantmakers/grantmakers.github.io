@@ -42,7 +42,7 @@ const dbHostPort =  remoteUser + ':' +
 
 
 const dbName  = 'grantmakers';
-const dbCollection = 'irs' + targetYear + '_' + month + day + year;
+const dbCollection = 'pf_' + targetYear + '_' + month + day + year + '_updates';
 const db = require('mongodb-promises').db(dbHostPort, dbName);
 const mycollection = db.collection(dbCollection);
 
