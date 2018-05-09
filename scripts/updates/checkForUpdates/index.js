@@ -68,7 +68,7 @@ exports.checkForUpdates = function checkForUpdates(req, res) {
       if (lastModifiedAws > lastModifiedGrantmakers) {
         countPfObjects();
       } else {
-        res.send('No updates available');
+        res.send('No updates available \n ');
         return;
       }
     });
