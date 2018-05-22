@@ -28,7 +28,7 @@ const s3 = new AWS.S3();
 
 // MongoDB settings
 const dbName  = 'grantmakers';
-const dbCollection = 'irs' + targetYear + '_' + month + day + year;
+const dbCollection = 'pf_' + targetYear + '_' + month + day + year + '_updates';
 const dbHostPort = '127.0.0.1:27017';
 const db = require('mongodb-promises').db(dbHostPort, dbName);
 const mycollection = db.collection(dbCollection);

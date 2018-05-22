@@ -1,6 +1,6 @@
 {
   "name": "url-check",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Check if url exists via Google Cloud Functions",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "url-exists": "^1.0.3",
-    "webfunc": "^0.6.0-alpha.8"
+    "webfunc": "^0.6.0-alpha.11"
   },
   "devDependencies": {},
   "repository": {

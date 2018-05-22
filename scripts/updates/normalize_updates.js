@@ -1,6 +1,7 @@
 // CamelCase for js
 // Underscore for MongoDB keys
 // IRS uses PascalCase
+db.pf_2018_052218_updates.aggregate([ { '$match': {} }, { '$out': 'normalized_updates' } ]);
 db.normalized_updates.find().forEach(function(u) {
   const ein = u.Index.EIN;
   const organizationName = u.Index.OrganizationName;
@@ -136,6 +137,7 @@ db.normalized_updates.find().forEach(function(u) {
   let hasGrants = false;
   let hasRecentGrants = false;
   let eachGrant;
+  let grantsReferenceAttachment = false;
   let grantsToPreselectedOnly = null;
   let grantsApplicationArray = null;
   let grantsApplicationInfo = null;
@@ -152,6 +154,8 @@ db.normalized_updates.find().forEach(function(u) {
     if (grantsToPreselectedOnly === 'X') {
       grantsToPreselectedOnly = true;
     }
+    // Note: misspelling below is correct - IRS schema contains the misspelling
+    grantsApplicationArray = grantsArray.ApplicationSubmissionInfoGrp || grantsArray.AppicationSubmissionInfo || null;
     if (grantsApplicationArray) {
       grantsApplicationInfo = grantsApplicationArray.FormAndInfoAndMaterialsTxt || grantsApplicationArray.FormAndInfoAndMaterials || null;
       grantsApplicationDeadlines = grantsApplicationArray.SubmissionDeadlinesTxt || grantsApplicationArray.SubmissionDeadlines || null;
@@ -222,6 +226,11 @@ db.normalized_updates.find().forEach(function(u) {
       'amount': Number(amount),
       'purpose': purpose,
     };
+    // Check for reference of an attachment
+    const attachmentRegex = /(ATTACH)|(SCHEDULE)/i;
+    if (purpose !== null && attachmentRegex.test(purpose) || recipientName !== null && attachmentRegex.test(recipientName)) {
+      grantsReferenceAttachment = true;
+    }
     // Limit grants to those over $5k if grantmakers has more than 10k total grants
     // Helps maintain 16MB MongoDB document size limit
     if (grantCount > 10000) {
@@ -265,6 +274,7 @@ db.normalized_updates.find().forEach(function(u) {
     'grants_application_info': grantsApplicationInfo,
     'grants_application_deadlines': grantsApplicationDeadlines,
     'grants_application_restrictions': grantsApplicationRestrictions,
+    'grants_reference_attachment': grantsReferenceAttachment,
     // 'grants_application_array': grantsApplicationArray,
     'grants': grants,
     'people': people,

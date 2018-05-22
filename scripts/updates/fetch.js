@@ -14,7 +14,7 @@ const dateObj = new Date();
 const month = (dateObj.getUTCMonth() + 1 < 10 ? '0' : '') + (dateObj.getUTCMonth() + 1);
 const day = (dateObj.getUTCDate() < 10 ? '0' : '') + dateObj.getUTCDate();
 const year = dateObj.getFullYear().toString().substr(2, 2);
-const previousUpdate = new Date('2018-02-13T16:02:11.854Z');
+const previousUpdate = new Date('2018-04-12T16:28:55.711Z');
 
 // AWS
 const AWS = require('aws-sdk');
@@ -42,7 +42,7 @@ const dbHostPort =  remoteUser + ':' +
 
 
 const dbName  = 'grantmakers';
-const dbCollection = 'irs' + targetYear + '_' + month + day + year;
+const dbCollection = 'pf_' + targetYear + '_' + month + day + year + '_updates';
 const db = require('mongodb-promises').db(dbHostPort, dbName);
 const mycollection = db.collection(dbCollection);
 

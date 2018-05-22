@@ -5,6 +5,7 @@ const es = require('event-stream');
 const JSONStream = require('JSONStream');
 const moment = require('moment');
 const secrets = require('./secrets');
+const Slack = require('node-slackr');
 
 // IRS Index Year
 const year = 2018;
@@ -19,6 +20,10 @@ const s3 = new AWS.S3();
 const bucket = 'irs-form-990';
 const indexFileName = 'index_' + yearString + '.json';
 const indexPath = 'https://s3.amazonaws.com/' + bucket + '/' + indexFileName;
+
+// Slack
+const slackURI = secrets.slack.webhook_uri;
+const slack = new Slack(slackURI, {'channel': '990updates'});
 
 // Main function
 exports.checkForUpdates = function checkForUpdates(req, res) {
@@ -68,7 +73,8 @@ exports.checkForUpdates = function checkForUpdates(req, res) {
       if (lastModifiedAws > lastModifiedGrantmakers) {
         countPfObjects();
       } else {
-        res.send('No updates available');
+        // slack.notify('No updates available');
+        res.send('No updates available \n ');
         return;
       }
     });
@@ -93,19 +99,25 @@ exports.checkForUpdates = function checkForUpdates(req, res) {
           ++count;
         }
       })
-      .on('end', function() {
-        res.send(
-          'Updates available' + '\n' +
-          'New PF Filings: ' + count + '\n'
-        );
-        count = 0;
-        return;
-      })
-      .on('error', function(err) {
-        console.error('-----mapSync Error-----');
-        console.error(err);
-        res.status(500).send('mapSync Error');
-      })
-    );
+        .on('end', function() {
+          let message = undefined;
+          if (count === 0) {
+            message = 'File updated by IRS,' + '\n' +
+                      'but no new 990-PF filings found' + '\n';
+          } else {
+            message = 'Updates available' + '\n' +
+                      'New PF Filings: ' + count + '\n';
+          }
+          slack.notify(message);
+          res.send(message);
+          count = 0;
+          return;
+        })
+        .on('error', function(err) {
+          console.error('-----mapSync Error-----');
+          console.error(err);
+          res.status(500).send('mapSync Error');
+        })
+      );
   }
 };
