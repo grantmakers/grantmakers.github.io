@@ -143,12 +143,12 @@ db.normalized.find().forEach(function(u) {
   let grantsApplicationInfo = null;
   let grantsApplicationDeadlines = null;
   let grantsApplicationRestrictions = null;
+  let grantsApplicationContact = {};
   if (grantsArray) {
     // Pull grants
     eachGrant = grantsArray.GrantOrContributionPdDurYrGrp || grantsArray.GrantOrContriPaidDuringYear || null;
 
     // Pull application info
-    // TODO Pull application guidance details if available
     // Part XV 2 - only makes contributions to preselected charitable organizations and does not accept unsolicited requests for funds.
     grantsToPreselectedOnly = grantsArray.OnlyContriToPreselectedInd || grantsArray.OnlyContributesToPreselected || null;
     if (grantsToPreselectedOnly === 'X') {
@@ -160,6 +160,29 @@ db.normalized.find().forEach(function(u) {
       grantsApplicationInfo = grantsApplicationArray.FormAndInfoAndMaterialsTxt || grantsApplicationArray.FormAndInfoAndMaterials || null;
       grantsApplicationDeadlines = grantsApplicationArray.SubmissionDeadlinesTxt || grantsApplicationArray.SubmissionDeadlines || null;
       grantsApplicationRestrictions = grantsApplicationArray.RestrictionsOnAwardsTxt || grantsApplicationArray.RestrictionsOnAwards || null;
+      grantsApplicationContact.name = grantsApplicationArray.RecipientPersonNm || grantsApplicationArray.RecipientName || null;
+      grantsApplicationContact.email = grantsApplicationArray.RecipientEmailAddressTxt || grantsApplicationArray.RecipientEmailAddress || null;
+      grantsApplicationContact.phone = grantsApplicationArray.RecipientPhoneNum || grantsApplicationArray.RecipientPhoneNumber || null;
+      grantsApplicationContact.address = {};
+      let newAddress = grantsApplicationContact.address;
+      const usAddress = grantsApplicationArray.RecipientUSAddress;
+      const foreignAddress = grantsApplicationArray.RecipientForeignAddress;
+      if (usAddress) {
+        grantsApplicationContact.is_foreign = false;
+        newAddress.street = usAddress.AddressLine1 || usAddress.AddressLine1Txt || null;
+        newAddress.street2 = usAddress.AddressLine2 || usAddress.AddressLine2Txt || null;
+        newAddress.city = usAddress.City || usAddress.CityNm || null;
+        newAddress.state = usAddress.State || usAddress.StateAbbreviationCd || null;
+        newAddress.zip = usAddress.ZIPCd || usAddress.ZIPCode || null;
+      } else if (foreignAddress) {
+        grantsApplicationContact.is_foreign = true;
+        newAddress.street = foreignAddress.AddressLine1 || foreignAddress.AddressLine1Txt || null;
+        newAddress.street2 = foreignAddress.AddressLine2 || foreignAddress.AddressLine2Txt || null;
+        newAddress.city = foreignAddress.City || foreignAddress.CityNm || null;
+        newAddress.state = foreignAddress.ProvinceOrState || foreignAddress.ProvinceOrStateNm || null;
+        newAddress.country = foreignAddress.Country || foreignAddress.CountryCd || null;
+        newAddress.zip = foreignAddress.PostalCode || foreignAddress.ForeignPostalCd || null;
+      }
     }
   }
 
@@ -274,6 +297,7 @@ db.normalized.find().forEach(function(u) {
     'grants_application_info': grantsApplicationInfo,
     'grants_application_deadlines': grantsApplicationDeadlines,
     'grants_application_restrictions': grantsApplicationRestrictions,
+    'grants_application_contact': grantsApplicationContact,
     'grants_reference_attachment': grantsReferenceAttachment,
     // 'grants_application_array': grantsApplicationArray,
     'grants': grants,
