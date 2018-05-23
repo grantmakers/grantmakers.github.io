@@ -18,6 +18,7 @@ db.normalized_updates.find().forEach(function(u) {
   let city = null;
   let state = null;
   let country = 'US';
+  let phone = null;
   let isForeign = false;
   let taxYear = null;
 
@@ -40,17 +41,25 @@ db.normalized_updates.find().forEach(function(u) {
   const foreign = u.Return.ReturnHeader.Filer.ForeignAddress;
 
   if (us) {
+    street = us.AddressLine1Txt || us.AddressLine1 || null;
+    street2 = us.AddressLine2Txt || us.AddressLine2 || null;
     city = us.CityNm || us.City;
     state = us.StateAbbreviationCd || us.State;
+    zip = us.ZIPCd || us.ZIPCode || null;
   } else if (foreign) {
+    street = foreign.AddressLine1Txt || foreign.AddressLine1 || null;
+    street2 = foreign.AddressLine2Txt || foreign.AddressLine2 || null;
     city = foreign.CityNm || foreign.City || 'Foreign';
     state = foreign.ProvinceOrStateNm || foreign.ProvinceOrState || 'Foreign';
     country = foreign.CountryCd || foreign.Country || 'Foreign';
+    zip = foreign.ZIPCd || foreign.ZIPCode || null;
     isForeign = true;
   } else {
     city = 'N/A';
     state = 'N/A';
   }
+
+  phone = u.Return.ReturnHeader.Filer.PhoneNum || u.Return.ReturnHeader.Filer.Phone || null;
   
   /** Website **/
   const websiteNew = u.Return.ReturnData.IRS990PF.StatementsRegardingActyGrp;
@@ -279,9 +288,13 @@ db.normalized_updates.find().forEach(function(u) {
     'assets': Number(assets),
     'website': website,
     'is_foreign': isForeign,
+    'street': street,
+    'street2': street2,
     'city': toTitleCase(city),
     'state': state,
     'country': country,
+    'zip': zip,
+    'phone': phone,
     'tax_period': Number(taxPeriod),
     'tax_year': Number(taxYear),
     'url': url,
