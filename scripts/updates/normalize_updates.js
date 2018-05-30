@@ -18,6 +18,7 @@ db.normalized_updates.find().forEach(function(u) {
   let city = null;
   let state = null;
   let country = 'US';
+  let phone = null;
   let isForeign = false;
   let taxYear = null;
 
@@ -40,17 +41,25 @@ db.normalized_updates.find().forEach(function(u) {
   const foreign = u.Return.ReturnHeader.Filer.ForeignAddress;
 
   if (us) {
+    street = us.AddressLine1Txt || us.AddressLine1 || null;
+    street2 = us.AddressLine2Txt || us.AddressLine2 || null;
     city = us.CityNm || us.City;
     state = us.StateAbbreviationCd || us.State;
+    zip = us.ZIPCd || us.ZIPCode || null;
   } else if (foreign) {
+    street = foreign.AddressLine1Txt || foreign.AddressLine1 || null;
+    street2 = foreign.AddressLine2Txt || foreign.AddressLine2 || null;
     city = foreign.CityNm || foreign.City || 'Foreign';
     state = foreign.ProvinceOrStateNm || foreign.ProvinceOrState || 'Foreign';
     country = foreign.CountryCd || foreign.Country || 'Foreign';
+    zip = foreign.ZIPCd || foreign.ZIPCode || null;
     isForeign = true;
   } else {
     city = 'N/A';
     state = 'N/A';
   }
+
+  phone = u.Return.ReturnHeader.Filer.PhoneNum || u.Return.ReturnHeader.Filer.Phone || null;
   
   /** Website **/
   const websiteNew = u.Return.ReturnData.IRS990PF.StatementsRegardingActyGrp;
@@ -143,12 +152,12 @@ db.normalized_updates.find().forEach(function(u) {
   let grantsApplicationInfo = null;
   let grantsApplicationDeadlines = null;
   let grantsApplicationRestrictions = null;
+  let grantsApplicationContact = {};
   if (grantsArray) {
     // Pull grants
     eachGrant = grantsArray.GrantOrContributionPdDurYrGrp || grantsArray.GrantOrContriPaidDuringYear || null;
 
     // Pull application info
-    // TODO Pull application guidance details if available
     // Part XV 2 - only makes contributions to preselected charitable organizations and does not accept unsolicited requests for funds.
     grantsToPreselectedOnly = grantsArray.OnlyContriToPreselectedInd || grantsArray.OnlyContributesToPreselected || null;
     if (grantsToPreselectedOnly === 'X') {
@@ -160,6 +169,29 @@ db.normalized_updates.find().forEach(function(u) {
       grantsApplicationInfo = grantsApplicationArray.FormAndInfoAndMaterialsTxt || grantsApplicationArray.FormAndInfoAndMaterials || null;
       grantsApplicationDeadlines = grantsApplicationArray.SubmissionDeadlinesTxt || grantsApplicationArray.SubmissionDeadlines || null;
       grantsApplicationRestrictions = grantsApplicationArray.RestrictionsOnAwardsTxt || grantsApplicationArray.RestrictionsOnAwards || null;
+      grantsApplicationContact.name = grantsApplicationArray.RecipientPersonNm || grantsApplicationArray.RecipientName || null;
+      grantsApplicationContact.email = grantsApplicationArray.RecipientEmailAddressTxt || grantsApplicationArray.RecipientEmailAddress || null;
+      grantsApplicationContact.phone = grantsApplicationArray.RecipientPhoneNum || grantsApplicationArray.RecipientPhoneNumber || null;
+      grantsApplicationContact.address = {};
+      let newAddress = grantsApplicationContact.address;
+      const usAddress = grantsApplicationArray.RecipientUSAddress;
+      const foreignAddress = grantsApplicationArray.RecipientForeignAddress;
+      if (usAddress) {
+        grantsApplicationContact.is_foreign = false;
+        newAddress.street = usAddress.AddressLine1 || usAddress.AddressLine1Txt || null;
+        newAddress.street2 = usAddress.AddressLine2 || usAddress.AddressLine2Txt || null;
+        newAddress.city = usAddress.City || usAddress.CityNm || null;
+        newAddress.state = usAddress.State || usAddress.StateAbbreviationCd || null;
+        newAddress.zip = usAddress.ZIPCd || usAddress.ZIPCode || null;
+      } else if (foreignAddress) {
+        grantsApplicationContact.is_foreign = true;
+        newAddress.street = foreignAddress.AddressLine1 || foreignAddress.AddressLine1Txt || null;
+        newAddress.street2 = foreignAddress.AddressLine2 || foreignAddress.AddressLine2Txt || null;
+        newAddress.city = foreignAddress.City || foreignAddress.CityNm || null;
+        newAddress.state = foreignAddress.ProvinceOrState || foreignAddress.ProvinceOrStateNm || null;
+        newAddress.country = foreignAddress.Country || foreignAddress.CountryCd || null;
+        newAddress.zip = foreignAddress.PostalCode || foreignAddress.ForeignPostalCd || null;
+      }
     }
   }
 
@@ -256,9 +288,13 @@ db.normalized_updates.find().forEach(function(u) {
     'assets': Number(assets),
     'website': website,
     'is_foreign': isForeign,
+    'street': street,
+    'street2': street2,
     'city': toTitleCase(city),
     'state': state,
     'country': country,
+    'zip': zip,
+    'phone': phone,
     'tax_period': Number(taxPeriod),
     'tax_year': Number(taxYear),
     'url': url,
@@ -274,6 +310,7 @@ db.normalized_updates.find().forEach(function(u) {
     'grants_application_info': grantsApplicationInfo,
     'grants_application_deadlines': grantsApplicationDeadlines,
     'grants_application_restrictions': grantsApplicationRestrictions,
+    'grants_application_contact': grantsApplicationContact,
     'grants_reference_attachment': grantsReferenceAttachment,
     // 'grants_application_array': grantsApplicationArray,
     'grants': grants,
