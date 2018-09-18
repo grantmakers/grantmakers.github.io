@@ -1,7 +1,7 @@
 # Site settings
 # Meta tags
 title: Grantmakers.io - A Community Project
-description: Quickly find data on 79,000 grantmaking institutions in the US. An open source project from your friends at SmarterGiving.
+description: Quickly find data on 80,000 grantmaking institutions in the US. An open source project from your friends at SmarterGiving.
 
 # Jekyll settings
 baseurl: # Leave this blank unless your site is located on a subpath, e.g. /blog
@@ -16,11 +16,11 @@ google_analytics: UA-84268197-1
 algolia_link: http://goto.algolia.com/l/139121/2017-10-24/26gc84
 
 # Sitewide helpers
-last_updated: '2018-08-28T13:20:19.509Z'
+last_updated: '2018-09-16T23:18:17.189Z'
 
 number_of_filings: 329839
-number_of_foundations: 79005
-number_of_grants: 4147484
+number_of_foundations: 80001
+number_of_grants: 4252055
 
 # Build settings
 markdown: kramdown
