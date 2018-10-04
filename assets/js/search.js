@@ -406,7 +406,7 @@ $(document).ready(function() {
       e.preventDefault();
       e.stopPropagation();
       readyToSearchScrollPosition();
-      $('.navbar-search').addClass('safari-scroll-hack');
+      // $('.navbar-search').addClass('safari-scroll-hack');
     }
   });
   $searchInput.on('focusout', function(e) { //HACK Mobile Safari
@@ -414,7 +414,7 @@ $(document).ready(function() {
       e.preventDefault();
       e.stopPropagation();
       readyToSearchScrollPosition();
-      $('.navbar-search').removeClass('safari-scroll-hack');
+      // $('.navbar-search').removeClass('safari-scroll-hack');
     }
   });
   $(document).on('input', $searchInput, function(e) {
