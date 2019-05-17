@@ -1,0 +1,500 @@
+---
+---
+/****************************
+Override Materialize variables
+*****************************/
+$font-stack: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif !default;
+$primary-color: #999999;
+$secondary-color: #c54e00;
+$error-color: color("yellow", "base");
+$link-color: $secondary-color !default;
+
+// Import Materialize
+@import 'materialize';
+
+/****************************
+Grid Sizes
+*****************************/
+
+// Materialize naming scheme
+$small-screen-up: 601px !default; // Mobile
+$medium-screen-up: 993px !default; // Tablet
+$large-screen-up: 1201px !default; // Desktop
+$small-screen: 600px !default;
+$medium-screen: 992px !default;
+$large-screen: 1200px !default;
+
+$medium-and-up: "only screen and (min-width : #{$small-screen-up})" !default;
+$large-and-up: "only screen and (min-width : #{$medium-screen-up})" !default;
+$extra-large-and-up: "only screen and (min-width : #{$large-screen-up})" !default;
+$small-and-down: "only screen and (max-width : #{$small-screen})" !default;
+$medium-and-down: "only screen and (max-width : #{$medium-screen})" !default;
+$medium-only: "only screen and (min-width : #{$small-screen-up}) and (max-width : #{$medium-screen})" !default;
+
+/****************************
+Custom colors
+*****************************/
+
+$grantmakers: #c54e00;
+$grantmakers-medium: #F56A10;
+$grantmakers-light: #FB8F48;
+$grantmakers-lightest: lighten($grantmakers-light, 30%);
+$grantmakers-dark: #A13F00;
+$grantmakers-darker: #772F00;
+
+$grey-base:              #000 !default;
+$grey-darker:            lighten($grey-base, 13.5%) !default; // #222
+$grey-dark:              lighten($grey-base, 20%) !default;   // #333
+$grey:                   lighten($grey-base, 33.5%) !default; // #555
+$grey-light:             #999999 !default; // #999999
+$grey-lighter:           lighten($grey-base, 93.5%) !default; // #eee
+$grey-lightest: 				 #f5f5f5;
+
+.grantmakers-color-bg, .btn-grantmakers, .grantmakers {
+	background-color: $grantmakers !important;
+}
+
+.btn-grantmakers:hover {
+	background-color: darken($grantmakers, 5%);
+}
+
+.grantmakers-color, .grantmakers-text {
+	color: $grantmakers !important;
+}
+
+a:not(.btn):not(.btn:hover) {
+	color: $grantmakers;
+}
+
+.disable-primary-color {
+	color: inherit !important;
+}
+
+/****************************
+Helpers
+*****************************/
+/* Sitewide helpers */
+$accent-color: #ee6e73;
+// $text-muted: #757575;
+// $text-muted-max: #9e9e9e;
+$text-muted: #424242;
+$text-muted-max: #757575;
+$text-color: rgba(0,0,0,0.87);
+.btn, .accent {
+  background-color: $accent-color;
+}
+.text-muted {
+  color: $text-muted !important;
+}
+.text-muted-max {
+  color: $text-muted-max !important;
+}
+.text-bold {
+  font-weight: 700;
+}
+.accent-text {
+  color: $accent-color;
+}
+.small {
+  font-size: 85%;
+}
+.hidden {
+  display: none;
+}
+.no-wrap, .text-nowrap {
+  white-space: nowrap;
+}
+.modal:focus {
+	outline: 0;
+}
+.container-custom {
+	margin-right: auto;
+	margin-left: auto;
+	padding-left: 15px;
+	padding-right: 15px;
+	@media #{$large-and-up} {
+		width: 970px;
+	}
+	@media #{$extra-large-and-up} {
+		width: 1170px;
+	}
+}
+.row-tight {
+  margin-bottom: 0;
+}
+/* Inline lists */
+.list-inline {
+  padding-left: 0;
+  margin-left: -5px;
+  list-style: none;
+}
+.list-inline > li {
+  display: inline-block;
+  padding-right: 5px;
+  padding-left: 5px;
+}
+
+/* Clear browser defaults */
+.clear-browser-default-button button {
+  align-items: inherit;
+  text-align: inherit;
+  cursor: inherit;
+  color: inherit;
+  background-color: inherit;
+  box-sizing: inherit;
+  padding: inherit;
+  border-width: inherit;
+  border-style: inherit;
+  border-color: inherit;
+  border-image: inherit;
+}
+
+
+/****************************
+Layout
+*****************************/
+header {
+  z-index: 2;
+}
+main {
+  z-index: 1;
+  position: relative;
+  top: -64px;
+}
+canvas {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+/* Sticky Footer */
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+main {
+  flex: 1 0 auto;
+}
+
+/****************************
+Algolia theme overrides
+*****************************/
+// Use these if using algolia-theme
+/*
+.ais-Hits-item, .ais-Results-item {
+  margin-top: inherit;
+  margin-left: inherit;
+  padding: inherit;
+  width: inherit;
+  border: inherit;
+  box-shadow: inherit;
+}
+
+.ais-Breadcrumb, .ais-ClearRefinements, .ais-CurrentRefinements, .ais-GeoSearch, .ais-HierarchicalMenu, .ais-Hits, .ais-HitsPerPage, .ais-InfiniteHits, .ais-InfiniteResults, .ais-Menu, .ais-MenuSelect, .ais-NumericMenu, .ais-NumericSelector, .ais-Pagination, .ais-Panel, .ais-PoweredBy, .ais-RangeInput, .ais-RangeSlider, .ais-RatingMenu, .ais-RefinementList, .ais-Results, .ais-ResultsPerPage, .ais-SearchBox, .ais-SortBy, .ais-Stats, .ais-ToggleRefinement {
+  color: inherit;
+}
+
+.ais-Stats-text {
+  font-size: inherit;
+}
+*/
+
+/****************************
+Mimic Algolia them - only the good parts
+*****************************/
+// Use these if NOT using algolia-theme
+.ais-ClearRefinements-button, .ais-CurrentRefinements-delete, .ais-CurrentRefinements-reset, .ais-GeoSearch-redo, .ais-GeoSearch-reset, .ais-HierarchicalMenu-showMore, .ais-InfiniteHits-loadMore, .ais-InfiniteResults-loadMore, .ais-Menu-showMore, .ais-RangeInput-submit, .ais-RefinementList-showMore, .ais-SearchBox-reset, .ais-SearchBox-submit {
+  padding: 0;
+  overflow: visible;
+  font: inherit;
+  line-height: normal;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+[class^=ais-] {
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+.ais-SearchBox-form {
+  display: block;
+  position: relative;
+}
+.ais-SearchBox-loadingIndicator, .ais-SearchBox-reset, .ais-SearchBox-submit {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  position: absolute;
+  z-index: 1;
+  width: 20px;
+  height: 20px;
+  top: 50%;
+  right: .3rem;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+.ais-SearchBox-submit {
+  left: .3rem;
+}
+.ais-SearchBox-submitIcon {
+  width: 14px;
+  height: 14px;
+}
+.ais-SearchBox-loadingIcon, .ais-SearchBox-resetIcon, .ais-SearchBox-submitIcon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
+}
+.ais-Highlight-highlighted, .ais-Snippet-highlighted {
+  background-color: lighten($accent-color, 27%); // Target color: #feebde
+  font-size: inherit !important;
+  color: inherit !important;
+}
+/****************************
+Page styling
+*****************************/
+/* Navbar */
+nav.navbar-unified-search {
+  background-color: transparent!important;
+  border-color: transparent!important;
+  box-shadow: none!important;
+}
+nav .logo-container {
+  padding: 5px 0;
+  display: inline-block;
+}
+.logo-container .logo {
+  border: 0;
+  width: 50px;
+  height: 50px;
+  float: left;
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+.logo-container .brand {
+  font-size: 16px;
+  color: #FFFFFF;
+  line-height: 32px;
+  float: left;
+  margin-left: 10px;
+  margin-top: 10px;
+  width: 70px;
+  height: 40px;
+  text-align: left;
+}
+.brand-logo {
+  display: inline-block;
+  height: 100%;
+}
+nav.nav-center ul.ul-center {
+  text-align: center;
+}
+nav.nav-center ul.ul-center li {
+  display: inline-block;
+  float: none;
+}
+nav.nav-center ul.ul-center li .ais-search-box {
+  display: inline-block;
+}
+
+/* Hero */
+$parallax-height: 75vh;
+.parallax-container {
+  height: $parallax-height;
+  // top: -64px;
+}
+.overlay {
+  background: rgba(44,45,51,0.8);
+  background: linear-gradient(rgba(44,45,51,0.8), rgba(44,45,51,0.8));
+  background: -moz-linear-gradient(rgba(44,45,51,0.8), rgba(44,45,51,0.8));
+  background: -webkit-linear-gradient(rgba(44,45,51,0.8), rgba(44,45,51,0.8));
+}
+.parallax {
+  position: relative;
+}
+.parallax img {
+  object-fit: cover;
+}
+.intro {
+  height: $parallax-height;
+  .intro-text {
+    margin: auto;
+    z-index: 1;
+    h1 {
+      margin-bottom: 10px;
+    }
+    h5 {
+      font-weight: 300;
+    }
+  }
+}
+
+/* Searchbar */
+.nav-search {
+  height: 64px;
+}
+.nav-search nav {
+  margin-bottom: 10px;
+  z-index: 3;
+}
+.nav-search nav.pinned {
+  width: 100%;
+  z-index: 3;
+}
+.nav-search .nav-wrapper {
+  padding: 0 15px;
+}
+
+#search-toggle {
+  height: 64px;
+  select {
+    outline: none;
+  }
+  // Can remove select-wrapper if using browser-default class
+  .select-wrapper {
+    height: 3rem;
+    position: relative; // HACK
+    left: 2px; // HACK
+    bottom: 2px; // HACK
+    border: none;
+    // box-shadow: none;
+    // box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+    input {
+      border: none;
+      color: white;
+    }
+  }
+  .caret {
+    z-index: 1;
+    fill: white;
+  }
+  ul {
+    width: 200px;
+  }
+  .optgroup {
+    &:hover {
+      background-color: white;
+      cursor: default;
+    }
+    span {
+      font-size: 0.8rem;
+    }
+  }
+  .optgroup-option {
+    span {
+      color: $accent-color;
+      padding-left: 0;
+    }
+  }
+}
+
+#ais-widget-search-box {
+  .ais-SearchBox-submit {
+    height: 3rem; // HACK icon is still too low by a few pixels
+    &:hover {
+      cursor: default;
+    }
+  }
+  .ais-SearchBox-submitIcon, .ais-SearchBox-resetIcon, .ais-SearchBox-loadingIcon {
+    fill: $text-muted;
+    width: 16px;
+    height: 16px;
+  }
+  input {
+    width: calc(100% - 40px);
+    padding-left: 40px;
+    background-color: white;
+    border: none;
+    box-shadow: none;
+    margin-bottom: 0;
+    border-radius: 3px;
+  }
+  input::placeholder {
+    color: $text-muted-max;
+  }
+}
+
+@media screen and (min-width: 993px) {
+  .ais-SearchBox {
+    min-width: 400px;
+    margin: auto; // center
+  }
+}
+.ais-SearchBox-submit, .ais-SearchBox-reset {
+  &:focus {
+    background-color: white;
+  }
+}
+
+#powered-by {
+  height: 64px; 
+  .ais-PoweredBy {
+    height: 100%;
+  }
+}
+
+/* Results wrapper */
+.section-raised {
+  margin: 0px 15px 0px;
+  border-radius: 6px;
+  @media screen and (min-width: 993px) {
+    margin: 0px 30px 0px;
+    padding-top: 3rem;
+    min-height: 470px;
+  }
+}
+
+/* Hits */
+.hit-summary-icons i.material-icons {
+  color: $grey-lighter; // TODO use Materialize @extend
+}
+.hit-summary-icons i.material-icons-active {
+  color: $grantmakers;
+}
+.hit-summary-financials {
+  margin-top: 20px; // Match row bottom margin spacing
+  li {
+    padding-left: 15px;
+  }
+  h6 small {
+    font-weight: 300;
+  }
+}
+
+
+/* Clear all */
+.btn-custom {
+  &:hover {
+    background-color: lighten($accent-color, 5%)
+  }
+}
+
+// http://maxdesign.com.au/articles/simple-responsive-table/
+.responsive-table-wrapper {
+	width: 100%;
+	overflow-y: auto;
+	_overflow: auto;
+	margin: 0 0 1em;
+}
+
+.responsive-table-wrapper::-webkit-scrollbar {
+	-webkit-appearance: none;
+	width: 14px;
+	height: 14px;
+}
+
+.responsive-table-wrapper::-webkit-scrollbar-thumb {
+	border-radius: 8px;
+	border: 3px solid #fff;
+	background-color: rgba(0, 0, 0, .3);
+}

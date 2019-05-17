@@ -1,0 +1,251 @@
+---
+permalink: /search/
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="apple-touch-icon" sizes="76x76" href="{{ site.baseurl }}/assets/img/apple-icon.png">
+    <link rel="icon" type="image/png" href="{{ site.baseurl }}/assets/img/favicon.png">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta content='width=device-width, initial-scale=1.0, minimum-scale=1' name='viewport' />
+
+    {% if jekyll.environment == 'staging' %}
+      <meta name="robots" content="noindex, nofollow">
+    {% endif %}
+
+    <title>{{ site.title }}</title>
+    <meta name="description" content="{{ site.description }}" />
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700">
+
+    <!-- Styles -->
+    <!--
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.css@7.1.1/themes/algolia-min.css" integrity="sha256-nkldBwBn2NQqRL1mod7BqHsJ6cEOn6u/ln6F/lI4CFo=" crossorigin="anonymous">
+    -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.css@7.1.1/themes/reset-min.css" integrity="sha256-JQ2nnTmybhOWSjfV3sa8mG0ZVhTCcORER4cyXc5HL10=" crossorigin="anonymous">
+    
+    <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/unified-search.css?v={{ site.time | date: '%Y%m%d'}}">
+
+    <!-- JavaScript -->
+    <!-- <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script> --> <!-- jQuery no longer required -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/algoliasearch@3.32.1/dist/algoliasearchLite.js" integrity="sha256-pMaJf0I78weeXGkRMBDO6jSulxC/q3sb0aPdtV2N8n0=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@3.2.0" integrity="sha256-/8usMtTwZ01jujD7KAZctG0UMk2S2NDNirGFVBbBZCM=" crossorigin="anonymous"></script>
+    <script src="{{ site.baseurl }}/assets/js/unified-search.js?v={{ site.time | date: '%Y%m%d'}}"></script>
+  </head>
+  <body>
+
+    <header>
+      <!-- Navbar -->
+      <div>
+        <nav class="navbar-unified-search transparent">
+          <div class="nav-wrapper">
+            <div class="container-custom">
+              <a href="#" data-target="mobile-nav" class="sidenav-trigger right disable-primary-color"><i class="material-icons">menu</i></a>
+              <div class="row">
+                <div class="col s8 m4 l4">
+                  <a href="https://www.grantmakers.io" data-ga="Homepage" class="brand-logo">
+                    <div class="logo-container">
+                      <div class="logo">
+                          <img src="{{ site.baseurl }}/assets/img/logo.png" alt="Grantmakers Logo" class="tooltipped" data-tooltip="<b>Grantmakers.io</b> is a free tool<br>from your friends at<br><b>SmarterGiving.org</b>" data-position="bottom" data-delay="20" data-html="true">
+                      </div>
+                      <div class="brand brand-name">
+                          Grantmakers.io
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                <div class="col m4 l8">
+                  <ul class="right hide-on-med-and-down">
+                    <li>
+                      <a href="{{ site.url }}/profiles-search/">
+                        <i class="material-icons left left-tighten grantmakers-text">lens</i> Find a Foundation Profile
+                      </a>
+                    </li>
+                    <li>
+                      <a href="{{ site.url }}/grants-search">
+                        <i class="material-icons left left-tighten blue-grey-text">lens</i> Search all Grants
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+      <!-- Mobile Navbar -->
+      <ul class="nav-primary sidenav" id="mobile-nav" >
+        <li>
+          <a href="{{ site.url }}/profiles-search/">
+            <i class="material-icons grantmakers-text">lens</i> Find a Foundation Profile
+          </a>
+        </li>
+        <li>
+          <a href="{{ site.url }}/grants-search">
+            <i class="material-icons blue-grey-text">lens</i> Search all Grants
+          </a>
+        </li>
+        <li><hr class="divider"></li>
+        <li><a href="{{ site.url }}/about/" data-ga="About">About</a></li>
+        <li><a href="{{ site.url }}/faq/" data-ga="FAQ">FAQ</a></li>
+        <li><hr class="divider"></li>
+        <li><a class="waves-effect waves-light btn-flat grey lighten-3" href="{{ site.url }}/profiles-search/"><i class="material-icons left">search</i> Search</a></li>
+      </ul>
+      <!-- End Mobile Navbar -->
+      <!-- End Navbar -->
+    </header>
+
+    <main>
+      <div class="parallax-container overlay">
+        <div class="parallax">
+          <img src="{{ site.baseurl }}/assets/img/bg.jpg">
+        </div>
+        <div class="intro valign-wrapper">
+          <div class="intro-text center-align white-text">
+            <h1 class="text-bold">Grantmaker Search</h1>
+            <h5>Profiles of {{ site.number_of_foundations | divided_by: 1000 }},{{ site.number_of_foundations | slice: 2,5 }} U.S. foundations</h5>
+          </div>
+        </div>
+        <canvas></canvas>
+      </div>
+      <div class="nav-search">
+        <nav class="nav-center grey lighten-3 z-depth-1">
+          <div class="nav-wrapper">
+            <div class="row">
+              <div class="col s2">
+                <div id="search-toggle" class="input-field valign-wrapper">
+                  <select class="browser-default blue-grey white-text">
+                    <optgroup class="disabled" label="Research a foundation">
+                      <option value="1">Profile Search</option>
+                    </optgroup>
+                    <optgroup class="disabled" label="Find new funders">
+                      <option value="3">Grants Search</option>
+                    </optgroup>
+                  </select>
+                </div>
+              </div>
+              <div class="col s6 offset-s1">
+                <div id="ais-widget-search-box"></div>
+              </div>
+              <div class="col s3">
+                <div id="powered-by" class="right"></div>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+      <div class="section section-raised z-depth-4 grey lighten-3">
+        <div class="row">
+          <div class="col s12 l3">
+            <!-- Filters / Refinements header -->
+            <div class="text-muted hide-on-med-and-down">
+              Filters
+            </div>
+            <div class="hide-on-large-only center-align">
+              <ul class="actions">
+                <li>
+                  <span id="ais-widget-mobile-clear-all"></span>
+                  <a href="#" data-target="refinements-slide-out" class="sidenav-trigger show-on-med-and-down waves-effect waves-light button-collapse btn white grey-text text-darken-3"><i class="material-icons right">filter_list</i> Filter</a>
+                </li>
+                <li>
+                  
+                </li>
+              </ul>
+              {% include search/refinements-slide-out.html %}
+            </div>
+            <div class="divider hide-on-med-and-down"></div>
+            <div class="section section-refinements hide-on-med-and-down">
+              <div> <!-- Add row class to remove added white space / padding -->
+                <div class="col s12">
+                  {% include search/refinement-list-card.html facet="city" title="City" %}
+                  {% include search/refinement-list-card.html facet="state" title="State" %}
+                  <div class="card">
+                    <div id="ais-widget-refinement-list--tax_year"></div>
+                  </div>
+                  <div class="card">
+                    <div id="ais-widget-refinement-list--grantee_state"></div>
+                  </div>
+                  <div class="card">
+                    <div id="ais-widget-refinement-list--grantee_city"></div>
+                  </div>
+                  <div class="card">
+                    <div id="ais-widget-range-slider"></div>
+                  </div>
+                </div>
+                <div class="col s12">
+                  <div class="section">
+                    <div id="ais-widget-clear-all" class="center-align"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col s12 l9">
+            <div class="row row-tight">
+              <div class="col s7 m9 l10">
+                  <div id="ais-widget-stats"></div>
+                </div>
+                <div class="col s5 m3 l2">
+                  <div id="ais-widget-sort-by"></div>
+                </div>
+            </div>
+            <div class="row">
+              <div class="col s12">
+                  <div class="divider"></div>
+              </div>
+            </div>
+            <div class="section">
+              <div class="row"> <!-- Add row class to remove added white space / padding -->
+                <div class="col s12">
+                    <div id="ais-widget-current-refined-values"></div>
+                  <div class=""> <!-- Use class card for grants results-->
+                    <div class=""> <!-- Use class card-content for grants results-->
+                      <div id="ais-widget-hits"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col s12 l9 offset-l3">
+            <div class="section center-align">
+              <div id="ais-widget-pagination"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="page-footer grey darken-3">
+      <div class="container">
+        <div class="row">
+          <div class="col l6 s12">
+            <h5 class="white-text">The Example Foundation</h5>
+            <p class="grey-text text-lighten-4">We believe in the inherent dignity of all people. But around the world, too many people are excluded from the political, economic, and social institutions that shape their lives.</p>
+          </div>
+          <div class="col l4 offset-l2 s12">
+            <h5 class="white-text">Links</h5>
+            <ul>
+              <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
+              <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
+              <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
+              <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-copyright grey darken-4">
+        <div class="container">
+        © 2017 The Example Foundation
+        <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+        </div>
+      </div>
+    </footer>
+    <!-- Plugin for Canvas.js, which creates the floating dots effect -->
+	  <!-- <script src="{{ site.baseurl }}/assets/js/canvas.js" type="text/javascript"></script> -->
+  </body>
+</html>
