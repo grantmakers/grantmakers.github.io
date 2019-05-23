@@ -15,7 +15,7 @@ ready(function() {
   // Initialize Materialize components
   // Note: if the element is created dynamically via Instantsearch widget,
   // the plugin needs to be initialized in the normal Instantsearch workflow
-  // using the render method (e.g. search.once('render'...)
+  // using the render method (e.g. search.on('render'...)
   const elemsPA = document.querySelectorAll('.parallax');
   M.Parallax.init(elemsPA);
 
@@ -25,89 +25,77 @@ ready(function() {
   if (!isMobile.matches) { // Use pushpin on desktop only
     const elemPP = document.querySelector('.nav-search nav');
     const optionsPP = {
-      top: elemPP.offsetTop,
+      'top': elemPP.offsetTop,
     };
     M.Pushpin.init(elemPP, optionsPP);
   }
+
+  // Toggle
+  const toggleParent = document.getElementById('search-toggle');
+  const toggle = toggleParent.querySelector('select');
+  toggle.onchange = function() {
+    toggle.classList.toggle('grants-search');
+  };
+  
 
   // Algolia Instantsearch init
   const searchClient = algoliasearch('KDWVSZVS1I', 'ce4d584b0de36ca3f8b4727fdb83c658');
 
   const search = instantsearch({
-    indexName: 'grantmakers_io',
+    'indexName': 'grantmakers_io',
     searchClient,
-    // TODO?
-    numberLocale: 'en-US',
-    // routing: true,
+    'numberLocale': 'en-US',
+    'searchParameters': {
+      'hitsPerPage': 8,
+    },
+    'routing': true,
   });
-
-  /*
-  var APPLICATION_ID = 'KDWVSZVS1I';
-  var SEARCH_ONLY_API_KEY = 'ce4d584b0de36ca3f8b4727fdb83c658';
-  var INDEX_NAME = 'grantmakers_io';
-  var PARAMS = {
-    hitsPerPage: 10,
-    maxValuesPerFacet: 8,
-    facets: ['grant_median'],
-    disjunctiveFacets: ['city', 'state'],
-    index: INDEX_NAME
-  };
-  var FACETS_SLIDER = [];
-  var FACETS_ORDER_OF_DISPLAY = ['city', 'state'];
-  var FACETS_LABELS = {'city': 'City', 'state': 'State'};
-  */
 
   // Define templates
   const templateHits = `{% include search/algolia-template-hits.html %}`;
-  const templateStats = `{% include search/algolia-template-stats.html %}`
-
-  // Define color palette
-  const widgetHeaderClasses = ['card-header', 'grey', 'lighten-4'];
-
-  // Helper variables - see also helper functions at bottom
-  const formatter = new Intl.NumberFormat('en-US', {
-    style: 'decimal',
-    minimumFractionDigits: 0,
-  });
+  const templateHitsEmpty = `{% include search/algolia-template-hits-empty.html %}`;
+  const templateStats = `{% include search/algolia-template-stats.html %}`;
 
   // Construct widgets
   search.addWidget(
     instantsearch.widgets.searchBox({
-      container: '#ais-widget-search-box',
-      placeholder: 'Foundation name...',
-      showSubmit: true,
-      showReset: true,
-      showLoadingIndicator: false,
-      queryHook: function(query, searchNew) {
+      'container': '#ais-widget-search-box',
+      'placeholder': 'Foundation name...',
+      'autofocus': true,
+      'showSubmit': true,
+      'showReset': true,
+      'showLoadingIndicator': false,
+      'queryHook': function(query, searchNew) {
         readyToSearchScrollPosition();
         searchNew(query);
+        initTooltips();
       },
     })
   );
 
   search.addWidget(
     instantsearch.widgets.poweredBy({
-      container: '#powered-by',
+      'container': '#powered-by',
     })
   );
 
   search.addWidget(
     instantsearch.widgets.hits({
-      container: '#ais-widget-hits',
-      templates: {
-        item: templateHits,
+      'container': '#ais-widget-hits',
+      'templates': {
+        'item': templateHits,
+        'empty': templateHitsEmpty,
       },
-      cssClasses: {
-        list: 'row',
-        item: ['col', 's12'],
+      'cssClasses': {
+        'list': 'row',
+        'item': ['col', 's12'],
       },
       transformItems(items) {
         return items.map(item => ({
-          // n.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
           ...item,
-          ein: item.ein.replace(/(\d{2})(\d{7})/, '$1-$2'),
-          grant_median: `$${item.grant_median.toLocaleString()}`,
-          assets: `$${numberHuman(item.assets, 0)}`,
+          'ein_formatted': item.ein.replace(/(\d{2})(\d{7})/, '$1-$2'),
+          'grant_median': `$${item.grant_median.toLocaleString()}`,
+          'assets': `$${numberHuman(item.assets, 0)}`,
         }));
       },
     })
@@ -115,99 +103,153 @@ ready(function() {
 
   search.addWidget(
     instantsearch.widgets.stats({
-      container: '#ais-widget-stats',
-      templates: {
-        text: templateStats,
+      'container': '#ais-widget-stats',
+      'templates': {
+        'text': templateStats,
       },
-      cssClasses: {
-        text: 'text-muted',
+      'cssClasses': {
+        'text': 'text-muted',
       },
     })
   );
 
   search.addWidget(
-    instantsearch.widgets.refinementList({
-      container: '#ais-widget-refinement-list--city',
-      attribute: 'city',
-      limit: 8,
-      showMore: true,
+    instantsearch.widgets.currentRefinements({
+      'container': '#ais-widget-current-refined-values',
+      'includedAttributes': ['city', 'state'],
+      'cssClasses': {
+        'list': 'list-inline',
+        'item': ['btn', 'blue-grey'],
+        'label': ['small'],
+        'categoryLabel': 'text-bold',
+        'delete': 'blue-grey-text',
+      },
+    })
+  );
+
+  /* Create refinements */
+  const refinements = [
+    'city',
+    'state',
+  ];
+
+  refinements.forEach((refinement) => {
+    /* Create desktop refinements */
+    search.addWidget(
+      instantsearch.widgets.refinementList({
+        'container': `#ais-widget-refinement-list--${refinement}`,
+        'attribute': refinement,
+        'limit': 8,
+        'showMore': false,
+        'cssClasses': {
+          'checkbox': 'filled-in',
+          'count': ['right', 'small'],
+          'selectedItem': ['grantmakers-text'],
+        },
+      })
+    );
+
+    /* Create mobile refinements */
+    search.addWidget(
+      instantsearch.widgets.refinementList({
+        'container': `#ais-widget-mobile-refinement-list--${refinement}`,
+        'attribute': refinement,
+        'limit': 8,
+        'showMore': false,
+        'cssClasses': {
+          'checkbox': 'filled-in',
+          'count': ['right', 'small'],
+          'selectedItem': ['grantmakers-text'],
+        },
+      })
+    );
+  });
+
+  search.addWidget(
+    instantsearch.widgets.clearRefinements({
+      'container': '#ais-widget-clear-all',
+      'cssClasses': {
+        'button': ['btn'],
+      },
+      'templates': {
+        'resetLabel': 'Clear filters',
+      },
     })
   );
 
   search.addWidget(
-    instantsearch.widgets.refinementList({
-      container: '#ais-widget-refinement-list--state',
-      attribute: 'state',
-      limit: 8,
-      showMore: true,
+    instantsearch.widgets.pagination({
+      'container': '#ais-widget-pagination',
+      'maxPages': 20,
+      'scrollTo': '.nav-search',
+      'cssClasses': {
+        'root': 'pagination',
+        'page': 'waves-effect',
+        'selectedItem': 'active grantmakers',
+        'disabledItem': 'disabled',
+      },
     })
   );
 
-
-
-  // Initialize Materialize JS components
+  // Initialize Materialize JS components created by Instantsearch widgets
   search.once('render', function() {
     // Search toggle
-    const elem = document.querySelectorAll('select');
-    const options = {
-      classes: 'btn blue-grey white-text',
-    };
-    M.FormSelect.init(elem, options)
+    initSelect();
+  });
 
+  search.on('render', function() {
+    // Tooltips
+    initTooltips();
+  });
 
-    // Sort by
-    const elems = document.querySelectorAll('select');
-    //M.FormSelect.init(elems);
+  search.on('error', function() {
+    // TODO Add messaging for 403 origin not allowed
   });
 
   // Initialize search
   search.start();
 
+  // Materialize init helpers
+  function initTooltips() {
+    const elems = document.querySelectorAll('.tooltipped');
+    const options = {
+      'position': 'top',
+      'exitDelay': 0, // Default is 0
+      'enterDelay': 100, // Default is 200
+      'inDuration': 300, // Default is 300
+      'outDuration': 250, // Default is 250
+    };
+    M.Tooltip.init(elems, options);
+  }
+
+  function initSelect() {
+    const elem = document.querySelectorAll('select');
+    const options = {
+      'classes': 'btn blue-grey white-text',
+    };
+    M.FormSelect.init(elem, options);
+  }
+
   // Scroll to top of results upon input change
   function readyToSearchScrollPosition() {
     window.scrollTo({
-      top: scrollAnchor.offsetTop,
-      left: 0,
-      behavior: 'auto',
+      'top': scrollAnchor.offsetTop,
+      'left': 0,
+      'behavior': 'auto',
     });
   }
 
   // Helper functions
-  function numberHuman(num, fixed) {
+  function numberHuman(num, decimals) {
     if (num === null) { return null; } // terminate early
     if (num === 0) { return '0'; } // terminate early
-    fixed = (!fixed || fixed < 0) ? 0 : fixed; // number of decimal places to show
-    var b = (num).toPrecision(2).split("e"), // get power
-        k = b.length === 1 ? 0 : Math.floor(Math.min(b[1].slice(1), 14) / 3), // floor at decimals, ceiling at trillions
-        c = k < 1 ? num.toFixed(0 + fixed) : (num / Math.pow(10, k * 3) ).toFixed(1 + fixed), // divide by power
-        d = c < 0 ? c : Math.abs(c), // enforce -0 is 0
-        e = d + ['', 'K', 'M', 'B', 'T'][k]; // append power
+    if (isNaN(num)) { return num; } // terminate early if already a string - handles edge case likely caused by cacheing
+    const fixed = !decimals || decimals < 0 ? 0 : decimals; // number of decimal places to show
+    const b = num.toPrecision(2).split('e'); // get power
+    const k = b.length === 1 ? 0 : Math.floor(Math.min(b[1].slice(1), 14) / 3); // floor at decimals, ceiling at trillions
+    const c = k < 1 ? num.toFixed(0 + fixed) : (num / Math.pow(10, k * 3) ).toFixed(1 + fixed); // divide by power
+    const d = c < 0 ? c : Math.abs(c); // enforce -0 is 0
+    const e = d + ['', 'K', 'M', 'B', 'T'][k]; // append power
     return e;
-  }
-
-  /* Legacy functions below :: May not be using */
-  function slugify(text) {
-    return text.toLowerCase().replace(/-+/g, '').replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
-  }
-
-  function randomId() {
-    return Math.random()
-      .toString(36)
-      .substr(2, 10);
-  }
-
-  function formatRefinements(item) {
-    // Format numbers
-    let n = item.count;
-    let formattedNumber = formatter.format(n);
-    item.count = formattedNumber;
-    // Ensure css IDs are properly formatted and unique
-    if (item.label) {
-      item.cssId = 'id-' + slugify(item.label);
-    } else {
-      // Fallback
-      item.cssId = 'id-' + randomId();
-    }
-    return item;
   }
 });

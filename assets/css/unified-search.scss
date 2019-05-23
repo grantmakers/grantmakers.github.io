@@ -12,6 +12,9 @@ $link-color: $secondary-color !default;
 // Import Materialize
 @import 'materialize';
 
+// TODO Allow to pull color variables
+// e.g. currently cannot use $blue-grey
+
 /****************************
 Grid Sizes
 *****************************/
@@ -35,20 +38,12 @@ $medium-only: "only screen and (min-width : #{$small-screen-up}) and (max-width 
 Custom colors
 *****************************/
 
-$grantmakers: #c54e00;
+$grantmakers: #c54e00; // Consider using default Material Design color: deep-orange darken-3 #d84315
 $grantmakers-medium: #F56A10;
 $grantmakers-light: #FB8F48;
 $grantmakers-lightest: lighten($grantmakers-light, 30%);
 $grantmakers-dark: #A13F00;
 $grantmakers-darker: #772F00;
-
-$grey-base:              #000 !default;
-$grey-darker:            lighten($grey-base, 13.5%) !default; // #222
-$grey-dark:              lighten($grey-base, 20%) !default;   // #333
-$grey:                   lighten($grey-base, 33.5%) !default; // #555
-$grey-light:             #999999 !default; // #999999
-$grey-lighter:           lighten($grey-base, 93.5%) !default; // #eee
-$grey-lightest: 				 #f5f5f5;
 
 .grantmakers-color-bg, .btn-grantmakers, .grantmakers {
 	background-color: $grantmakers !important;
@@ -70,11 +65,20 @@ a:not(.btn):not(.btn:hover) {
 	color: inherit !important;
 }
 
+$blue-grey: #607d8b !important;
+
+/****************************
+Main body color
+*****************************/
+body.unified-search {
+  @extend .grey, .lighten-2;
+}
+
 /****************************
 Helpers
 *****************************/
 /* Sitewide helpers */
-$accent-color: #ee6e73;
+$accent-color: $grantmakers;
 // $text-muted: #757575;
 // $text-muted-max: #9e9e9e;
 $text-muted: #424242;
@@ -82,6 +86,9 @@ $text-muted-max: #757575;
 $text-color: rgba(0,0,0,0.87);
 .btn, .accent {
   background-color: $accent-color;
+}
+.text-default {
+  color: $text-color;
 }
 .text-muted {
   color: $text-muted !important;
@@ -92,11 +99,14 @@ $text-color: rgba(0,0,0,0.87);
 .text-bold {
   font-weight: 700;
 }
+.text-light {
+  font-weight: 300;
+}
 .accent-text {
   color: $accent-color;
 }
 .small {
-  font-size: 85%;
+  font-size: 85% !important;
 }
 .hidden {
   display: none;
@@ -125,7 +135,7 @@ $text-color: rgba(0,0,0,0.87);
 /* Inline lists */
 .list-inline {
   padding-left: 0;
-  margin-left: -5px;
+  // margin-left: -5px;
   list-style: none;
 }
 .list-inline > li {
@@ -154,10 +164,10 @@ $text-color: rgba(0,0,0,0.87);
 Layout
 *****************************/
 header {
-  z-index: 2;
+  z-index: 996;
 }
 main {
-  z-index: 1;
+  z-index: 995;
   position: relative;
   top: -64px;
 }
@@ -204,7 +214,7 @@ Algolia theme overrides
 Mimic Algolia them - only the good parts
 *****************************/
 // Use these if NOT using algolia-theme
-.ais-ClearRefinements-button, .ais-CurrentRefinements-delete, .ais-CurrentRefinements-reset, .ais-GeoSearch-redo, .ais-GeoSearch-reset, .ais-HierarchicalMenu-showMore, .ais-InfiniteHits-loadMore, .ais-InfiniteResults-loadMore, .ais-Menu-showMore, .ais-RangeInput-submit, .ais-RefinementList-showMore, .ais-SearchBox-reset, .ais-SearchBox-submit {
+.ais-CurrentRefinements-delete, .ais-CurrentRefinements-reset, .ais-GeoSearch-redo, .ais-GeoSearch-reset, .ais-HierarchicalMenu-showMore, .ais-InfiniteHits-loadMore, .ais-InfiniteResults-loadMore, .ais-Menu-showMore, .ais-RangeInput-submit, .ais-RefinementList-showMore, .ais-SearchBox-reset, .ais-SearchBox-submit {
   padding: 0;
   overflow: visible;
   font: inherit;
@@ -254,7 +264,7 @@ Mimic Algolia them - only the good parts
   transform: translateX(-50%) translateY(-50%);
 }
 .ais-Highlight-highlighted, .ais-Snippet-highlighted {
-  background-color: lighten($accent-color, 27%); // Target color: #feebde
+  background-color: lighten($accent-color, 50%); // Target color: #feebde
   font-size: inherit !important;
   color: inherit !important;
 }
@@ -295,6 +305,12 @@ nav .logo-container {
 .brand-logo {
   display: inline-block;
   height: 100%;
+}
+@media only screen and (max-width: 992px) {
+  nav .brand-logo {
+    left: inherit;
+    transform: inherit;
+  }
 }
 nav.nav-center ul.ul-center {
   text-align: center;
@@ -358,6 +374,10 @@ $parallax-height: 75vh;
 #search-toggle {
   height: 64px;
   select {
+    @extend .grantmakers;
+    &.grants-search {
+      @extend .blue-grey;
+    }
     outline: none;
   }
   // Can remove select-wrapper if using browser-default class
@@ -424,6 +444,11 @@ $parallax-height: 75vh;
   }
 }
 
+.search-tips {
+  transform: rotate(180deg);
+  vertical-align: sub;
+}
+
 @media screen and (min-width: 993px) {
   .ais-SearchBox {
     min-width: 400px;
@@ -452,14 +477,61 @@ $parallax-height: 75vh;
     padding-top: 3rem;
     min-height: 470px;
   }
+  .divider {
+    margin-bottom: 0.5rem; // improve spacing - doubles 0.5rem card default
+  }
+}
+
+/* Current Refinements */
+#ais-widget-current-refined-values {
+  ul li {
+    margin-right: 0.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    padding: 0px 10px;
+  }
+  .ais-CurrentRefinements-category {
+    padding-left: 5px;
+  }
+  button {
+    padding-left: 5px;
+    line-height: 100%;
+    &:before {
+      font-family: "Material Icons";
+      content: "remove_circle";
+      color: white;
+      vertical-align: top;
+    } 
+    &:focus {
+      background-color: inherit;
+      color: inherit;
+    }
+  }
 }
 
 /* Hits */
+.ais-Hits-list li:first-child .card {
+  // margin-top: 0px; // TODO This is hacky
+}
 .hit-summary-icons i.material-icons {
-  color: $grey-lighter; // TODO use Materialize @extend
+  @extend .grey-text, .text-lighten-3;
+  &:hover {
+    cursor: default;
+  }
 }
 .hit-summary-icons i.material-icons-active {
-  color: $grantmakers;
+  @extend .grantmakers-text;
+}
+.hit-summary-icons i.website {
+  &:hover {
+    cursor: pointer;
+  }
+}
+a.hit-name {
+  color: $text-color;
+  &:hover{ 
+    @extend .grantmakers-text;
+  }
 }
 .hit-summary-financials {
   margin-top: 20px; // Match row bottom margin spacing
@@ -471,12 +543,65 @@ $parallax-height: 75vh;
   }
 }
 
+/* Empty Hits */
+.hits-empty {
+  .card-header {
+    padding: 16px 24px; // Match card-content spacing
+    border-radius: 2px 2px 0px 0px;
+  }
+  .card-actions {
+    li.small  {
+      margin-left: 1rem;
+    }
+    li.reset-margin {
+      margin-left: 0;
+    }
+  }
+  strong span {
+    background-color: lighten($accent-color, 50%); // Target color: #feebde
+  }
+}
+
+/* Refinements */
+.section-refinements {
+  .card-header {
+    padding: 10px;
+    border-radius: 2px 2px 0px 0px;
+    text-transform: uppercase;
+  }
+  .card-content {
+    padding: 24px;
+    border-radius: 0 0 2px 2px;
+  }
+  label {
+    color: $text-color;
+  }
+  .ais-RefinementList-count {
+    height: 25px;
+    line-height: 25px;
+  }
+  .ais-RefinementList-item--selected {
+    label span {
+      color: $grantmakers;
+    }
+  }
+}
 
 /* Clear all */
 .btn-custom {
   &:hover {
     background-color: lighten($accent-color, 5%)
   }
+}
+
+/* Pagination */
+.pagination {
+  .disabled {
+    visibility: hidden;
+  }
+}
+.ais-Pagination-list {
+  display: inherit;
 }
 
 // http://maxdesign.com.au/articles/simple-responsive-table/
@@ -497,4 +622,46 @@ $parallax-height: 75vh;
 	border-radius: 8px;
 	border: 3px solid #fff;
 	background-color: rgba(0, 0, 0, .3);
+}
+
+/* Footer */
+footer ul li {
+	display: inline-block;
+}
+
+footer ul li a {
+	color: inherit !important;
+	padding: 15px;
+	font-weight: 500;
+	font-size: 12px;
+	text-transform: uppercase;
+	border-radius: 3px;
+	text-decoration: none;
+	position: relative;
+	display: block;
+}
+
+footer .copyright {
+	margin: 15px 0;
+	padding: 15px 0;
+  font-size: 14px;
+  font-weight: 300;
+	.material-icons {
+    font-size: 14px;
+    vertical-align: middle;
+	}
+}
+
+.footer-terms {
+  @extend .grey, .darken-2;
+  @extend .grey-text, .text-lighten-1;
+	.row {
+		margin: 0;
+	}
+	ul {
+		margin: 5px 0;
+	}
+	a {
+    @extend .grey-text, .text-lighten-1;
+	}
 }

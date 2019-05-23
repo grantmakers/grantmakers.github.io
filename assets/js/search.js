@@ -1,3 +1,4 @@
+/* eslint-disable */
 $(document).ready(function() {
   'use strict';
 
