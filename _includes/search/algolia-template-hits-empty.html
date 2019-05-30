@@ -1,37 +1,12 @@
-{% raw %}
-  <div class="hits-empty">
-    <div class="card">
-      <div class="card-content">
-        <p>We didn't find any foundations named <strong>"<span>{{query}}</span>"</strong></p>
-      </div>
-    </div>
-    <div class="card-actions">
-      <div class="card">
-        <div class="card-header grey lighten-4">
-          <span class="card-title">How to search like a pro using Grantmakers.io</span>
-        </div>
-        <div class="card-content">
-            
-            <ul>
-              <li class="text-bold grantmakers-text">Profiles Search</li>
-              <li class="small reset-margin"><em>Perfect for researching a specific foundation</em></li>
-              <li class="small">Name</li>
-              <li class="small">EIN</li>
-            </ul>
-            <ul>
-                <li class="text-bold blue-grey-text">Grants Search</li>
-                <li class="small reset-margin"><em>Use the public IRS dataset to prospect, for free!</em></li>
-                <li class="small">Keyword</li>
-                <li class="small">Location</li>
-                <li class="small">Past Grantees</li>
-                <li class="small">Grant Amount</li>
-              </ul>
-            <!-- <p class="text-light">Use our <a href="{{ site.url }}/grants-search/" class="blue-grey-text text-bold">Grants Search</a> tool for basic prospecting.</p> -->
-        </div>
-        <div class="card-action">
-          <small>DATA SOURCE: Public electronic IRS 990 dataset</small>
-        </div>
-      </div>
+<div class="hits-empty">
+  <div class="card yellow lighten-4">
+    <div class="card-content">
+      {% raw %}
+      <p>We didn't find any foundations named <strong>"<span>{{query}}</span>"</strong></p>
+      {% endraw %}
     </div>
   </div>
-{% endraw %}
+  <div class="card-actions">
+    {% include search/search-tips.html %}
+  </div>
+</div>

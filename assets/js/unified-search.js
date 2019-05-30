@@ -22,6 +22,9 @@ ready(function() {
   const elemsSN = document.querySelectorAll('.sidenav');
   M.Sidenav.init(elemsSN);
 
+  const elemsMO = document.querySelectorAll('.modal');
+  M.Modal.init(elemsMO);
+
   if (!isMobile.matches) { // Use pushpin on desktop only
     const elemPP = document.querySelector('.nav-search nav');
     const optionsPP = {
@@ -66,8 +69,9 @@ ready(function() {
       'showReset': true,
       'showLoadingIndicator': false,
       'queryHook': function(query, searchNew) {
+        const queryCleaned = checkForEIN(query);
         readyToSearchScrollPosition();
-        searchNew(query);
+        searchNew(queryCleaned);
         initTooltips();
       },
     })
@@ -128,15 +132,48 @@ ready(function() {
   );
 
   /* Create refinements */
-  const refinements = [
-    'city',
-    'state',
-  ];
+  facets.forEach((refinement) => {
+    const refinementListWithPanel = instantsearch.widgets.panel({
+      'templates': {
+        'header': refinement,
+      },
+      hidden(options) {
+        return options.results.nbHits === 0;
+      },
+      'cssClasses': {
+        'root': 'card',
+        'header': [
+          'card-header',
+          'grey',
+          'lighten-4',
+        ],
+        'body': 'card-content',
+      },
+    })(instantsearch.widgets.refinementList);
 
-  refinements.forEach((refinement) => {
+    // TODO DRY it up
+    const mobileRefinementListWithPanel = instantsearch.widgets.panel({
+      'templates': {
+        'header': refinement,
+      },
+      hidden(options) {
+        return options.results.nbHits === 0;
+      },
+      'cssClasses': {
+        'root': 'card',
+        'header': [
+          'card-header',
+          'blue-grey',
+          'lighten-4',
+        ],
+        'body': 'card-content',
+      },
+    })(instantsearch.widgets.refinementList);
+    
     /* Create desktop refinements */
     search.addWidget(
-      instantsearch.widgets.refinementList({
+      // instantsearch.widgets.refinementList({
+      refinementListWithPanel({
         'container': `#ais-widget-refinement-list--${refinement}`,
         'attribute': refinement,
         'limit': 8,
@@ -151,7 +188,7 @@ ready(function() {
 
     /* Create mobile refinements */
     search.addWidget(
-      instantsearch.widgets.refinementList({
+      mobileRefinementListWithPanel({
         'container': `#ais-widget-mobile-refinement-list--${refinement}`,
         'attribute': refinement,
         'limit': 8,
@@ -164,6 +201,7 @@ ready(function() {
       })
     );
   });
+  
 
   search.addWidget(
     instantsearch.widgets.clearRefinements({
@@ -230,6 +268,24 @@ ready(function() {
     M.FormSelect.init(elem, options);
   }
 
+  // QUERY HOOKS
+  // ==============
+  // Handle EINs entered in searchbox with a hyphen
+  function checkForEIN(query) {
+    // Base Regex: /^[0-9]{2}\-\d{7}$/g;
+    // Assume query is an EIN as soon as 2 digits entered after hyphen
+    const regexEIN = /^[0-9]{2}\-\d{2}/g;
+    const isEIN = regexEIN.test(query);
+    if (query.includes('-') && isEIN) {
+      // TODO Will remove hyphen if query ALSO includes prohibit string (e.g. -foo 12-3456789)
+      // TODO Add toast - will assist with any confusion caused by routing:true setting...
+      // ...which autoupdates the url withOUT the hyphen
+      return query.replace('-', '');
+    } else {
+      return query;
+    }
+  }
+
   // Scroll to top of results upon input change
   function readyToSearchScrollPosition() {
     window.scrollTo({
@@ -238,8 +294,8 @@ ready(function() {
       'behavior': 'auto',
     });
   }
-
-  // Helper functions
+  // MISC HELPER FUNCTIONS
+  // ==============
   function numberHuman(num, decimals) {
     if (num === null) { return null; } // terminate early
     if (num === 0) { return '0'; } // terminate early
