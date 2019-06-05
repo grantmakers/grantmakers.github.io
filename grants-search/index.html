@@ -1,5 +1,4 @@
 ---
-permalink: /search/
 ---
 <!doctype html>
 <html lang="en">
@@ -34,7 +33,7 @@ permalink: /search/
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/algoliasearch@3.32.1/dist/algoliasearchLite.js" integrity="sha256-pMaJf0I78weeXGkRMBDO6jSulxC/q3sb0aPdtV2N8n0=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@3.2.0" integrity="sha256-/8usMtTwZ01jujD7KAZctG0UMk2S2NDNirGFVBbBZCM=" crossorigin="anonymous"></script>
-    <script src="{{ site.baseurl }}/assets/js/unified-search.js?v={{ site.time | date: '%Y%m%d'}}"></script>
+    <script src="{{ site.baseurl }}/assets/js/grants-search.js?v={{ site.time | date: '%Y%m%d'}}"></script>
   </head>
   <body class="unified-search">
 
@@ -87,8 +86,9 @@ permalink: /search/
         </div>
         <div class="intro valign-wrapper">
           <div class="intro-text center-align white-text">
-            <h1 class="text-bold">Grantmaker Search</h1>
-            <h5>Profiles of {{ site.number_of_foundations | divided_by: 1000 }},{{ site.number_of_foundations | slice: 2,5 }} U.S. foundations</h5>
+            <h1 class="text-bold">Grants Search</h1>
+            <h5>Discover who foundations are funding</h5>
+            <p>Search through all {{ site.number_of_grants | divided_by: 1000000 }}.{{ site.number_of_grants | modulo: 1000000 | divided_by: 100000 }} million grants contained in the public IRS 990-PF dataset</p>
           </div>
         </div>
         <canvas></canvas>
@@ -99,12 +99,12 @@ permalink: /search/
             <div class="row">
               <div class="col s2">
                 <div id="search-toggle" class="input-field valign-wrapper">
-                  <select class="browser-default grantmakers white-text">
+                  <select class="browser-default grants-search white-text">
                     <optgroup class="disabled" label="Research a foundation">
                       <option value="profiles">Profile Search</option>
                     </optgroup>
                     <optgroup class="disabled" label="Find new funders">
-                      <option value="grants">Grants Search</option>
+                      <option value="grants" selected>Grants Search</option>
                     </optgroup>
                   </select>
                 </div>
@@ -121,10 +121,20 @@ permalink: /search/
       </div>
       <div class="section section-raised z-depth-4 grey lighten-3">
         <div class="row">
-          <div class="col s12 l3">
+          <div class="col s12 l4"> 
             <!-- Filters / Refinements header -->
             <div class="text-muted hide-on-med-and-down">
-              Filters
+              Filters 
+              <!--
+              <div class="switch switch-refinements right">
+                <label>
+                  Advanced
+                  <input type="checkbox">
+                  <span class="lever"></span>
+                </label>
+              </div>
+              -->
+              <!-- <span class="right text-muted-max">some shiz</span> -->
             </div>
             <div class="hide-on-large-only center-align">
               <ul class="actions">
@@ -141,6 +151,13 @@ permalink: /search/
             <div class="section-refinements hide-on-med-and-down">
               <div> <!-- Add row class to remove added white space / padding -->
                 <div class="col s12">
+                  <div id="ais-widget-range-input"></div>
+                  <div id="range-input-helpers">
+                    <ul class="list-inline">
+                      <li id="range-input-helper-min"></li>
+                      <li id="range-input-helper-max"></li>
+                    </ul>
+                  </div>
                   <div id="ais-widget-refinement-list--city"></div>
                   <div id="ais-widget-refinement-list--state"></div>
                   <div id="ais-widget-refinement-list--grantee_name"></div>
@@ -156,7 +173,7 @@ permalink: /search/
               </div>
             </div>
           </div>
-          <div class="col s12 l9">
+          <div class="col s12 l8">
             <div class="row row-tight">
               <div class="col s7 m9 l10">
                   <div id="ais-widget-stats"></div>

@@ -1,0 +1,79 @@
+{% raw %}
+<div class="row row-grant-names">
+  <div class="col m6">
+    <span class="text-bold">{{#helpers.highlight}}{ "attribute": "grantee_name" }{{/helpers.highlight}}</span> <!--<span class="text-muted small">({{ tax_year }})</span>-->
+  </div>
+  <div class="col m5">
+    <a class="truncate tooltipped text-light" href="https://www.grantmakers.io/profiles/{{ ein }}" data-tooltip="View all recent grants" data-placement="top">{{ organization_name }}</a>
+  </div>
+  <div class="col m1">
+    <div class="actions-wrapper">
+      <!-- original location of info -->
+      <a class="text-center modal-trigger small" href="#modal-grant-detail-{{ objectID }}">
+          <i class="material-icons blue-grey-text right">info</i>
+          <!-- details... -->
+        </a>
+    </div>
+  </div>
+</div>
+<div class="row"> 
+  <div class="col m6">
+    <div class="small text-light">
+      <p>{{#grantee_city}}
+          {{#helpers.highlight}}{ "attribute": "grantee_city" }{{/helpers.highlight}}, {{ grantee_state }}
+      {{/grantee_city}}</p>
+    </div>
+  </div> 
+  <div class="col m5">
+    <div class="small text-light">
+      <p>{{ grant_amount }}</p>
+    </div>
+  </div>              
+</div>
+<div class="row">
+  <div class="col m11">
+    <div class="grant-purpose text-muted-max">
+      <small>{{#helpers.highlight}}{ "attribute": "grant_purpose" }{{/helpers.highlight}} ({{ tax_year }})</small>
+    </div>
+  </div>
+</div>
+
+<div id="modal-grant-detail-{{ objectID }}" class="modal modal-algolia-hit">
+  <div class="modal-content">
+    <div class="modal-close right"><i class="material-icons">close</i></div>
+    <h5>Grant Detail</h5>
+  
+    <div class="row">
+      <div class="col m9">
+        <div class="modal-algolia-hit-label">Name</div>
+        <p class="text-thin"><strong>{{ grantee_name }}</strong><br>{{ grantee_city }}{{#grantee_state}}, {{ grantee_state }}{{/grantee_state}}</p>
+        <div class="modal-algolia-hit-label">Donor</div>
+        <p><a href="https://www.grantmakers.io/profiles/{{ ein }}">{{ organization_name }}</a></p>
+      </div>
+      <div class="col m3">
+        <div class="modal-algolia-hit-label">Amount</div>
+        <p>{{ grant_amount }}</p>
+        <div class="modal-algolia-hit-label">Tax Year</div>
+        <p>{{ tax_year }}</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col m12">
+        <div class="modal-algolia-hit-label">
+          Grant Purpose
+        </div>
+        <p>{{ grant_purpose }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="divider divider-no-margin"></div>
+    <a class="btn-flat" href="https://www.grantmakers.io/profiles/{{ ein }}/">Donor Profile</a>
+    {{#website}}
+    <!-- The current algolia index for grants does not yet contain website info -->
+    <!-- Thus, this will currently never show a second button -->
+    <a class="btn-flat" href="{{ website }}">Donor Website</a>
+    {{/website}}
+  </div>
+</div>
+{% endraw %}

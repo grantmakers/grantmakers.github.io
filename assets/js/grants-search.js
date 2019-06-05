@@ -33,78 +33,37 @@ ready(function() {
     M.Pushpin.init(elemPP, optionsPP);
   }
 
-  // Define Algolia params
-  let searchClient;
-  let facets;
-
-  const profilesSearch = algoliasearch('KDWVSZVS1I', 'ce4d584b0de36ca3f8b4727fdb83c658');
-  const grantsSearch = algoliasearch('QA1231C5W9', 'cd47ecb3457441878399b20acc8c3fbc');
-
-  const profilesSearchFacets = [
-    'city',
-    'state',
-  ];
-  const grantsSearchFacets = [
-    'grantee_name',
-    'organization_name',
-    'grantee_city',
-    'grantee_state',
+  const searchClient = algoliasearch('QA1231C5W9', 'cd47ecb3457441878399b20acc8c3fbc');
+  const facets = [
+    {
+      'facet': 'grantee_name',
+      'display_name': 'Recipient',
+    },
+    {
+      'facet': 'organization_name',
+      'display_name': 'Donor',
+    },
+    {
+      'facet': 'grantee_city',
+      'display_name': 'City',
+    },
+    {
+      'facet': 'grantee_state',
+      'display_name': 'State',
+    },
   ];
 
   // Define toggle helpers
   const toggleParent = document.getElementById('search-toggle');
   const toggle = toggleParent.querySelector('select');
 
-  // Set search type
-  const urlParams = new URLSearchParams(window.location.search);
-  let searchType = urlParams.get('type') || 'profiles';
-  setInitialSearchType(searchType);
-
-  function setInitialSearchType(type) {
-    if (!type) {
-      // TODO Set profiles as initial search type
-    }
-    if (type === 'profiles') {
-      searchClient = profilesSearch;
-      facets = profilesSearchFacets;
-    } else {
-      searchClient = grantsSearch;
-      facets = grantsSearchFacets;
-      toggle.classList.add('grants-search');
-      toggle.value = 'grants';
-      // TODO Ease the color change - causes a noticeable 'flash'
-    }
-  }
-  
-  function setInstantsearchParams() {
-
-  }
-  // TODO Set instantsearch params
-  // NOTE To dynamically change search parameters, need either
-  // 1. Custom widget, or
-  // 2. A page refresh
-  
-  // TODO Set initial button color if grants...e.g. initialIsNotProfiles
+  // Ensure initial toggle state set to grants search
+  toggle.value = 'grants';
 
   // Toggle search type
   toggle.onchange = function() {
-    // Toggle button color
-    // TODO Set via searchType
-    toggle.classList.toggle('grants-search'); // Won't work if url query string starts at grants
-
-    // searchType = !searchType; // Requires using a boolean
-
-    // Toggle search type
-    searchType = searchType === 'profiles' ? 'grants' : 'profiles';
-    
-    // window.location.search = urlParams.toString(); // Refreshes page
-
-    // Update query string
-    urlParams.set('type', searchType);
-    if (history.pushState) {
-      const newUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}?${urlParams}`;
-      window.history.pushState({'path': newUrl}, '', newUrl);
-    }
+    console.log('switch');
+    window.location.href = '/profiles-search/';
   };
 
   const search = instantsearch({
@@ -112,17 +71,19 @@ ready(function() {
     searchClient,
     'numberLocale': 'en-US',
     'searchParameters': {
-      'hitsPerPage': 8,
+      'hitsPerPage': 12,
     },
+    'routing': true,
+    /*
     'routing': {
       'stateMapping': {
         stateToRoute({query, refinementList, page}) {
           // TODO Add all relevent refinements from array
-          
           return {
-            'type': searchType,
+            // 'type': searchType,
             'query': query,
             // we use the character ~ as it is one that is rarely present in data and renders well in URLs
+
             'grantee_name':
               refinementList &&
               refinementList.grantee_name &&
@@ -142,9 +103,9 @@ ready(function() {
             'page': page,
           };
         },
-        routeToState({type, query, grantees, orgs, cities, states, page}) {
+        routeToState({query, grantees, orgs, cities, states, page}) {
           return {
-            'type': type,
+            // 'type': type,
             'query': query,
             'refinementList': {
               'grantee_name': grantees && grantees.split('~'),
@@ -157,6 +118,7 @@ ready(function() {
         },
       },
     },
+    */
   });
 
   // Define templates
@@ -173,7 +135,7 @@ ready(function() {
   search.addWidget(
     instantsearch.widgets.searchBox({
       'container': '#ais-widget-search-box',
-      'placeholder': 'Foundation name...',
+      'placeholder': 'Search by keywords, location, or grantee name',
       'autofocus': true,
       'showSubmit': true,
       'showReset': true,
@@ -234,9 +196,7 @@ ready(function() {
       transformItems(items) {
         return items.map(item => ({
           ...item,
-          // 'ein_formatted': item.ein.replace(/(\d{2})(\d{7})/, '$1-$2'),
           'grant_amount': `$${item.grant_amount.toLocaleString()}`,
-          // 'assets': `$${numberHuman(item.assets, 0)}`,
         }));
       },
     })
@@ -268,11 +228,41 @@ ready(function() {
     })
   );
 
-  /* Create refinements */
+  /* Create grant amount refinement */
+  const rangeInputWithPanel = instantsearch.widgets.panel({
+    'templates': {
+      'header': 'Grant Size',
+    },
+    hidden(options) {
+      return options.results.nbHits === 0;
+    },
+    'cssClasses': {
+      'root': 'card',
+      'header': [
+        'card-header',
+        // 'grey',
+        // 'lighten-4',
+      ],
+      'body': 'card-content',
+    },
+  })(instantsearch.widgets.rangeInput);
+
+  search.addWidget(
+    rangeInputWithPanel({
+      'container': '#ais-widget-range-input',
+      'attribute': 'grant_amount',
+      'min': 0,
+      'cssClasses': {
+        'input': 'input-algolia',
+      },
+    })
+  );
+
+  /* Create all other refinements */
   facets.forEach((refinement) => {
     const refinementListWithPanel = instantsearch.widgets.panel({
       'templates': {
-        'header': refinement,
+        'header': refinement.display_name,
       },
       hidden(options) {
         return options.results.nbHits === 0;
@@ -281,8 +271,8 @@ ready(function() {
         'root': 'card',
         'header': [
           'card-header',
-          'grey',
-          'lighten-4',
+          // 'grey',
+          // 'lighten-4',
         ],
         'body': 'card-content',
       },
@@ -291,7 +281,7 @@ ready(function() {
     // TODO DRY it up
     const mobileRefinementListWithPanel = instantsearch.widgets.panel({
       'templates': {
-        'header': refinement,
+        'header': refinement.display_name,
       },
       hidden(options) {
         return options.results.nbHits === 0;
@@ -309,16 +299,19 @@ ready(function() {
     
     /* Create desktop refinements */
     search.addWidget(
-      // instantsearch.widgets.refinementList({
       refinementListWithPanel({
-        'container': `#ais-widget-refinement-list--${refinement}`,
-        'attribute': refinement,
+        'container': `#ais-widget-refinement-list--${refinement.facet}`,
+        'attribute': refinement.facet,
         'limit': 8,
         'showMore': false,
+        // 'searchable': true,
         'cssClasses': {
           'checkbox': 'filled-in',
+          'labelText': 'small',
           'count': ['right', 'small'],
           'selectedItem': ['grantmakers-text'],
+          // 'searchableRoot': 'ais-SearchBox-refinements',
+          // 'searchableSubmit': 'hidden',
         },
       })
     );
@@ -326,8 +319,8 @@ ready(function() {
     /* Create mobile refinements */
     search.addWidget(
       mobileRefinementListWithPanel({
-        'container': `#ais-widget-mobile-refinement-list--${refinement}`,
-        'attribute': refinement,
+        'container': `#ais-widget-mobile-refinement-list--${refinement.facet}`,
+        'attribute': refinement.facet,
         'limit': 8,
         'showMore': false,
         'cssClasses': {
@@ -376,6 +369,31 @@ ready(function() {
     // Tooltips
     initTooltips();
     initModals();
+    const rangeMinInput = document.getElementsByClassName('ais-RangeInput-input--min')[0];
+    const rangeMaxInput = document.getElementsByClassName('ais-RangeInput-input--max')[0];
+
+    const rangeMinTarget = document.getElementById('range-input-helper-min');
+    const rangeMaxTarget = document.getElementById('range-input-helper-max');
+  
+    rangeMinInput.addEventListener('input', function() {
+      const num = parseFloat(this.value);
+      // const num = numberHuman(this.value);
+      if (num > 999) {
+        rangeMinTarget.innerHTML = numberHuman(num);
+      } else {
+        rangeMinTarget.innerHTML = '';
+      }
+    });
+    // TODO Dry it up
+    rangeMaxInput.addEventListener('input', function() {
+      const num = parseFloat(this.value);
+      // const num = numberHuman(this.value);
+      if (num > 999) {
+        rangeMaxTarget.innerHTML = numberHuman(num);
+      } else {
+        rangeMaxTarget.innerHTML = '';
+      }
+    });
   });
 
   search.on('error', function(e) {

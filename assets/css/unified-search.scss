@@ -45,6 +45,9 @@ $grantmakers-lightest: lighten($grantmakers-light, 30%);
 $grantmakers-dark: #A13F00;
 $grantmakers-darker: #772F00;
 
+$grantmakers-secondary: #607d8b; // .grey-blue
+$grantmakers-secondary-accent: #03a9fa; // .light-blue
+
 .grantmakers-color-bg, .btn-grantmakers, .grantmakers {
 	background-color: $grantmakers !important;
 }
@@ -65,8 +68,6 @@ a:not(.btn):not(.btn:hover) {
 	color: inherit !important;
 }
 
-$blue-grey: #607d8b !important;
-
 /****************************
 Main body color
 *****************************/
@@ -79,11 +80,16 @@ Helpers
 *****************************/
 /* Sitewide helpers */
 $accent-color: $grantmakers;
+$divider-color: #e0e0e0;
+$divider-color-dark: #bdbdbd;
 // $text-muted: #757575;
 // $text-muted-max: #9e9e9e;
 $text-muted: #424242;
 $text-muted-max: #757575;
 $text-color: rgba(0,0,0,0.87);
+.link-underline:hover {
+  text-decoration: underline;
+}
 .btn, .accent {
   background-color: $accent-color;
 }
@@ -99,7 +105,7 @@ $text-color: rgba(0,0,0,0.87);
 .text-bold {
   font-weight: 700;
 }
-.text-light {
+.text-light, .text-thin {
   font-weight: 300;
 }
 .accent-text {
@@ -128,6 +134,25 @@ $text-color: rgba(0,0,0,0.87);
 	@media #{$extra-large-and-up} {
 		width: 1170px;
 	}
+}
+/* Tooltip styling - Uses material-kit for inspiration */
+/*
+.material-tooltip {
+  color: #555555;
+  font-size: 85%;
+  line-height: 1.5em;
+  background: #FFFFFF;
+  border: none;
+  box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.2);
+}
+*/
+ol.striped {
+  li:nth-of-type(even) {
+    @extend .grey, .lighten-4;
+  }
+}
+.divider-no-margin {
+  margin: 0 !important;
 }
 .row-tight {
   margin-bottom: 0;
@@ -292,6 +317,13 @@ Mimic Algolia them - only the good parts
   font-size: inherit !important;
   color: inherit !important;
 }
+.grants-search {
+  .ais-Highlight-highlighted, .ais-Snippet-highlighted {
+    background-color: #e3f4fb;
+    font-size: inherit !important;
+    color: inherit !important;
+  }
+}
 /****************************
 Page styling
 *****************************/
@@ -374,6 +406,9 @@ $parallax-height: 75vh;
       margin-bottom: 10px;
     }
     h5 {
+      font-weight: 300;
+    }
+    p {
       font-weight: 300;
     }
   }
@@ -489,6 +524,7 @@ $parallax-height: 75vh;
 
 /* Results wrapper */
 .section-raised {
+  position: relative; // For 'try it' tips positioning
   margin: 0px 15px 0px;
   border-radius: 6px;
   @media screen and (min-width: 993px) {
@@ -578,6 +614,7 @@ $parallax-height: 75vh;
 }
 
 /* Hits */
+/* Profiles */
 .hit-summary-icons i.material-icons {
   @extend .grey-text, .text-lighten-3;
   &:hover {
@@ -607,28 +644,161 @@ a.hit-name {
     font-weight: 300;
   }
 }
-
-/* Empty Hits */
-.hits-empty {
-  strong span {
-    // background-color: lighten($accent-color, 50%);
+/* Grants Search */
+.grants-search {
+  .card .card-content {
+    padding: 2rem;
+  }
+  .ais-Hits-item {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+  .ais-Hits-item a {
+    // color: $grantmakers-secondary;
+    color: $text-color;
+    &:hover {
+      // text-decoration: underline;
+      color: $grantmakers-secondary-accent;
+    }
+  }
+  .ais-Hits-item .row {
+    margin-bottom: 0;
+  }
+  li {
+    padding: 1rem;
+    padding-right: 0rem; // HACK Only works if using col m1 strategy for icon
+    border-bottom: 1px solid $divider-color;
+    &:last-child {
+      border: none;
+    } 
+  }
+  /*
+  .actions-wrapper {
+    position: relative;
+    height: 100%;
+    .modal-trigger {
+      position: absolute;
+      bottom: 0px;
+    }
+  }
+  */
+  i.material-icons {
+    font-size: 18px;
+  }
+  .row-grant-names {
+    margin-bottom: 5px;
+  }
+  .grant-purpose {
+    margin-top: 1rem;
+  }
+  .modal {
+    .modal-algolia-hit-label {
+      font-size: 85%;
+      color: $text-muted-max;
+    }
+    p {
+      margin-bottom: 1rem;
+    }
+    h5 {
+      margin-top: 0px;
+      margin-bottom: 2rem;
+    }
   }
 }
 
+/* Empty Hits */
+
 /* Refinements */
-.section-refinements {
+.switch-refinements {
+  label input[type=checkbox]:checked + .lever {
+    background-color: #84c7c1;
+  }
+  label .lever:before {
+    background-color: rgba(38,166,154,0.15);
+  }
+  label input[type=checkbox]:checked + .lever:after {
+    background-color: #26a69a;
+  }
+}
+
+/* Range Input */
+.input-algolia {
+  background-color: white !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 3px !important;
+  border-bottom: none !important;
+  height: 2rem !important;
+  width: 7rem !important;
+  margin: 0 10px !important;
+  padding-left: 0.5rem !important;
+  &:focus {
+    border-bottom: 0 !important;
+    box-shadow: none !important;
+  }
+  &.ais-RangeInput-input--min {
+    margin-left: 0px !important;
+  }
+}
+#range-input-helpers {
+  height: 1.5rem;
+  padding-left: 1rem;
+  font-size: 60%;
+  color: $text-muted-max;
+  position: relative;
+  bottom: 20px;
+  left: -5px;
+  ul, li {
+    margin: 0;
+    padding: 0;
+  }
+  #range-input-helper-max {
+    position: relative;
+    left: 110px; // TODO HACK
+  }
+}
+// HACK
+#ais-widget-refinement-list--grantee_name {
   .card-header {
-    padding: 10px;
+    padding: 0;
+  }
+}
+
+.section-refinements {
+  .card {
+    background-color: transparent;
+    box-shadow: none;
+  }
+  .card-header {
+    padding: 24px 10px 0 0;
     border-radius: 2px 2px 0px 0px;
     text-transform: uppercase;
+    border-bottom: 1px solid $divider-color;
     @media #{$medium-and-down} {
-      padding: 0px;
-      padding-left: 10px;
+      padding: 0 0 0 10px;
     }
   }
   .card-content {
-    padding: 24px;
+    padding: 8px 0px;
     border-radius: 0 0 2px 2px;
+  }
+  .ais-RefinementList-searchBox .ais-SearchBox {
+    min-width: inherit;
+    input {
+      background-color: white;
+      border: none;
+      box-shadow: none;
+      border-radius: 3px;
+      border-bottom: none;
+      height: 2rem;
+      &:focus {
+        border-bottom: 0;
+        box-shadow: none;
+      }
+      button.ais-SearchBox-reset {
+        top: 40% // HACK
+      }
+    }
   }
   label {
     color: $text-color;
@@ -643,17 +813,24 @@ a.hit-name {
     }
   }
   li.ais-RefinementList-item {
+    clear: both;
     @media #{$medium-and-down} {
       height: 2rem;
       line-height: 2rem;
     }
+  }
+  .ais-RefinementList-labelText {
+    width: 80%;
+  }
+  .ais-RefinementList-labelText mark {
+    background-color: #e3f4fb;
   }
 }
 
 /* Clear all */
 .btn-custom {
   &:hover {
-    background-color: lighten($accent-color, 5%)
+    background-color: #e3f4fb;
   }
 }
 
