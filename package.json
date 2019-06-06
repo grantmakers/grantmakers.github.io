@@ -1,0 +1,24 @@
+{
+  "name": "grantmakersio",
+  "version": "0.0.1",
+  "description": "Grantmakers.io is an open source community project from SmarterGiving.org",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/grantmakers/grantmakers.github.io.git"
+  },
+  "keywords": [],
+  "author": "Chad Kruse",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/grantmakers/grantmakers.github.io/issues"
+  },
+  "homepage": "https://www.grantmakers.io",
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-plugin-frontmatter": "0.0.8"
+  }
+}
