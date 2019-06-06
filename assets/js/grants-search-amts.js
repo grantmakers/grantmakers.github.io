@@ -1,6 +1,33 @@
 // Stashing these here
 // Will integrate in future update
 
+/* Helpers */
+const rangeMinInput = document.getElementsByClassName('ais-RangeInput-input--min')[0];
+const rangeMaxInput = document.getElementsByClassName('ais-RangeInput-input--max')[0];
+
+const rangeMinTarget = document.getElementById('range-input-helper-min');
+const rangeMaxTarget = document.getElementById('range-input-helper-max');
+
+rangeMinInput.addEventListener('input', function() {
+  const num = parseFloat(this.value);
+  // const num = numberHuman(this.value);
+  if (num > 999) {
+    rangeMinTarget.innerHTML = numberHuman(num);
+  } else {
+    rangeMinTarget.innerHTML = '';
+  }
+});
+// TODO Dry it up
+rangeMaxInput.addEventListener('input', function() {
+  const num = parseFloat(this.value);
+  // const num = numberHuman(this.value);
+  if (num > 999) {
+    rangeMaxTarget.innerHTML = numberHuman(num);
+  } else {
+    rangeMaxTarget.innerHTML = '';
+  }
+});
+
 /* Create grant amount refinement :: Range Input */
 const rangeInputWithPanel = instantsearch.widgets.panel({
   'templates': {
