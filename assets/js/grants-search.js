@@ -73,8 +73,7 @@ ready(function() {
     'searchParameters': {
       'hitsPerPage': 12,
     },
-    'routing': true,
-    /*
+    // 'routing': true,
     'routing': {
       'stateMapping': {
         stateToRoute({query, refinementList, page}) {
@@ -83,7 +82,6 @@ ready(function() {
             // 'type': searchType,
             'query': query,
             // we use the character ~ as it is one that is rarely present in data and renders well in URLs
-
             'grantee_name':
               refinementList &&
               refinementList.grantee_name &&
@@ -118,7 +116,6 @@ ready(function() {
         },
       },
     },
-    */
   });
 
   // Define templates
@@ -191,7 +188,7 @@ ready(function() {
       'cssClasses': {
         'root': '',
         'list': 'striped row',
-        'item': ['col', 's12'],
+        'item': ['col', 's12', 'li-grants-search'],
       },
       transformItems(items) {
         return items.map(item => ({
@@ -279,7 +276,7 @@ ready(function() {
           'checkbox': 'filled-in',
           'labelText': 'small',
           'count': ['right', 'small'],
-          'selectedItem': ['grantmakers-text'],
+          // 'selectedItem': ['grants-search-text'],
           // 'searchableRoot': 'ais-SearchBox-refinements',
           // 'searchableSubmit': 'hidden',
         },
@@ -323,7 +320,7 @@ ready(function() {
       'cssClasses': {
         'root': 'pagination',
         'page': 'waves-effect',
-        'selectedItem': 'active grantmakers',
+        'selectedItem': 'active',
         'disabledItem': 'disabled',
       },
     })
@@ -369,7 +366,7 @@ ready(function() {
   search.on('error', function(e) {
     // TODO Add messaging for 403 origin not allowed
     // TODO Remove console statement UNLESS is development
-    console.log(e);
+    // console.log(e);
   });
 
   // Initialize search
@@ -400,6 +397,7 @@ ready(function() {
     };
     M.FormSelect.init(elem, options);
   }
+  
 
   // QUERY HOOKS
   // ==============

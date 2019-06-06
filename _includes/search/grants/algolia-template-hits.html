@@ -4,15 +4,13 @@
     <span class="text-bold">{{#helpers.highlight}}{ "attribute": "grantee_name" }{{/helpers.highlight}}</span> <!--<span class="text-muted small">({{ tax_year }})</span>-->
   </div>
   <div class="col m5">
-    <a class="truncate tooltipped text-light" href="https://www.grantmakers.io/profiles/{{ ein }}" data-tooltip="View all recent grants" data-placement="top">{{ organization_name }}</a>
+    <a class="truncate text-light" href="https://www.grantmakers.io/profiles/{{ ein }}" title="View foundation profile">{{ organization_name }}</a>
   </div>
   <div class="col m1">
     <div class="actions-wrapper">
-      <!-- original location of info -->
-      <a class="text-center modal-trigger small" href="#modal-grant-detail-{{ objectID }}">
-          <i class="material-icons blue-grey-text right">info</i>
-          <!-- details... -->
-        </a>
+      <a class="text-center modal-trigger small" href="#modal-grant-detail-{{ objectID }}" title="View grant details">
+        <i class="material-icons md-18 blue-grey-text right">info</i>
+      </a>
     </div>
   </div>
 </div>

@@ -167,6 +167,9 @@ i.material-icons-rounded {
   border-radius: 50%;
   padding-top: 1px;
 }
+i.md-18 {
+  font-size: 18px;
+}
 
 /* Inline lists */
 .list-inline {
@@ -316,6 +319,12 @@ Mimic Algolia them - only the good parts
   background-color: lighten($accent-color, 50%); // Target color: #feebde
   font-size: inherit !important;
   color: inherit !important;
+}
+.grants-search-bg {
+  background-color: $grantmakers-secondary-accent !important;
+}
+.grants-search-text {
+  color: $grantmakers-secondary-accent !important;
 }
 .grants-search {
   .ais-Highlight-highlighted, .ais-Snippet-highlighted {
@@ -645,8 +654,25 @@ a.hit-name {
   }
 }
 /* Grants Search */
+/* Refinements */
 .grants-search {
-  .card .card-content {
+  [type="checkbox"].filled-in:checked + span:not(.lever):after {
+    border: 2px solid $grantmakers-secondary-accent;
+    background-color: $grantmakers-secondary-accent;
+  }
+  .ais-RefinementList-item--selected {
+    label span {
+      color: $grantmakers-secondary-accent;
+    }
+  }
+  .ais-RefinementList-labelText mark {
+    background-color: #e3f4fb;
+  }
+}
+/* Hits */
+.card-grants-search #ais-widget-hits {
+  
+  .card-content {
     padding: 2rem;
   }
   .ais-Hits-item {
@@ -664,26 +690,13 @@ a.hit-name {
   .ais-Hits-item .row {
     margin-bottom: 0;
   }
-  li {
+  li.li-grants-hits {
     padding: 1rem;
     padding-right: 0rem; // HACK Only works if using col m1 strategy for icon
     border-bottom: 1px solid $divider-color;
     &:last-child {
       border: none;
     } 
-  }
-  /*
-  .actions-wrapper {
-    position: relative;
-    height: 100%;
-    .modal-trigger {
-      position: absolute;
-      bottom: 0px;
-    }
-  }
-  */
-  i.material-icons {
-    font-size: 18px;
   }
   .row-grant-names {
     margin-bottom: 5px;
@@ -705,6 +718,12 @@ a.hit-name {
     }
   }
 }
+/* Pagination */
+#ais-widget-pagination.grants-search {
+  .pagination li.active {
+    background-color: $grantmakers-secondary;
+  }
+}
 
 /* Empty Hits */
 
@@ -719,6 +738,11 @@ a.hit-name {
   label input[type=checkbox]:checked + .lever:after {
     background-color: #26a69a;
   }
+}
+
+/* Range Slider */
+.ais-RangeSlider .rheostat-progress {
+  @extend .blue-grey;
 }
 
 /* Range Input */
@@ -807,11 +831,6 @@ a.hit-name {
     height: 25px;
     line-height: 25px;
   }
-  .ais-RefinementList-item--selected {
-    label span {
-      color: $grantmakers;
-    }
-  }
   li.ais-RefinementList-item {
     clear: both;
     @media #{$medium-and-down} {
@@ -822,8 +841,18 @@ a.hit-name {
   .ais-RefinementList-labelText {
     width: 80%;
   }
-  .ais-RefinementList-labelText mark {
-    background-color: #e3f4fb;
+  &.profiles-search {
+    .ais-RefinementList-item--selected {
+      label span {
+        color: $grantmakers;
+      }
+    }
+    .ais-RefinementList-labelText mark {
+      background-color: #e3f4fb;
+    }
+  }
+  &.grants-search {
+    
   }
 }
 
