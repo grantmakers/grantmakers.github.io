@@ -228,36 +228,6 @@ ready(function() {
     })
   );
 
-  /* Create grant amount refinement */
-  const rangeInputWithPanel = instantsearch.widgets.panel({
-    'templates': {
-      'header': 'Grant Size',
-    },
-    hidden(options) {
-      return options.results.nbHits === 0;
-    },
-    'cssClasses': {
-      'root': 'card',
-      'header': [
-        'card-header',
-        // 'grey',
-        // 'lighten-4',
-      ],
-      'body': 'card-content',
-    },
-  })(instantsearch.widgets.rangeInput);
-
-  search.addWidget(
-    rangeInputWithPanel({
-      'container': '#ais-widget-range-input',
-      'attribute': 'grant_amount',
-      'min': 0,
-      'cssClasses': {
-        'input': 'input-algolia',
-      },
-    })
-  );
-
   /* Create all other refinements */
   facets.forEach((refinement) => {
     const refinementListWithPanel = instantsearch.widgets.panel({
