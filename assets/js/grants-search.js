@@ -214,13 +214,21 @@ ready(function() {
   search.addWidget(
     instantsearch.widgets.currentRefinements({
       'container': '#ais-widget-current-refined-values',
-      'includedAttributes': ['city', 'state'],
+      'includedAttributes': ['grantee_name', 'organization_name', 'grantee_city', 'grantee_state'],
       'cssClasses': {
         'list': 'list-inline',
         'item': ['btn', 'blue-grey'],
         'label': ['small'],
         'categoryLabel': 'text-bold',
         'delete': 'blue-grey-text',
+      },
+      transformItems(items) {
+        console.log(items);
+        // TODO Adjust labels
+        return items.map(item => ({
+          ...item,
+          'label': item.label.toUpperCase(),
+        }));
       },
     })
   );
