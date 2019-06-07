@@ -439,6 +439,7 @@ $parallax-height: 75vh;
   padding: 0 15px;
 }
 
+/* Search toggle / dropdown */
 #search-toggle {
   height: 64px;
   select {
@@ -486,6 +487,7 @@ $parallax-height: 75vh;
   }
 }
 
+/* Search box */
 #ais-widget-search-box {
   .ais-SearchBox-submit {
     height: 3rem; // HACK icon is still too low by a few pixels
@@ -602,6 +604,9 @@ $parallax-height: 75vh;
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
     padding: 0px 10px;
+  }
+  .btn:hover {
+    background-color: $grantmakers;
   }
   .ais-CurrentRefinements-category {
     padding-left: 5px;
@@ -864,6 +869,9 @@ a.hit-name {
 }
 
 /* Pagination */
+.pagination li.active {
+  background-color: $grantmakers;
+}
 .pagination {
   .disabled {
     visibility: hidden;

@@ -1,277 +1,241 @@
 ---
+permalink: /profiles-search/
 ---
 <!doctype html>
 <html lang="en">
-<head>
-	<meta charset="utf-8" />
-	<link rel="apple-touch-icon" sizes="76x76" href="assets/img/apple-icon.jpg">
-	<link rel="icon" type="image/png" href="{{ site.baseurl }}/assets/img/favicon.png">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <head>
+    <meta charset="utf-8" />
+    <link rel="apple-touch-icon" sizes="76x76" href="{{ site.baseurl }}/assets/img/apple-icon.png">
+    <link rel="icon" type="image/png" href="{{ site.baseurl }}/assets/img/favicon.png">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta content='width=device-width, initial-scale=1.0, minimum-scale=1' name='viewport' />
 
-	<title>{{ site.title }}</title>
-	<meta name="description" content="{{ site.description }}" />
+    {% if jekyll.environment == 'staging' %}
+      <meta name="robots" content="noindex, nofollow">
+    {% endif %}
 
-	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <title>{{ site.title }}</title>
+    <meta name="description" content="{{ site.description }}" />
 
-	<!-- Progress Bar - Initial load -->
-	<link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/assets/css/pace.css">
-	<script data-pace-options='{
-    "elements": {
-      "selectors": ["#stats-template"]
-    },
-    "restartOnPushState": false,
-    "restartOnRequestAfter": false
-  }' src="{{ site.baseurl }}/assets/js/pace.min.js">
-  </script>
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700">
 
-	<!-- Fonts and icons     -->
-	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" />
-  <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.ion.rangeslider/2.0.12/css/ion.rangeSlider.css">
-  <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.ion.rangeslider/2.0.12/css/ion.rangeSlider.skinNice.css">
+    <!-- Styles -->
+    <!--
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.css@7.1.1/themes/algolia-min.css" integrity="sha256-nkldBwBn2NQqRL1mod7BqHsJ6cEOn6u/ln6F/lI4CFo=" crossorigin="anonymous">
+    -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.css@7.1.1/themes/reset-min.css" integrity="sha256-JQ2nnTmybhOWSjfV3sa8mG0ZVhTCcORER4cyXc5HL10=" crossorigin="anonymous">
+    
+    <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/unified-search.css?v={{ site.time | date: '%Y%m%d'}}">
 
-	<!-- CSS Files -->
-  <link href="{{ site.baseurl }}/assets/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="{{ site.baseurl }}/assets/css/main.css" rel="stylesheet">
+    <!-- JavaScript -->
+    <!-- <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script> --> <!-- jQuery no longer required -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/algoliasearch@3.32.1/dist/algoliasearchLite.js" integrity="sha256-pMaJf0I78weeXGkRMBDO6jSulxC/q3sb0aPdtV2N8n0=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@3.2.0" integrity="sha256-/8usMtTwZ01jujD7KAZctG0UMk2S2NDNirGFVBbBZCM=" crossorigin="anonymous"></script>
+    <script src="{{ site.baseurl }}/assets/js/profiles-search.js?v={{ site.time | date: '%Y%m%d'}}"></script>
+  </head>
+  <body class="unified-search">
 
-</head>
-
-<body class="index-page">
-
-<!-- Navbar -->
-<nav class="navbar navbar-transparent navbar-fixed-top navbar-color-on-scroll navbar-search" data-spy="affix" data-offset-top="60">
-	<div class="container">
-		<div class="row">
-			<div class="col-sm-3">
-				<div class="navbar-header">
-					<!--
-			  	<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation-index">
-		      	<span class="sr-only">Toggle navigation</span>
-		      	<span class="icon-bar"></span>
-		      	<span class="icon-bar"></span>
-		      	<span class="icon-bar"></span>
-			  	</button>
-			  	-->
-			  	<a href="{{ site.baseurl }}/">
-			    	<div class="logo-container">
-			        <div class="logo">
-			           <img src="{{ site.baseurl }}/assets/img/logo.png" alt="Grantmakers Logo" rel="tooltip" title="<b>Grantmakers.io</b> is a free tool from your friends at <b>SmarterGiving</b>" data-placement="bottom" data-html="true">
-			        </div>
-			        <div class="brand brand-name">
-			           Grantmakers.io
-			        </div>
-						</div>
-			    </a>
-		    </div>
-			</div>
-			<div class="col-sm-6">
-				<div class="form-group form-group-lg search-input-wrapper">
-				  <div class="input-group center-block">
-						<input id="search-input" class="form-control" type="text" autocomplete="off" spellcheck="false" autocorrect="off" placeholder="Search..." autofocus/>
-						<span class="input-group-addon input-group-addon-close">
-							<div id="search-input-icon" class="empty"></div>
-				    </span>
-				  </div>
-				</div>
-			</div>
-			<div class="col-sm-3">
-				<ul class="nav navbar-nav navbar-right">
-					<li class="algolia-logo">
-						<!-- Dark background -->
-			    	<a class="algolia-dark-bg" href="{{ site.algolia_link }}">Search powered by<br><img src="{{ site.baseurl }}/assets/img/algolia-dark-bg.svg" alt="Powered by Algolia"></a>
-			    	<!-- Light background -->
-			    	<a class="algolia-light-bg" href="{{ site.algolia_link }}">Search powered by<br><img src="{{ site.baseurl }}/assets/img/algolia-light-bg.svg" alt="Powered by Algolia"></a>
-			    </li>
-	    	</ul>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-10 col-md-offset-1 text-center text-muted">
-				<div class="try-it-wrapper">
-					<ul class="list-inline try-it">
-			      <li>Try:</li>
-			      <li><a href="{{ site.baseurl }}/?q=novo%20foundation&" class="btn btn-simple">Novo Foundation</a></li>
-			      <li><a href="{{ site.baseurl }}/?q=bend%2C%20or&" class="btn btn-simple">Bend, OR</a></li>
-			      <li><a href="{{ site.baseurl }}/?q=510381959&" class="btn btn-simple">51-0381959</a></li>
-				  </ul>
-				</div>
+    <header>
+      <!-- Navbar -->
+      <div>
+        <nav class="navbar-unified-search transparent">
+          <div class="nav-wrapper">
+            <div class="container-custom">
+              <a href="#" data-target="mobile-nav" class="sidenav-trigger right disable-primary-color"><i class="material-icons">menu</i></a>
+              <div class="row">
+                <div class="col s8 m4 l4">
+                  <a href="https://www.grantmakers.io" data-ga="Homepage" class="brand-logo">
+                    <div class="logo-container">
+                      <div class="logo">
+                          <img src="{{ site.baseurl }}/assets/img/logo.png" alt="Grantmakers Logo" class="tooltipped" data-tooltip="<b>Grantmakers.io</b> is a free tool<br>from your friends at<br><b>SmarterGiving.org</b>" data-position="bottom" data-delay="20" data-html="true">
+                      </div>
+                      <div class="brand brand-name">
+                          Grantmakers.io
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                <div class="col m4 l8">
+                  <ul class="right hide-on-med-and-down">
+                    <li>
+                      <a href="{{ site.url }}/profiles-search/">
+                        <i class="material-icons left left-tighten grantmakers-text">find_in_page</i> Find a Foundation Profile
+                      </a>
+                    </li>
+                    <li>
+                      <a href="{{ site.url }}/grants-search">
+                        <i class="material-icons left left-tighten blue-grey-text">find_in_page</i> Search all Grants
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </nav>
       </div>
-		</div>
-	</div>
-</nav>
-<!-- End Navbar -->
+      <!-- End Navbar -->
+    </header>
 
-<div class="wrapper">
-
-	<div class="header header-filter">
-		<div id="intro" class="container">
-			<div class="row">
-
-				<div class="col-md-8 col-md-offset-2">
-					<div class="header-intro">
-						<h1>Grantmaker Search</h1>
-						<!-- Note, when profiles reach >100k, need to adjust slice to 3,6 -->
-						<h3>Profiles of {{ site.number_of_foundations | divided_by: 1000 }},{{ site.number_of_foundations | slice: 2,5 }} U.S foundations</h3>
-					</div>
-				</div>
-
-				<div class="col-md-8 col-md-offset-2">
-					<div class="header-intro-cta text-center">
-						<ul class="list-inline">
-							<li><a href="{{ site.baseurl }}/about/" class="btn btn-danger btn-large">Learn More</a></li>
-						</ul>
-					</div>
-				</div>
-
-			</div>
-		</div>
-		<canvas></canvas>
-	</div>
-
-	<div class="main main-raised">
-		<div class="section section-results">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-12">
-						<main>
-
-						  <!-- Left Column -->
-						  <div id="left-column-affix-parent" class="col-md-2">
-						  	<div id="left-column">
-						    	<div id="facets"></div>
-						    	<div id="clear"></div>
-						    	<div id="tips">
-						    		<div class="facets">
-						    			<h5>Feedback Welcome</h5>
-						    			<ul class="list-unstyled">
-												<li>As a community project, insight and ideas from professionals like you guide the development of this site.</li>
-												<li><a href="https://github.com/grantmakers/grantmakers.github.io/issues"><i class="material-icons md-18">add_box</i> Post a suggestion</a></li>
-												<li><a href="mailto:hello@grantmakers.io"><i class="material-icons md-18">email</i> Get in touch</a></li>
-						    			</ul>
-						    		</div>
-						    	</div>
-						  	</div>
-						  </div>					  
-
-						  <!-- Right Column -->
-							<div class="col-md-9 col-md-offset-1">
-								<div id="right-column">
-							    <!-- 
-							    <div id="sort-by">Sort by:
-							      <select dir="rtl" id="sort-by-select">
-							        <option value="" selected>Most relevant</option>
-							        <option value="_TaxPeriod_asc">Lowest Price</option>
-							        <option value="_TaxPeriod_desc">Highest Price</option>
-							      </select>
-							      <span class="caret"></span>
-							    </div>
-							    -->
-							    <div id="stats"><h5><div class="pace-activity-not-fixed"></div><span class="algolia-loading"> Fetching returns</span></h5></div>
-							    <div id="rate-limit"></div>
-							    <div id="hits"></div>
-							    <div id="pagination" class="text-center"></div>
-							  </div>
-							</div>
-						</main>
-					</div>
-				</div>
-				<!--
-				<div class="row">
-					<div class="col-md-9 col-md-offset-3 text-center">
-		        <ul class="list-inline">
-				      <li>Try it:</li>
-				      <li><a href="{{ site.baseurl }}/?q=novo%20foundation&" class="btn btn-danger btn-simple">Novo Foundation</a></li>
-				      <li><a href="{{ site.baseurl }}/?q=bend%2C%20or&" class="btn btn-danger btn-simple">Bend, OR</a></li>
-				      <li><a href="{{ site.baseurl }}/?q=510381959&" class="btn btn-danger btn-simple">51-0381959</a></li>
-					  </ul>
-		      </div>
-				</div>
-				-->
-			</div>
-		</div>
-	</div>
-
-  {% include footer.html %}
-
-</div>
-
-{% include footer-license-and-links.html %}
-
-<!-- Hogan.js Search Template -->
-  {% include search.html %}
-<!-- /Hogan.js Search Template -->
-
-<!-- Tax Filings Modal -->
-<div class="modal modal-tax-filings">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h4 class="modal-title">Select Your 990 Preference</h4>
+    <main>
+      <div class="parallax-container overlay">
+        <div class="parallax">
+          <img src="{{ site.baseurl }}/assets/img/bg.jpg">
+        </div>
+        <div class="intro valign-wrapper">
+          <div class="intro-text center-align white-text">
+            <h1 class="text-bold">Profiles Search</h1>
+            <h5>Profiles of {{ site.number_of_foundations | divided_by: 1000 }},{{ site.number_of_foundations | slice: 2,5 }} U.S. foundations</h5>
+            <p>Source: IRS electronic 990 dataset</p>
+          </div>
+        </div>
+        <canvas></canvas>
       </div>
-      <div class="modal-body">
-			  <div class="radio text-center">
-			    <label class="js-tax-filings-preference btn btn-simple btn-danger" data-tax-filings-preference="pdf">
-			      <i class="material-icons">picture_as_pdf</i><br>PDF<!--<br><small class="text-muted">Read</small>-->
-			    </label>
-			    <label class="js-tax-filings-preference btn btn-simple btn-danger" data-tax-filings-preference="xml">
-			      <i class="material-icons">code</i><br>XML<!--<br><small class="text-muted">Analyze</small>-->
-			    </label>
-			  </div>
-			  <div class="modal-sources text-center">
-			   	<hr>
-			   	<ul class="list-inline">
-			   		<li>Sources:</li>
-			   		<li><small><a class="text-muted" href="http://990finder.foundationcenter.org/" target="_blank">Foundation Center (PDF)</a></small></li>
-			   		<li><small><a class="text-muted" href="https://aws.amazon.com/public-datasets/irs-990/" target="_blank">IRS Electronic Filings (XML)</a></small></li>
-			   	</ul>
-			   </div>
+      <div class="nav-search">
+        <nav class="nav-center grey lighten-3 z-depth-1">
+          <div class="nav-wrapper">
+            <div class="row">
+              <div class="col s2">
+                <div id="search-toggle" class="input-field valign-wrapper">
+                  <select class="browser-default grantmakers white-text">
+                    <optgroup class="disabled" label="Research a foundation">
+                      <option value="profiles">Profile Search</option>
+                    </optgroup>
+                    <optgroup class="disabled" label="Find new funders">
+                      <option value="grants">Grants Search</option>
+                    </optgroup>
+                  </select>
+                </div>
+              </div>
+              <div class="col s6 offset-s1">
+                <div id="ais-widget-search-box"></div>
+              </div>
+              <div class="col s3">
+                <div id="powered-by" class="right"></div>
+              </div>
+            </div>
+          </div>
+        </nav>
       </div>
-      <!--
-      <div class="modal-footer">
-      	<p class="text-center small">Download the free <a href="https://chrome.google.com/webstore/detail/irs-form-990-pf-viewer/mkdlgildlkgnabibkmckjlggcpenmiln">XML Viewer</a></p>
+      <div class="section section-raised z-depth-4 grey lighten-3">
+        <div class="row">
+          <div class="col s12 l3">
+            <!-- Filters / Refinements header -->
+            <div class="text-muted hide-on-med-and-down">
+              Filters
+            </div>
+            <div class="hide-on-large-only center-align">
+              <ul class="actions">
+                <li>
+                  <span id="ais-widget-mobile-clear-all"></span>
+                  <a href="#" data-target="refinements-slide-out" class="sidenav-trigger show-on-med-and-down waves-effect waves-light button-collapse btn white grey-text text-darken-3"><i class="material-icons right">filter_list</i> Filter</a>
+                </li>
+                <li>
+                  
+                </li>
+              </ul>
+            </div>
+            <div class="divider hide-on-med-and-down"></div>
+            <div class="section-refinements hide-on-med-and-down">
+              <div> <!-- Add row class to remove added white space / padding -->
+                <div class="col s12">
+                  <div id="ais-widget-refinement-list--city"></div>
+                  <div id="ais-widget-refinement-list--state"></div>
+                  <div id="ais-widget-refinement-list--grantee_name"></div>
+                  <div id="ais-widget-refinement-list--organization_name"></div>
+                  <div id="ais-widget-refinement-list--grantee_city"></div>
+                  <div id="ais-widget-refinement-list--grantee_state"></div>
+                </div>
+                <div class="col s12">
+                  <div class="section">
+                    <div id="ais-widget-clear-all" class="center-align"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col s12 l9">
+            <div class="row row-tight">
+              <div class="col s7 m9 l10">
+                  <div id="ais-widget-stats"></div>
+                </div>
+                <div class="col s5 m3 l2">
+                  <div id="ais-widget-sort-by" class="small text-muted-max right hide-on-med-and-down">
+                    <a href="#modal-tips" class="modal-trigger text-muted-max">Search tips <i class="tiny material-icons material-icons-rounded grey lighten-2 icon-idea left">wb_incandescent</i></a>
+                  </div>
+                </div>
+            </div>
+            <div class="">
+              <div class="">
+                  <div class="divider"></div>
+              </div>
+            </div>
+            <div class="row"> <!-- Add row class to remove added white space / padding -->
+              <div class="col s12">
+                  <div id="ais-widget-current-refined-values"></div>
+                  <!-- Profiles ais-widge-hits goes here-->
+                <div> <!-- Use class card for grants results-->
+                  <div> <!-- Use class card-content for grants results-->
+                    <div id="ais-widget-hits"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col s12 l9 offset-l3">
+            <div class="section center-align">
+              <div id="ais-widget-pagination"></div>
+            </div>
+          </div>
+        </div>
       </div>
-      -->
+    </main>
+
+    {% include materialize/footer.html %}
+    {% include materialize/footer-license-and-links.html %}
+    <!-- Mobile Sidenavs -->
+    <!-- Primary Navbar -->
+    <ul class="nav-primary sidenav" id="mobile-nav" >
+      <li>
+        <a href="{{ site.url }}/profiles-search/">
+          <i class="material-icons grantmakers-text">lens</i> Find a Foundation Profile
+        </a>
+      </li>
+      <li>
+        <a href="{{ site.url }}/grants-search">
+          <i class="material-icons blue-grey-text">lens</i> Search all Grants
+        </a>
+      </li>
+      <li><hr class="divider"></li>
+      <li><a href="{{ site.url }}/about/" data-ga="About">About</a></li>
+      <li><a href="{{ site.url }}/faq/" data-ga="FAQ">FAQ</a></li>
+      <li><hr class="divider"></li>
+      <li><a class="waves-effect waves-light btn-flat grey lighten-3" href="{{ site.url }}/profiles-search/"><i class="material-icons left">search</i> Search</a></li>
+    </ul>
+    <!-- End Primary Navbar -->
+    <!-- Filters Sidenav-->
+    <ul id="refinements-slide-out" class="sidenav section-refinements left-align grey lighten-5">
+      <li><div id="ais-widget-mobile-refinement-list--city"></div></li>
+      <li><div id="ais-widget-mobile-refinement-list--state"></div></li>
+      <div id="ais-widget-mobile-refinement-list--grantee_name"></div>
+      <div id="ais-widget-mobile-refinement-list--organization_name"></div>
+      <div id="ais-widget-mobile-refinement-list--grantee_city"></div>
+      <div id="ais-widget-mobile-refinement-list--grantee_state"></div>
+    </ul>
+    <!-- End Filters sidenav -->
+
+    <!-- Plugin for Canvas.js, which creates the floating dots effect -->
+    <!-- <script src="{{ site.baseurl }}/assets/js/canvas.js" type="text/javascript"></script> -->
+    
+    <!-- Modals -->
+    <div id="modal-tips" class="modal">
+      <div class="modal-content">
+        {% include search/search-tips.html %}
+      </div>
     </div>
-  </div>
-</div>
-<!-- /Tax Filings Modal -->
-
-{% include ga.html %}
-
-</body>
-	<!--   Core JS Files   -->
-	<script src="{{ site.baseurl }}/assets/js/jquery.min.js" type="text/javascript"></script>
-	<script src="{{ site.baseurl }}/assets/js/bootstrap.min.js" type="text/javascript"></script>
-	<script src="{{ site.baseurl }}/assets/js/material.min.js"></script>
-
-	<!-- Plugin for Canvas.js, which creates the floating dots effect -->
-	<script src="{{ site.baseurl }}/assets/js/canvas.js" type="text/javascript"></script>
-
-	<!-- Control Center for Material Kit: activating the ripples, parallax effects, scripts from the example pages etc -->
-	<script src="{{ site.baseurl }}/assets/js/material-kit.js" type="text/javascript"></script>
-
-	<!-- Search and Algolia-related scripts -->
-	<script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=Object.assign,Intl.~locale.en"></script>
-	<script src="//cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
-	<script src="//cdn.jsdelivr.net/algoliasearch.helper/2/algoliasearch.helper.min.js"></script>
-	<script src="//cdn.jsdelivr.net/hogan.js/3.0.2/hogan.min.common.js"></script>
-	<script src="//cdn.jsdelivr.net/jquery.ion.rangeslider/2.0.12/js/ion.rangeSlider.min.js"></script>
-	<script src="{{ site.baseurl }}/assets/js/search.js"></script>
-
-	<script type="text/javascript">
-		$().ready(function(){
-			// the body of this function is in assets/material-kit.js
-			//materialKit.initSliders();
-        window_width = $(window).width();
-
-        if (window_width >= 992){
-            big_image = $('.wrapper > .header');
-
-				$(window).on('scroll', materialKitDemo.checkScrollForParallax);
-			}
-
-		});
-	</script>
-	
+    <!-- End Modals-->
+  </body>
 </html>
