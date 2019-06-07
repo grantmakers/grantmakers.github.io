@@ -37,11 +37,11 @@ ready(function() {
   const facets = [
     {
       'facet': 'city',
-      'display_name': 'City',
+      'label': 'City',
     },
     {
       'facet': 'state',
-      'display_name': 'State',
+      'label': 'State',
     },
   ];
 
@@ -182,7 +182,7 @@ ready(function() {
   facets.forEach((refinement) => {
     const refinementListWithPanel = instantsearch.widgets.panel({
       'templates': {
-        'header': refinement.display_name,
+        'header': refinement.label,
       },
       hidden(options) {
         return options.results.nbHits === 0;
@@ -201,7 +201,7 @@ ready(function() {
     // TODO DRY it up
     const mobileRefinementListWithPanel = instantsearch.widgets.panel({
       'templates': {
-        'header': refinement.display_name,
+        'header': refinement.label,
       },
       hidden(options) {
         return options.results.nbHits === 0;

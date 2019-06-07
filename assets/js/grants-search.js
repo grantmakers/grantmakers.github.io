@@ -37,19 +37,19 @@ ready(function() {
   const facets = [
     {
       'facet': 'grantee_name',
-      'display_name': 'Recipient',
+      'label': 'Recipient',
     },
     {
       'facet': 'organization_name',
-      'display_name': 'Donor',
+      'label': 'Donor',
     },
     {
       'facet': 'grantee_city',
-      'display_name': 'City',
+      'label': 'City',
     },
     {
       'facet': 'grantee_state',
-      'display_name': 'State',
+      'label': 'State',
     },
   ];
 
@@ -223,11 +223,10 @@ ready(function() {
         'delete': 'blue-grey-text',
       },
       transformItems(items) {
-        console.log(items);
-        // TODO Adjust labels
+        const intersection = facets.filter(item => facets.includes(item.attribute));
         return items.map(item => ({
           ...item,
-          'label': item.label.toUpperCase(),
+          'label': intersection,
         }));
       },
     })
@@ -237,7 +236,7 @@ ready(function() {
   facets.forEach((refinement) => {
     const refinementListWithPanel = instantsearch.widgets.panel({
       'templates': {
-        'header': refinement.display_name,
+        'header': refinement.label,
       },
       hidden(options) {
         return options.results.nbHits === 0;
@@ -256,7 +255,7 @@ ready(function() {
     // TODO DRY it up
     const mobileRefinementListWithPanel = instantsearch.widgets.panel({
       'templates': {
-        'header': refinement.display_name,
+        'header': refinement.label,
       },
       hidden(options) {
         return options.results.nbHits === 0;
