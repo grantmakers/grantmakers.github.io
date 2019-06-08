@@ -137,10 +137,10 @@ ready(function() {
       'showSubmit': true,
       'showReset': true,
       'showLoadingIndicator': false,
-      'queryHook': function(query, searchNew) {
+      'queryHook': function(query, searchInstance) {
         const queryCleaned = checkForEIN(query);
         readyToSearchScrollPosition();
-        searchNew(queryCleaned);
+        searchInstance(queryCleaned);
         initTooltips();
       },
     })
