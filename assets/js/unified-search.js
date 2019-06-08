@@ -265,6 +265,12 @@ ready(function() {
         'categoryLabel': 'text-bold',
         'delete': 'blue-grey-text',
       },
+      transformItems(items) {
+        return items.map(item => ({
+          ...item,
+          'label': getLabel(item),
+        }));
+      },
     })
   );
 
@@ -441,6 +447,10 @@ ready(function() {
   }
   // MISC HELPER FUNCTIONS
   // ==============
+  function getLabel(item) {
+    const obj = facets.filter(each => each.facet === item.attribute);
+    return obj[0].label;
+  }
   function numberHuman(num, decimals) {
     if (num === null) { return null; } // terminate early
     if (num === 0) { return '0'; } // terminate early
