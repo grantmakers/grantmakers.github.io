@@ -76,12 +76,9 @@ ready(function() {
     // 'routing': true,
     'routing': {
       'stateMapping': {
-        stateToRoute({query, refinementList, page}) {
-          // TODO Add all relevent refinements from array
+        stateToRoute({query, refinementList, page}) { // could also use stateToRoute(uiState)
           return {
-            // 'type': searchType,
             'query': query,
-            // we use the character ~ as it is one that is rarely present in data and renders well in URLs
             'grantee_name':
               refinementList &&
               refinementList.grantee_name &&
@@ -101,17 +98,16 @@ ready(function() {
             'page': page,
           };
         },
-        routeToState({query, grantees, orgs, cities, states, page}) {
+        routeToState(routeState) {
           return {
-            // 'type': type,
-            'query': query,
+            'query': routeState.query,
             'refinementList': {
-              'grantee_name': grantees && grantees.split('~'),
-              'organization_name': orgs && orgs.split('~'),
-              'grantee_city': cities && cities.split('~'),
-              'grantee_state': states && states.split('~'),
+              'grantee_name': routeState.grantee_name && routeState.grantee_name.split('~'),
+              'organization_name': routeState.organization_name && routeState.organization_name.split('~'),
+              'grantee_city': routeState.grantee_city && routeState.grantee_city.split('~'),
+              'grantee_state': routeState.grantee_state && routeState.grantee_state.split('~'),
             },
-            'page': page,
+            'page': routeState.page,
           };
         },
       },
@@ -276,7 +272,6 @@ ready(function() {
       })
     );
   });
-  
 
   search.addWidget(
     instantsearch.widgets.clearRefinements({
