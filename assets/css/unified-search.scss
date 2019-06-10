@@ -326,7 +326,7 @@ Mimic Algolia them - only the good parts
 .grants-search-text {
   color: $grantmakers-secondary-accent !important;
 }
-.grants-search {
+.li-grants-search {
   .ais-Highlight-highlighted, .ais-Snippet-highlighted {
     background-color: #e3f4fb;
     font-size: inherit !important;
@@ -672,6 +672,9 @@ a.hit-name {
   }
   .ais-RefinementList-labelText mark {
     background-color: #e3f4fb;
+  }
+  .ais-ClearRefinements-button {
+    // background color adjusted in instantsearch
   }
 }
 /* Hits */
