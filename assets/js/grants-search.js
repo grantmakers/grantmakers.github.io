@@ -122,9 +122,6 @@ ready(function() {
   const templateHitsEmpty = `{% include search/algolia-template-hits-empty.html %}`;
   const templateStats = `{% include search/algolia-template-stats.html %}`;
 
-  // Profiles
-  const templateHitsProfiles = `{% include search/profiles/algolia-template-hits.html %}`;
-
   // Grants
   const templateHits = `{% include search/grants/algolia-template-hits.html %}`;
 
@@ -151,31 +148,6 @@ ready(function() {
       'container': '#powered-by',
     })
   );
-
-  // Profiles search
-  /*
-  search.addWidget(
-    instantsearch.widgets.hits({
-      'container': '#ais-widget-hits',
-      'templates': {
-        'item': templateHits,
-        'empty': templateHitsEmpty,
-      },
-      'cssClasses': {
-        'list': 'row',
-        'item': ['col', 's12'],
-      },
-      transformItems(items) {
-        return items.map(item => ({
-          ...item,
-          'ein_formatted': item.ein.replace(/(\d{2})(\d{7})/, '$1-$2'),
-          'grant_median': `$${item.grant_median.toLocaleString()}`,
-          'assets': `$${numberHuman(item.assets, 0)}`,
-        }));
-      },
-    })
-  );
-  */
 
   // Grants search
   search.addWidget(
