@@ -341,6 +341,44 @@ nav.navbar-unified-search {
   background-color: transparent!important;
   border-color: transparent!important;
   box-shadow: none!important;
+  .collection {
+    margin: 0;
+    border: none;
+    border-radius:inherit;
+    .collection-item {
+      background-color: inherit;
+      min-height: inherit;
+      border-bottom: none;
+      // padding: inherit;
+      &.avatar {
+        padding-left: 64px;
+        padding-top: 12px;
+        padding-bottom: 0;
+        .circle {
+          font-size: 18px;
+          position: absolute;
+          width: 35px;
+          height: 35px;
+          line-height: 36px;
+          overflow: hidden;
+          left: 15px;
+          display: inline-block;
+          vertical-align: middle;
+        }
+        .title {
+          font-size: inherit;
+        }
+      }
+      a {
+        padding:0;
+      }
+      
+      p {
+        line-height: 1rem;
+      }
+    }
+
+  }
 }
 nav .logo-container {
   padding: 5px 0;
