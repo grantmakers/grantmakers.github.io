@@ -33,14 +33,22 @@ ready(function() {
     M.Pushpin.init(elemPP, optionsPP);
   }
 
-  const searchClient = algoliasearch('KDWVSZVS1I', 'ce4d584b0de36ca3f8b4727fdb83c658');
+  const searchClient = algoliasearch('QA1231C5W9', 'cd47ecb3457441878399b20acc8c3fbc');
   const facets = [
     {
-      'facet': 'city',
+      'facet': 'grantee_name',
+      'label': 'Recipient',
+    },
+    {
+      'facet': 'organization_name',
+      'label': 'Donor',
+    },
+    {
+      'facet': 'grantee_city',
       'label': 'City',
     },
     {
-      'facet': 'state',
+      'facet': 'grantee_state',
       'label': 'State',
     },
   ];
@@ -50,12 +58,12 @@ ready(function() {
   const toggle = toggleParent.querySelector('select');
 
   // Ensure initial toggle state set to grants search
-  toggle.value = 'profiles';
+  toggle.value = 'grants';
 
   // Toggle search type
   toggle.onchange = function() {
     console.log('switch');
-    window.location.href = '/grants-search/';
+    window.location.href = '/search/profiles/';
   };
 
   const search = instantsearch({
@@ -63,37 +71,43 @@ ready(function() {
     searchClient,
     'numberLocale': 'en-US',
     'searchParameters': {
-      'hitsPerPage': 8,
+      'hitsPerPage': 12,
     },
     // 'routing': true,
     'routing': {
       'stateMapping': {
-        stateToRoute({query, refinementList, page}) {
-          // TODO Add all relevent refinements from array
+        stateToRoute({query, refinementList, page}) { // could also use stateToRoute(uiState)
           return {
-            // 'type': searchType,
             'query': query,
-            // we use the character ~ as it is one that is rarely present in data and renders well in URLs
-            'city':
+            'grantee_name':
               refinementList &&
-              refinementList.city &&
-              refinementList.city.join('~'),
-            'state':
+              refinementList.grantee_name &&
+              refinementList.grantee_name.join('~'),
+            'organization_name':
               refinementList &&
-              refinementList.state &&
-              refinementList.state.join('~'),
+              refinementList.organization_name &&
+              refinementList.organization_name.join('~'),
+            'grantee_city':
+              refinementList &&
+              refinementList.grantee_city &&
+              refinementList.grantee_city.join('~'),
+            'grantee_state':
+              refinementList &&
+              refinementList.grantee_state &&
+              refinementList.grantee_state.join('~'),
             'page': page,
           };
         },
-        routeToState({query, cities, states, page}) {
+        routeToState(routeState) {
           return {
-            // 'type': type,
-            'query': query,
+            'query': routeState.query,
             'refinementList': {
-              'city': cities && cities.split('~'),
-              'state': states && states.split('~'),
+              'grantee_name': routeState.grantee_name && routeState.grantee_name.split('~'),
+              'organization_name': routeState.organization_name && routeState.organization_name.split('~'),
+              'grantee_city': routeState.grantee_city && routeState.grantee_city.split('~'),
+              'grantee_state': routeState.grantee_state && routeState.grantee_state.split('~'),
             },
-            'page': page,
+            'page': routeState.page,
           };
         },
       },
@@ -101,15 +115,17 @@ ready(function() {
   });
 
   // Define templates
-  const templateHits = `{% include search/profiles/algolia-template-hits.html %}`;
   const templateHitsEmpty = `{% include search/algolia-template-hits-empty.html %}`;
-  const templateStats = `{% include search/profiles/algolia-template-stats.html %}`;
+  const templateStats = `{% include search/algolia-template-stats.html %}`;
+
+  // Grants
+  const templateHits = `{% include search/grants/algolia-template-hits.html %}`;
 
   // Construct widgets
   search.addWidget(
     instantsearch.widgets.searchBox({
       'container': '#ais-widget-search-box',
-      'placeholder': 'Search by foundation name, location, or EIN',
+      'placeholder': 'Search by keywords, location, or grantee name',
       'autofocus': true,
       'showSubmit': true,
       'showReset': true,
@@ -129,7 +145,7 @@ ready(function() {
     })
   );
 
-  // Profiles search
+  // Grants search
   search.addWidget(
     instantsearch.widgets.hits({
       'container': '#ais-widget-hits',
@@ -138,15 +154,14 @@ ready(function() {
         'empty': templateHitsEmpty,
       },
       'cssClasses': {
-        'list': 'row',
-        'item': ['col', 's12'],
+        'root': '',
+        'list': 'striped row',
+        'item': ['col', 's12', 'li-grants-search'],
       },
       transformItems(items) {
         return items.map(item => ({
           ...item,
-          'ein_formatted': item.ein.replace(/(\d{2})(\d{7})/, '$1-$2'),
-          'grant_median': `$${item.grant_median.toLocaleString()}`,
-          'assets': `$${numberHuman(item.assets, 0)}`,
+          'grant_amount': `$${item.grant_amount.toLocaleString()}`,
         }));
       },
     })
@@ -167,13 +182,13 @@ ready(function() {
   search.addWidget(
     instantsearch.widgets.currentRefinements({
       'container': '#ais-widget-current-refined-values',
-      'includedAttributes': ['city', 'state'],
+      'includedAttributes': ['grantee_name', 'organization_name', 'grantee_city', 'grantee_state'],
       'cssClasses': {
         'list': 'list-inline',
-        'item': ['btn'],
+        'item': ['btn', 'blue-grey'],
         'label': ['small'],
         'categoryLabel': 'text-bold',
-        'delete': 'grantmakers-text',
+        'delete': 'blue-grey-text',
       },
       transformItems(items) {
         return items.map(item => ({
@@ -257,13 +272,12 @@ ready(function() {
       })
     );
   });
-  
 
   search.addWidget(
     instantsearch.widgets.clearRefinements({
       'container': '#ais-widget-clear-all',
       'cssClasses': {
-        'button': ['btn'],
+        'button': ['btn blue-grey'],
       },
       'templates': {
         'resetLabel': 'Clear filters',
@@ -365,6 +379,7 @@ ready(function() {
     const obj = facets.filter(each => each.facet === item.attribute);
     return obj[0].label;
   }
+
   function numberHuman(num, decimals) {
     if (num === null) { return null; } // terminate early
     if (num === 0) { return '0'; } // terminate early

@@ -38,47 +38,7 @@ permalink: /search/
   </head>
   <body class="unified-search">
 
-    <header>
-      <!-- Navbar -->
-      <div>
-        <nav class="navbar-unified-search transparent">
-          <div class="nav-wrapper">
-            <div class="container-custom">
-              <a href="#" data-target="mobile-nav" class="sidenav-trigger right disable-primary-color"><i class="material-icons">menu</i></a>
-              <div class="row">
-                <div class="col s8 m4 l4">
-                  <a href="https://www.grantmakers.io" data-ga="Homepage" class="brand-logo">
-                    <div class="logo-container">
-                      <div class="logo">
-                          <img src="{{ site.baseurl }}/assets/img/logo.png" alt="Grantmakers Logo" class="tooltipped" data-tooltip="<b>Grantmakers.io</b> is a free tool<br>from your friends at<br><b>SmarterGiving.org</b>" data-position="bottom" data-delay="20" data-html="true">
-                      </div>
-                      <div class="brand brand-name">
-                          Grantmakers.io
-                      </div>
-                    </div>
-                  </a>
-                </div>
-                <div class="col m4 l8">
-                  <ul class="right hide-on-med-and-down">
-                    <li>
-                      <a href="{{ site.url }}/profiles-search/">
-                        <i class="material-icons left left-tighten grantmakers-text">find_in_page</i> Find a Foundation Profile
-                      </a>
-                    </li>
-                    <li>
-                      <a href="{{ site.url }}/grants-search">
-                        <i class="material-icons left left-tighten blue-grey-text">find_in_page</i> Search all Grants
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </nav>
-      </div>
-      <!-- End Navbar -->
-    </header>
+    {% include materialize/header.html %}
 
     <main>
       <div class="parallax-container overlay">
