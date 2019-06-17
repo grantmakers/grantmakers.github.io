@@ -371,6 +371,9 @@ nav.navbar-unified-search {
       }
       a {
         padding:0;
+        &:hover {
+          background-color: inherit;
+        }
       }
       
       p {
