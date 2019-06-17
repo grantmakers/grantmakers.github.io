@@ -284,10 +284,25 @@ Search Header
 *****************************/
 
 /* Navbar */
+.landing-page .navbar {
+	padding-top: 5px; // HACK
+}
 #navigation-example {
+	li > a {
+		font-size: 15px;
+		text-transform: none;
+		padding-top: 10px; // HACK
+	}
 	i.material-icons {
-		color: transparent;
+		font-size: 18px;
+		height: 35px;
+		width: 35px;
+		max-width: unset;
+		line-height: 36px;
 		border-radius: 50%;
+		padding: 0px 8px;
+		margin-right: 8px;
+
 	}
 }
 .form-group-header-search {
