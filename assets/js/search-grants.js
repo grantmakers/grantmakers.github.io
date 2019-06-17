@@ -277,7 +277,7 @@ ready(function() {
     instantsearch.widgets.clearRefinements({
       'container': '#ais-widget-clear-all',
       'cssClasses': {
-        'button': ['btn blue-grey'],
+        'button': ['btn blue-grey waves-effect waves-light'],
       },
       'templates': {
         'resetLabel': 'Clear filters',
