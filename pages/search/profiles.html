@@ -58,7 +58,7 @@ permalink: /search/profiles/
         <nav class="nav-center grey lighten-3 z-depth-1">
           <div class="nav-wrapper">
             <div class="row">
-              <div class="col s2">
+              <div class="col l2 hide-on-med-and-down">
                 <div id="search-toggle" class="input-field valign-wrapper">
                   <select class="browser-default grantmakers white-text">
                     <optgroup class="disabled" label="Research a foundation">
@@ -70,10 +70,10 @@ permalink: /search/profiles/
                   </select>
                 </div>
               </div>
-              <div class="col s6 offset-s1">
+              <div class="col s12 l6 offset-l1">
                 <div id="ais-widget-search-box"></div>
               </div>
-              <div class="col s3">
+              <div class="col l3 hide-on-med-and-down">
                 <div id="powered-by" class="right"></div>
               </div>
             </div>
@@ -88,13 +88,12 @@ permalink: /search/profiles/
               Filters
             </div>
             <div class="hide-on-large-only center-align">
-              <ul class="actions">
+              <ul class="actions list-inline">
                 <li>
-                  <span id="ais-widget-mobile-clear-all"></span>
                   <a href="#" data-target="refinements-slide-out" class="sidenav-trigger show-on-med-and-down waves-effect waves-light button-collapse btn white grey-text text-darken-3"><i class="material-icons right">filter_list</i> Filter</a>
                 </li>
                 <li>
-                  
+                  <span id="ais-widget-mobile-clear-all"></span>
                 </li>
               </ul>
             </div>
@@ -104,10 +103,6 @@ permalink: /search/profiles/
                 <div class="col s12">
                   <div id="ais-widget-refinement-list--city"></div>
                   <div id="ais-widget-refinement-list--state"></div>
-                  <div id="ais-widget-refinement-list--grantee_name"></div>
-                  <div id="ais-widget-refinement-list--organization_name"></div>
-                  <div id="ais-widget-refinement-list--grantee_city"></div>
-                  <div id="ais-widget-refinement-list--grantee_state"></div>
                 </div>
                 <div class="col s12">
                   <div class="section">
@@ -119,11 +114,11 @@ permalink: /search/profiles/
           </div>
           <div class="col s12 l9">
             <div class="row row-tight">
-              <div class="col s7 m9 l10">
+              <div class="col s12 m9 l10">
                   <div id="ais-widget-stats"></div>
                 </div>
-                <div class="col s5 m3 l2">
-                  <div id="ais-widget-sort-by" class="small text-muted-max right hide-on-med-and-down">
+                <div class="col m3 l2 hide-on-small-only">
+                  <div id="ais-widget-sort-by" class="small text-muted-max right">
                     <a href="#modal-tips" class="modal-trigger text-muted-max">Search tips <i class="tiny material-icons material-icons-rounded grey lighten-2 icon-idea left">wb_incandescent</i></a>
                   </div>
                 </div>
@@ -158,33 +153,21 @@ permalink: /search/profiles/
     {% include materialize/footer-license-and-links.html %}
     <!-- Mobile Sidenavs -->
     <!-- Primary Navbar -->
-    <ul class="nav-primary sidenav" id="mobile-nav" >
-      <li>
-        <a href="{{ site.url }}/search/profiles/">
-          <i class="material-icons grantmakers-text">lens</i> Find a Foundation Profile
-        </a>
-      </li>
-      <li>
-        <a href="{{ site.url }}/search/grants">
-          <i class="material-icons blue-grey-text">lens</i> Search all Grants
-        </a>
-      </li>
-      <li><hr class="divider"></li>
-      <li><a href="{{ site.url }}/about/" data-ga="About">About</a></li>
-      <li><a href="{{ site.url }}/faq/" data-ga="FAQ">FAQ</a></li>
-      <li><hr class="divider"></li>
-      <li><a class="waves-effect waves-light btn-flat grey lighten-3" href="{{ site.url }}/search/profiles/"><i class="material-icons left">search</i> Search</a></li>
-    </ul>
+      {% include materialize/header-mobile.html %}
     <!-- End Primary Navbar -->
     <!-- Filters Sidenav-->
-    <ul id="refinements-slide-out" class="sidenav section-refinements left-align grey lighten-5">
-      <li><div id="ais-widget-mobile-refinement-list--city"></div></li>
-      <li><div id="ais-widget-mobile-refinement-list--state"></div></li>
-      <div id="ais-widget-mobile-refinement-list--grantee_name"></div>
-      <div id="ais-widget-mobile-refinement-list--organization_name"></div>
-      <div id="ais-widget-mobile-refinement-list--grantee_city"></div>
-      <div id="ais-widget-mobile-refinement-list--grantee_state"></div>
-    </ul>
+    <div class="row">
+      <div class="col s12">
+        <ul id="refinements-slide-out" class="sidenav section-refinements left-align grey lighten-5">
+          <li><div id="ais-widget-mobile-refinement-list--city"></div></li>
+          <li><div id="ais-widget-mobile-refinement-list--state"></div></li>
+          <div id="ais-widget-mobile-refinement-list--grantee_name"></div>
+          <div id="ais-widget-mobile-refinement-list--organization_name"></div>
+          <div id="ais-widget-mobile-refinement-list--grantee_city"></div>
+          <div id="ais-widget-mobile-refinement-list--grantee_state"></div>
+        </ul>
+      </div>
+    </div>
     <!-- End Filters sidenav -->
 
     <!-- Plugin for Canvas.js, which creates the floating dots effect -->

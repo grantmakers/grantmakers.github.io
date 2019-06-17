@@ -1,12 +1,12 @@
 {% raw %}
 <div class="row row-grant-names">
-  <div class="col m6">
+  <div class="col s12 m6">
     <span class="text-bold">{{#helpers.highlight}}{ "attribute": "grantee_name" }{{/helpers.highlight}}</span> <!--<span class="text-muted small">({{ tax_year }})</span>-->
   </div>
-  <div class="col m5">
+  <div class="col s12 m5">
     <a class="truncate text-light" href="https://www.grantmakers.io/profiles/{{ ein }}" title="View foundation profile">{{ organization_name }}</a>
   </div>
-  <div class="col m1">
+  <div class="col m1 hide-on-small-only">
     <div class="actions-wrapper">
       <a class="text-center modal-trigger small" href="#modal-grant-detail-{{ objectID }}" title="View grant details">
         <i class="material-icons md-18 blue-grey-text right">info</i>
@@ -15,21 +15,21 @@
   </div>
 </div>
 <div class="row"> 
-  <div class="col m6">
+  <div class="col s6">
     <div class="small text-light">
       <p>{{#grantee_city}}
           {{#helpers.highlight}}{ "attribute": "grantee_city" }{{/helpers.highlight}}, {{ grantee_state }}
       {{/grantee_city}}</p>
     </div>
   </div> 
-  <div class="col m5">
+  <div class="col s5">
     <div class="small text-light">
       <p>{{ grant_amount }}</p>
     </div>
   </div>              
 </div>
 <div class="row">
-  <div class="col m11">
+  <div class="col s11">
     <div class="grant-purpose text-muted-max">
       <small>{{#helpers.highlight}}{ "attribute": "grant_purpose" }{{/helpers.highlight}} ({{ tax_year }})</small>
     </div>

@@ -220,6 +220,8 @@ ready(function() {
     })(instantsearch.widgets.refinementList);
 
     // TODO DRY it up
+    // Hiding on mobile as grants search refinements not useful on mobile
+    /*
     const mobileRefinementListWithPanel = instantsearch.widgets.panel({
       'templates': {
         'header': refinement.label,
@@ -237,6 +239,7 @@ ready(function() {
         'body': 'card-content',
       },
     })(instantsearch.widgets.refinementList);
+    */
     
     /* Create desktop refinements */
     search.addWidget(
@@ -258,6 +261,7 @@ ready(function() {
     );
 
     /* Create mobile refinements */
+    /* Hiding on mobile as grants search refinements not useful on mobile
     search.addWidget(
       mobileRefinementListWithPanel({
         'container': `#ais-widget-mobile-refinement-list--${refinement.facet}`,
@@ -271,6 +275,7 @@ ready(function() {
         },
       })
     );
+    */
   });
 
   search.addWidget(

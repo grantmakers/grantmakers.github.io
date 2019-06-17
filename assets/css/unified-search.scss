@@ -60,9 +60,11 @@ $grantmakers-secondary-accent: #03a9fa; // .light-blue
 	color: $grantmakers !important;
 }
 
+/*
 a:not(.btn):not(.btn:hover) {
 	color: $grantmakers;
 }
+*/
 
 .disable-primary-color {
 	color: inherit !important;
@@ -729,11 +731,12 @@ a.hit-name {
     padding-bottom: 1rem;
   }
   .ais-Hits-item a {
-    // color: $grantmakers-secondary;
     color: $text-color;
     &:hover {
-      // text-decoration: underline;
       color: $grantmakers-secondary-accent;
+    }
+    @media #{$medium-and-down} {
+      white-space: normal;
     }
   }
   .ais-Hits-item .row {
@@ -902,6 +905,15 @@ a.hit-name {
   }
   &.grants-search {
     
+  }
+}
+/* Mobile Refinememnts */
+#refinements-slide-out {
+  .ais-Panel.card {
+    margin: 0;
+  }
+  .ais-Panel-body.card-content {
+    padding: 10px;
   }
 }
 

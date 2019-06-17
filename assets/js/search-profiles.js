@@ -216,8 +216,8 @@ ready(function() {
         'root': 'card',
         'header': [
           'card-header',
-          'blue-grey',
-          'lighten-4',
+          'grey',
+          'lighten-2',
         ],
         'body': 'card-content',
       },
@@ -264,6 +264,19 @@ ready(function() {
       'container': '#ais-widget-clear-all',
       'cssClasses': {
         'button': ['btn waves-effect waves-light'],
+      },
+      'templates': {
+        'resetLabel': 'Clear filters',
+      },
+    })
+  );
+
+  search.addWidget(
+    instantsearch.widgets.clearRefinements({
+      'container': '#ais-widget-mobile-clear-all',
+      'cssClasses': {
+        'button': ['btn waves-effect waves-light'],
+        'disabledButton': 'hidden',
       },
       'templates': {
         'resetLabel': 'Clear filters',
