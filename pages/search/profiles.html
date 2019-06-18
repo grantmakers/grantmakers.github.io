@@ -81,7 +81,9 @@ permalink: /search/profiles/
         </nav>
       </div>
       <div class="section section-raised z-depth-4 grey lighten-3">
-        <div class="row">
+        {% include search/algolia-template-rate-limit.html %}
+        {% include search/algolia-template-forbidden.html %}
+        <div id="algolia-hits-wrapper" class="row">
           <div class="col s12 l3">
             <!-- Filters / Refinements header -->
             <div class="text-muted hide-on-med-and-down">

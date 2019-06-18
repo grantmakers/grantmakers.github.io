@@ -311,9 +311,14 @@ ready(function() {
   });
 
   search.on('error', function(e) {
-    // TODO Add messaging for 403 origin not allowed
-    // TODO Remove console statement UNLESS is development
-    // console.log(e);
+    if (e.statusCode === 429) {
+      renderRateLimit();
+      console.log('Rate limit reached');
+    }
+    if (e.statusCode === 403) {
+      renderForbidden();
+      console.log('Origin forbidden');
+    }
   });
 
   // Initialize search
@@ -372,6 +377,23 @@ ready(function() {
       'behavior': 'auto',
     });
   }
+
+  function renderRateLimit() {
+    const message = document.getElementById('rate-limit-message');
+    message.classList.remove('hidden');
+
+    const results = document.getElementById('algolia-hits-wrapper');
+    results.classList.add('hidden');
+  }
+
+  function renderForbidden() {
+    const message = document.getElementById('forbidden-message');
+    message.classList.remove('hidden');
+
+    const results = document.getElementById('algolia-hits-wrapper');
+    results.classList.add('hidden');
+  }
+
   // MISC HELPER FUNCTIONS
   // ==============
   function getLabel(item) {

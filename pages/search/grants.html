@@ -81,7 +81,9 @@ permalink: /search/grants/
         </nav>
       </div>
       <div class="section section-raised z-depth-4 grey lighten-3">
-        <div class="row">
+        {% include search/algolia-template-rate-limit.html %}
+        {% include search/algolia-template-forbidden.html %}
+        <div id="algolia-hits-wrapper" class="row">
           <div class="col s12 l4"> 
             <!-- Filters / Refinements header -->
             <div class="text-muted hide-on-med-and-down">
@@ -97,11 +99,11 @@ permalink: /search/grants/
               -->
               <!-- <span class="right text-muted-max">some shiz</span> -->
             </div>
-            <div class="hide-on-med-and-down center-align">
+            <div class="hidden">
               <ul class="actions">
                 <li>
                   <span id="ais-widget-mobile-clear-all"></span>
-                  <a href="#" data-target="refinements-slide-out" class="sidenav-trigger show-on-med-and-down waves-effect waves-light button-collapse btn white grey-text text-darken-3"><i class="material-icons right">filter_list</i> Filter</a>
+                  <a href="#" data-target="refinements-slide-out" class="sidenav-trigger waves-effect waves-light button-collapse btn white grey-text text-darken-3"><i class="material-icons right">filter_list</i> Filter</a>
                 </li>
                 <li>
                   
