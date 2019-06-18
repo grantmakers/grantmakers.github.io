@@ -33,7 +33,7 @@ ready(function() {
     M.Pushpin.init(elemPP, optionsPP);
   }
 
-  const searchClient = algoliasearch('KDWVSZVS1I', 'ce4d584b0de36ca3f8b4727fdb83c658');
+  const searchClient = algoliasearch('KDWVSZVS1I', '{{ site.algolia_public_key_profiles }}');
   const facets = [
     {
       'facet': 'city',

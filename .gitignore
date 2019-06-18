@@ -4,3 +4,4 @@ _site/
 .DS_Store
 secrets.js
 node_modules/
+_config_development.yml

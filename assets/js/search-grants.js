@@ -33,7 +33,7 @@ ready(function() {
     M.Pushpin.init(elemPP, optionsPP);
   }
 
-  const searchClient = algoliasearch('QA1231C5W9', 'cd47ecb3457441878399b20acc8c3fbc');
+  const searchClient = algoliasearch('QA1231C5W9', '{{ site.algolia_public_key_grants }}');
   const facets = [
     {
       'facet': 'grantee_name',
