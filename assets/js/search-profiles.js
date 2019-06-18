@@ -102,7 +102,7 @@ ready(function() {
 
   // Define templates
   const templateHits = `{% include search/profiles/algolia-template-hits.html %}`;
-  const templateHitsEmpty = `{% include search/algolia-template-hits-empty.html %}`;
+  const templateHitsEmpty = `{% include search/profiles/algolia-template-hits-empty.html %}`;
   const templateStats = `{% include search/profiles/algolia-template-stats.html %}`;
 
   // Construct widgets

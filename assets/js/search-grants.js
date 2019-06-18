@@ -115,7 +115,7 @@ ready(function() {
   });
 
   // Define templates
-  const templateHitsEmpty = `{% include search/algolia-template-hits-empty.html %}`;
+  const templateHitsEmpty = `{% include search/grants/algolia-template-hits-empty.html %}`;
   const templateStats = `{% include search/algolia-template-stats.html %}`;
 
   // Grants
