@@ -11,6 +11,8 @@ baseurl: # Leave this blank unless your site is located on a subpath, e.g. /blog
 url: https://www.grantmakers.io # Typically http://www.yourdomain.org
 sass:
   sass_dir: assets/css/_sass
+plugins:
+  - jekyll-redirect-from
 
 # Google Analytics
 google_analytics: UA-84268197-1
