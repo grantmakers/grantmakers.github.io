@@ -1,4 +1,4 @@
-$(function() {
+(function() {
   'use strict';
 
   var canvas = document.querySelector('canvas'),
@@ -55,4 +55,4 @@ $(function() {
       context.fill();
     }
   }
-});
+})();

@@ -1,0 +1,13 @@
+<div class="hits-empty">
+  <div class="card yellow lighten-4">
+    <div class="card-content">
+      {% raw %}
+      <p>We didn't find any results for <strong>"<span>{{query}}</span>"</strong></p>
+      <p class="small text-muted-max">We searched keywords, locations, and names</p>
+      {% endraw %}
+    </div>
+  </div>
+  <div class="card-actions">
+    {% include search/search-tips.html %}
+  </div>
+</div>

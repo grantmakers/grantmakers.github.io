@@ -1,7 +1,10 @@
 {
   "parserOptions": {
     "ecmaVersion": 6,
-    "sourceType": "module",
+    "sourceType": "script",
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true
+    }
   },
   "env": {
     "browser": true,
@@ -9,6 +12,9 @@
     "commonjs": true,
     "es6": true
   },
+  "plugins": [
+    "frontmatter"
+  ],
   "rules": {
 /**
  * Strict mode
@@ -114,7 +120,7 @@
       "allowSingleLine": true
     }],
     "quotes": [
-      2, "single", "avoid-escape"    // http://eslint.org/docs/rules/quotes
+      2, "single", { "avoidEscape": true, "allowTemplateLiterals": true }    // http://eslint.org/docs/rules/quotes
     ],
     "camelcase": [2, {               // http://eslint.org/docs/rules/camelcase
       "properties": "never"

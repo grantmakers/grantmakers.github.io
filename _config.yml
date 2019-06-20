@@ -1,3 +1,6 @@
+# Note: Local Grantmakers.io development requires a _config_development.yml with local Algolia API keys
+# bundle exec jekyll serve --livereload --config _config.yml,_config_development.yml
+
 # Site settings
 # Meta tags
 title: Grantmakers.io - A Community Project
@@ -8,12 +11,18 @@ baseurl: # Leave this blank unless your site is located on a subpath, e.g. /blog
 url: https://www.grantmakers.io # Typically http://www.yourdomain.org
 sass:
   sass_dir: assets/css/_sass
+plugins:
+  - jekyll-redirect-from
 
 # Google Analytics
 google_analytics: UA-84268197-1
 
 # Algolia Link
 algolia_link: http://goto.algolia.com/l/139121/2017-10-24/26gc84
+
+# Algolia Public API Search Keys
+algolia_public_key_grants: cd47ecb3457441878399b20acc8c3fbc
+algolia_public_key_profiles: ce4d584b0de36ca3f8b4727fdb83c658
 
 # Sitewide helpers
 last_updated: '2019-05-17T15:10:52.485Z'
@@ -32,5 +41,7 @@ exclude:
   - LICENSE
   - README.md
   - node_modules
+  - package-lock.json
+  - package.json
   - scripts/
   - data/ #Note: does not affect _data folder

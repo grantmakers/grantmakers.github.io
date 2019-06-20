@@ -1,0 +1,44 @@
+{% raw %}
+  <div class="card">
+    <div class="card-content">
+      <div class="row">
+        <div class="col s6">
+          <ul class="inline-list hit-summary-icons">
+            <li class="left">
+              <i class="material-icons {{#has_recent_grants}}material-icons-active{{/has_recent_grants}} tooltipped" {{#has_recent_grants}} data-tooltip="Has recent grants"{{/has_recent_grants}}{{^has_recent_grants}} data-tooltip="No recent grants"{{/has_recent_grants}}>monetization_on</i>
+            </li>
+            <li class="left">
+              <i class="material-icons {{#is_likely_staffed}}material-icons-active{{/is_likely_staffed}} tooltipped" {{#is_likely_staffed}} data-tooltip="Is likely staffed"{{/is_likely_staffed}}{{^is_likely_staffed}} data-tooltip="No paid staff"{{/is_likely_staffed}}>account_circle</i>
+            </li>             
+            {{#website}}
+              <li class="left">
+                <a href="{{ website }}" target="_blank"><i class="material-icons material-icons-active website tooltipped" data-tooltip="Click to visit website">public</i></a>
+              </li>
+            {{/website}}
+            {{^website}}
+              <li class="left">
+                <i class="material-icons tooltipped" data-tooltip="No website listed">public</i>
+              </li>
+            {{/website}}
+          </ul>
+        </div>
+        <div class="col s6 right-align">
+          <span class="text-light tooltipped" data-tooltip="EIN">{{ ein_formatted }}</span>
+        </div>
+      </div>
+      <span class="card-title">
+        <a class="hit-name" href="https://grantmakers.io/profiles/{{ ein }}" title="View Profile">{{#helpers.highlight}}{ "attribute": "organization_name" }{{/helpers.highlight}}</a>
+      </span>
+      <p class="grantmakers-text">{{#helpers.highlight}}{ "attribute": "city" }{{/helpers.highlight}}, {{#helpers.highlight}}{ "attribute": "state" }{{/helpers.highlight}}</p>
+      <ul class="list-inline hit-summary-financials grey lighten-4">
+        <li>
+          <h6 class="text-muted">{{ assets }}<br><small>Total Assets</small></h6>
+        </li>
+        <li>
+          <h6 class="text-muted">{{ grant_median }}<br><small>Median Grant</small></h6>
+        </li>
+      </ul>
+      
+    </div>
+  </div>
+{% endraw %}

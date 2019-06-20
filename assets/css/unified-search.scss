@@ -1,0 +1,1000 @@
+---
+---
+/****************************
+Override Materialize variables
+*****************************/
+$font-stack: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif !default;
+$primary-color: #999999;
+$secondary-color: #c54e00;
+$error-color: color("yellow", "base");
+$link-color: $secondary-color !default;
+
+// Import Materialize
+@import 'materialize';
+
+// TODO Allow to pull color variables
+// e.g. currently cannot use $blue-grey
+
+/****************************
+Grid Sizes
+*****************************/
+
+// Materialize naming scheme
+$small-screen-up: 601px !default; // Mobile
+$medium-screen-up: 993px !default; // Tablet
+$large-screen-up: 1201px !default; // Desktop
+$small-screen: 600px !default;
+$medium-screen: 992px !default;
+$large-screen: 1200px !default;
+
+$medium-and-up: "only screen and (min-width : #{$small-screen-up})" !default;
+$large-and-up: "only screen and (min-width : #{$medium-screen-up})" !default;
+$extra-large-and-up: "only screen and (min-width : #{$large-screen-up})" !default;
+$small-and-down: "only screen and (max-width : #{$small-screen})" !default;
+$medium-and-down: "only screen and (max-width : #{$medium-screen})" !default;
+$medium-only: "only screen and (min-width : #{$small-screen-up}) and (max-width : #{$medium-screen})" !default;
+
+/****************************
+Custom colors
+*****************************/
+
+$grantmakers: #c54e00; // Consider using default Material Design color: deep-orange darken-3 #d84315
+$grantmakers-medium: #F56A10;
+$grantmakers-light: #FB8F48;
+$grantmakers-lightest: lighten($grantmakers-light, 30%);
+$grantmakers-dark: #A13F00;
+$grantmakers-darker: #772F00;
+
+$grantmakers-secondary: #607d8b; // .grey-blue
+$grantmakers-secondary-accent: #03a9fa; // .light-blue
+
+.grantmakers-color-bg, .btn-grantmakers, .grantmakers {
+	background-color: $grantmakers !important;
+}
+
+.btn-grantmakers:hover {
+	background-color: darken($grantmakers, 5%);
+}
+
+.grantmakers-color, .grantmakers-text {
+	color: $grantmakers !important;
+}
+
+/*
+a:not(.btn):not(.btn:hover) {
+	color: $grantmakers;
+}
+*/
+
+.disable-primary-color {
+	color: inherit !important;
+}
+
+/****************************
+Main body color
+*****************************/
+body.unified-search {
+  @extend .grey, .lighten-2;
+}
+
+/****************************
+Helpers
+*****************************/
+/* Sitewide helpers */
+$accent-color: $grantmakers;
+$divider-color: #e0e0e0;
+$divider-color-dark: #bdbdbd;
+// $text-muted: #757575;
+// $text-muted-max: #9e9e9e;
+$text-muted: #424242;
+$text-muted-max: #757575;
+$text-color: rgba(0,0,0,0.87);
+.link-underline:hover {
+  text-decoration: underline;
+}
+.btn, .accent {
+  background-color: $accent-color;
+}
+.text-default {
+  color: $text-color;
+}
+.text-muted {
+  color: $text-muted !important;
+}
+.text-muted-max {
+  color: $text-muted-max !important;
+}
+.text-bold {
+  font-weight: 700;
+}
+.text-light, .text-thin {
+  font-weight: 300;
+}
+.accent-text {
+  color: $accent-color;
+}
+.small {
+  font-size: 85% !important;
+}
+.hidden {
+  display: none;
+}
+.no-wrap, .text-nowrap {
+  white-space: nowrap;
+}
+.modal:focus {
+	outline: 0;
+}
+.container-custom {
+	margin-right: auto;
+	margin-left: auto;
+	padding-left: 15px;
+	padding-right: 15px;
+	@media #{$large-and-up} {
+		width: 970px;
+	}
+	@media #{$extra-large-and-up} {
+		width: 1170px;
+	}
+}
+/* Tooltip styling - Uses material-kit for inspiration */
+/*
+.material-tooltip {
+  color: #555555;
+  font-size: 85%;
+  line-height: 1.5em;
+  background: #FFFFFF;
+  border: none;
+  box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.2);
+}
+*/
+ol.striped {
+  li:nth-of-type(even) {
+    @extend .grey, .lighten-4;
+  }
+}
+.divider-no-margin {
+  margin: 0 !important;
+}
+.row-tight {
+  margin-bottom: 0;
+}
+/* Icon helpers */
+i.icon-idea {
+  transform: rotate(180deg);
+  margin-right: 5px;
+  vertical-align: sub;
+}
+i.material-icons-rounded {
+  border-radius: 50%;
+  padding-top: 1px;
+}
+i.md-18 {
+  font-size: 18px;
+}
+
+/* Inline lists */
+.list-inline {
+  padding-left: 0;
+  // margin-left: -5px;
+  list-style: none;
+}
+.list-inline > li {
+  display: inline-block;
+  padding-right: 5px;
+  padding-left: 5px;
+}
+
+/* Clear browser defaults */
+.clear-browser-default-button button {
+  align-items: inherit;
+  text-align: inherit;
+  cursor: inherit;
+  color: inherit;
+  background-color: inherit;
+  box-sizing: inherit;
+  padding: inherit;
+  border-width: inherit;
+  border-style: inherit;
+  border-color: inherit;
+  border-image: inherit;
+}
+
+
+/****************************
+Layout
+*****************************/
+header {
+  z-index: 996;
+}
+main {
+  z-index: 995;
+  position: relative;
+  top: -64px;
+}
+canvas {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+/* Sticky Footer */
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+main {
+  flex: 1 0 auto;
+}
+#ais-widget-hits {
+  min-height: 300px;
+  // TODO Set min-height programatically
+  @media screen and (min-height: 600px) {
+    min-height: 400px;
+  }
+  @media screen and (min-height: 800px) {
+    min-height: 600px;
+  }
+  @media screen and (min-height: 1000px) {
+    min-height: 800px;
+  }
+}
+
+/****************************
+Algolia theme overrides
+*****************************/
+// Use these if using algolia-theme
+/*
+.ais-Hits-item, .ais-Results-item {
+  margin-top: inherit;
+  margin-left: inherit;
+  padding: inherit;
+  width: inherit;
+  border: inherit;
+  box-shadow: inherit;
+}
+
+.ais-Breadcrumb, .ais-ClearRefinements, .ais-CurrentRefinements, .ais-GeoSearch, .ais-HierarchicalMenu, .ais-Hits, .ais-HitsPerPage, .ais-InfiniteHits, .ais-InfiniteResults, .ais-Menu, .ais-MenuSelect, .ais-NumericMenu, .ais-NumericSelector, .ais-Pagination, .ais-Panel, .ais-PoweredBy, .ais-RangeInput, .ais-RangeSlider, .ais-RatingMenu, .ais-RefinementList, .ais-Results, .ais-ResultsPerPage, .ais-SearchBox, .ais-SortBy, .ais-Stats, .ais-ToggleRefinement {
+  color: inherit;
+}
+
+.ais-Stats-text {
+  font-size: inherit;
+}
+*/
+
+/****************************
+Mimic Algolia them - only the good parts
+*****************************/
+// Use these if NOT using algolia-theme
+.ais-CurrentRefinements-delete, .ais-CurrentRefinements-reset, .ais-GeoSearch-redo, .ais-GeoSearch-reset, .ais-HierarchicalMenu-showMore, .ais-InfiniteHits-loadMore, .ais-InfiniteResults-loadMore, .ais-Menu-showMore, .ais-RangeInput-submit, .ais-RefinementList-showMore, .ais-SearchBox-reset, .ais-SearchBox-submit {
+  padding: 0;
+  overflow: visible;
+  font: inherit;
+  line-height: normal;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+[class^=ais-] {
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+.ais-SearchBox-form {
+  display: block;
+  position: relative;
+}
+.ais-SearchBox-loadingIndicator, .ais-SearchBox-reset, .ais-SearchBox-submit {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  position: absolute;
+  z-index: 1;
+  width: 20px;
+  height: 20px;
+  top: 50%;
+  right: .3rem;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+.ais-SearchBox-submit {
+  left: .3rem;
+}
+.ais-SearchBox-submitIcon {
+  width: 14px;
+  height: 14px;
+}
+.ais-SearchBox-loadingIcon, .ais-SearchBox-resetIcon, .ais-SearchBox-submitIcon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
+}
+.ais-Highlight-highlighted, .ais-Snippet-highlighted {
+  background-color: lighten($accent-color, 50%); // Target color: #feebde
+  font-size: inherit !important;
+  color: inherit !important;
+}
+.grants-search-bg {
+  background-color: $grantmakers-secondary-accent !important;
+}
+.grants-search-text {
+  color: $grantmakers-secondary-accent !important;
+}
+.li-grants-search {
+  .ais-Highlight-highlighted, .ais-Snippet-highlighted {
+    background-color: #e3f4fb;
+    font-size: inherit !important;
+    color: inherit !important;
+  }
+}
+/****************************
+Page styling
+*****************************/
+/* Navbar */
+nav.navbar-unified-search {
+  background-color: transparent!important;
+  border-color: transparent!important;
+  box-shadow: none!important;
+  .collection {
+    margin: 0;
+    border: none;
+    border-radius:inherit;
+    .collection-item {
+      background-color: inherit;
+      min-height: inherit;
+      border-bottom: none;
+      // padding: inherit;
+      &.avatar {
+        padding-left: 64px;
+        padding-top: 12px;
+        padding-bottom: 0;
+        .circle {
+          font-size: 18px;
+          position: absolute;
+          width: 35px;
+          height: 35px;
+          line-height: 36px;
+          overflow: hidden;
+          left: 15px;
+          display: inline-block;
+          vertical-align: middle;
+        }
+        .title {
+          font-size: inherit;
+        }
+      }
+      a {
+        padding:0;
+        &:hover {
+          background-color: inherit;
+        }
+      }
+      
+      p {
+        line-height: 1rem;
+      }
+    }
+
+  }
+}
+nav .logo-container {
+  padding: 5px 0;
+  display: inline-block;
+}
+.logo-container .logo {
+  border: 0;
+  width: 50px;
+  height: 50px;
+  float: left;
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+.logo-container .brand {
+  font-size: 16px;
+  color: #FFFFFF;
+  line-height: 32px;
+  float: left;
+  margin-left: 10px;
+  margin-top: 10px;
+  width: 70px;
+  height: 40px;
+  text-align: left;
+}
+.brand-logo {
+  display: inline-block;
+  height: 100%;
+}
+@media only screen and (max-width: 992px) {
+  nav .brand-logo {
+    left: inherit;
+    transform: inherit;
+  }
+}
+nav.nav-center ul.ul-center {
+  text-align: center;
+}
+nav.nav-center ul.ul-center li {
+  display: inline-block;
+  float: none;
+}
+nav.nav-center ul.ul-center li .ais-search-box {
+  display: inline-block;
+}
+
+/* Hero */
+$parallax-height: 75vh;
+.parallax-container {
+  height: $parallax-height;
+  // top: -64px;
+}
+.overlay {
+  background: rgba(44,45,51,0.8);
+  background: linear-gradient(rgba(44,45,51,0.8), rgba(44,45,51,0.8));
+  background: -moz-linear-gradient(rgba(44,45,51,0.8), rgba(44,45,51,0.8));
+  background: -webkit-linear-gradient(rgba(44,45,51,0.8), rgba(44,45,51,0.8));
+}
+.parallax {
+  position: relative;
+}
+.parallax img {
+  object-fit: cover;
+}
+.intro {
+  height: $parallax-height;
+  .intro-text {
+    margin: auto;
+    z-index: 1;
+    h1 {
+      margin-bottom: 10px;
+    }
+    h5 {
+      font-weight: 300;
+    }
+    p {
+      font-weight: 300;
+    }
+  }
+}
+
+/* Searchbar */
+.nav-search {
+  height: 64px;
+}
+.nav-search nav {
+  margin-bottom: 10px;
+  z-index: 3;
+}
+.nav-search nav.pinned {
+  width: 100%;
+  z-index: 3;
+}
+.nav-search .nav-wrapper {
+  padding: 0 15px;
+}
+
+/* Search toggle / dropdown */
+#search-toggle {
+  height: 64px;
+  select {
+    @extend .grantmakers;
+    &.grants-search {
+      @extend .blue-grey;
+    }
+    outline: none;
+  }
+  // Can remove select-wrapper if using browser-default class
+  .select-wrapper {
+    height: 3rem;
+    position: relative; // HACK
+    left: 2px; // HACK
+    bottom: 2px; // HACK
+    border: none;
+    // box-shadow: none;
+    // box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+    input {
+      border: none;
+      color: white;
+    }
+  }
+  .caret {
+    z-index: 1;
+    fill: white;
+  }
+  ul {
+    width: 200px;
+  }
+  .optgroup {
+    &:hover {
+      background-color: white;
+      cursor: default;
+    }
+    span {
+      font-size: 0.8rem;
+    }
+  }
+  .optgroup-option {
+    span {
+      color: $accent-color;
+      padding-left: 0;
+    }
+  }
+}
+
+/* Search box */
+#ais-widget-search-box {
+  .ais-SearchBox-submit {
+    height: 3rem; // HACK icon is still too low by a few pixels
+    &:hover {
+      cursor: default;
+    }
+  }
+  .ais-SearchBox-submitIcon, .ais-SearchBox-resetIcon, .ais-SearchBox-loadingIcon {
+    fill: $text-muted;
+    width: 16px;
+    height: 16px;
+  }
+  input {
+    width: calc(100% - 40px);
+    padding-left: 40px;
+    background-color: white;
+    border: none;
+    box-shadow: none;
+    margin-bottom: 0;
+    border-radius: 3px;
+  }
+  input::placeholder {
+    color: $text-muted-max;
+  }
+}
+
+@media screen and (min-width: 993px) {
+  .ais-SearchBox {
+    min-width: 400px;
+    margin: auto; // center
+  }
+}
+.ais-SearchBox-submit, .ais-SearchBox-reset {
+  &:focus {
+    background-color: white;
+  }
+}
+
+#powered-by {
+  height: 64px; 
+  .ais-PoweredBy {
+    height: 100%;
+  }
+}
+
+/* Results wrapper */
+.section-raised {
+  position: relative; // For 'try it' tips positioning
+  margin: 0px 15px 0px;
+  border-radius: 6px;
+  @media screen and (min-width: 993px) {
+    margin: 0px 30px 0px;
+    padding-top: 3rem;
+    min-height: 470px;
+  }
+
+  .divider {
+    margin-bottom: 0.5rem; // improve spacing - doubles 0.5rem card default
+  }
+}
+
+/* Stats */
+.ais-Stats-text span {
+  &:before {
+    content: "(";
+  }
+  &:after {
+    content: ")"
+  }
+  //display: none;
+}
+
+/* Search tips modal */
+#modal-tips {
+  .modal-content {
+    padding: 0;
+  }
+  .card-search-tips {
+    margin: 0;
+  }
+}
+/* Search tips card */
+.card-search-tips { // TODO Change naming convention to create new global icon (e.g. material-icons-idea)
+  .card-header {
+    padding: 16px 24px; // Match card-content spacing
+    border-radius: 2px 2px 0px 0px;
+    i {
+      font-size: 18px;
+    }
+  }
+  .divider {
+    margin: 1rem 0;
+  }
+  ul.search-details-header {
+    margin-bottom: 0.5rem;
+  }
+  ul.search-details-content {
+    margin-left: calc(24px + 15px);
+    margin-top: 0;
+    padding: 12px 18px;
+    li:first-child {
+      text-transform: uppercase;
+      // font-weight: bold;
+      // color: #9e9e9e; // TODO This should be default text-muted (but current text-muted is too dark)
+      // text-decoration: underline solid $text-muted-max;
+    }
+  }
+}
+
+/* Current Refinements */
+#ais-widget-current-refined-values {
+  ul li {
+    margin-right: 0.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    padding: 0px 10px;
+  }
+  .btn:hover {
+    background-color: $grantmakers;
+  }
+  .ais-CurrentRefinements-category {
+    padding-left: 5px;
+  }
+  button {
+    padding-left: 5px;
+    line-height: 100%;
+    &:before {
+      font-family: "Material Icons";
+      content: "remove_circle";
+      color: white;
+      vertical-align: top;
+    } 
+    &:focus {
+      background-color: inherit;
+      color: inherit;
+    }
+  }
+}
+
+/* Hits */
+/* Profiles */
+.hit-summary-icons i.material-icons {
+  @extend .grey-text, .text-lighten-3;
+  &:hover {
+    cursor: default;
+  }
+}
+.hit-summary-icons i.material-icons-active {
+  @extend .grantmakers-text;
+}
+.hit-summary-icons i.website {
+  &:hover {
+    cursor: pointer;
+  }
+}
+a.hit-name {
+  color: $text-color;
+  &:hover{ 
+    @extend .grantmakers-text;
+  }
+}
+.hit-summary-financials {
+  margin-top: 20px; // Match row bottom margin spacing
+  li {
+    padding-left: 15px;
+  }
+  h6 small {
+    font-weight: 300;
+  }
+}
+/* Grants Search */
+/* Refinements */
+.grants-search {
+  [type="checkbox"].filled-in:checked + span:not(.lever):after {
+    border: 2px solid $grantmakers-secondary-accent;
+    background-color: $grantmakers-secondary-accent;
+  }
+  .ais-RefinementList-item--selected {
+    label span {
+      color: $grantmakers-secondary-accent;
+    }
+  }
+  .ais-RefinementList-labelText mark {
+    background-color: #e3f4fb;
+  }
+  .ais-ClearRefinements-button {
+    // background color adjusted in instantsearch
+  }
+}
+/* Hits */
+.card-grants-search #ais-widget-hits {
+  
+  .card-content {
+    padding: 2rem;
+  }
+  .ais-Hits-item {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+  .ais-Hits-item a {
+    color: $text-color;
+    &:hover {
+      color: $grantmakers-secondary-accent;
+    }
+    @media #{$medium-and-down} {
+      white-space: normal;
+    }
+  }
+  .ais-Hits-item .row {
+    margin-bottom: 0;
+  }
+  li.li-grants-hits {
+    padding: 1rem;
+    padding-right: 0rem; // HACK Only works if using col m1 strategy for icon
+    border-bottom: 1px solid $divider-color;
+    &:last-child {
+      border: none;
+    } 
+  }
+  .row-grant-names {
+    margin-bottom: 5px;
+  }
+  .grant-purpose {
+    margin-top: 1rem;
+  }
+  .modal {
+    .modal-algolia-hit-label {
+      font-size: 85%;
+      color: $text-muted-max;
+    }
+    p {
+      margin-bottom: 1rem;
+    }
+    h5 {
+      margin-top: 0px;
+      margin-bottom: 2rem;
+    }
+  }
+}
+/* Pagination */
+#ais-widget-pagination.grants-search {
+  .pagination li.active {
+    background-color: $grantmakers-secondary;
+  }
+}
+
+/* Empty Hits */
+
+/* Refinements */
+.switch-refinements {
+  label input[type=checkbox]:checked + .lever {
+    background-color: #84c7c1;
+  }
+  label .lever:before {
+    background-color: rgba(38,166,154,0.15);
+  }
+  label input[type=checkbox]:checked + .lever:after {
+    background-color: #26a69a;
+  }
+}
+
+/* Range Slider */
+.ais-RangeSlider .rheostat-progress {
+  @extend .blue-grey;
+}
+
+/* Range Input */
+.input-algolia {
+  background-color: white !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 3px !important;
+  border-bottom: none !important;
+  height: 2rem !important;
+  width: 7rem !important;
+  margin: 0 10px !important;
+  padding-left: 0.5rem !important;
+  &:focus {
+    border-bottom: 0 !important;
+    box-shadow: none !important;
+  }
+  &.ais-RangeInput-input--min {
+    margin-left: 0px !important;
+  }
+}
+#range-input-helpers {
+  height: 1.5rem;
+  padding-left: 1rem;
+  font-size: 60%;
+  color: $text-muted-max;
+  position: relative;
+  bottom: 20px;
+  left: -5px;
+  ul, li {
+    margin: 0;
+    padding: 0;
+  }
+  #range-input-helper-max {
+    position: relative;
+    left: 110px; // TODO HACK
+  }
+}
+// HACK
+#ais-widget-refinement-list--grantee_name {
+  .card-header {
+    padding: 0;
+  }
+}
+
+.section-refinements {
+  .card {
+    background-color: transparent;
+    box-shadow: none;
+  }
+  .card-header {
+    padding: 24px 10px 0 0;
+    border-radius: 2px 2px 0px 0px;
+    text-transform: uppercase;
+    border-bottom: 1px solid $divider-color;
+    @media #{$medium-and-down} {
+      padding: 0 0 0 10px;
+    }
+  }
+  .card-content {
+    padding: 8px 0px;
+    border-radius: 0 0 2px 2px;
+  }
+  .ais-RefinementList-searchBox .ais-SearchBox {
+    min-width: inherit;
+    input {
+      background-color: white;
+      border: none;
+      box-shadow: none;
+      border-radius: 3px;
+      border-bottom: none;
+      height: 2rem;
+      &:focus {
+        border-bottom: 0;
+        box-shadow: none;
+      }
+      button.ais-SearchBox-reset {
+        top: 40% // HACK
+      }
+    }
+  }
+  label {
+    color: $text-color;
+  }
+  .ais-RefinementList-count {
+    height: 25px;
+    line-height: 25px;
+  }
+  li.ais-RefinementList-item {
+    clear: both;
+    @media #{$medium-and-down} {
+      height: 2rem;
+      line-height: 2rem;
+    }
+  }
+  .ais-RefinementList-labelText {
+    width: 80%;
+  }
+  &.profiles-search {
+    .ais-RefinementList-item--selected {
+      label span {
+        color: $grantmakers;
+      }
+    }
+    .ais-RefinementList-labelText mark {
+      background-color: #e3f4fb;
+    }
+  }
+  &.grants-search {
+    
+  }
+}
+/* Mobile Refinememnts */
+#refinements-slide-out {
+  .ais-Panel.card {
+    margin: 0;
+  }
+  .ais-Panel-body.card-content {
+    padding: 10px;
+  }
+}
+
+/* Clear all */
+.btn-custom {
+  &:hover {
+    background-color: #e3f4fb;
+  }
+}
+
+/* Pagination */
+.pagination li.active {
+  background-color: $grantmakers;
+}
+.pagination {
+  .disabled {
+    visibility: hidden;
+  }
+}
+.ais-Pagination-list {
+  display: inherit;
+}
+
+// http://maxdesign.com.au/articles/simple-responsive-table/
+.responsive-table-wrapper {
+	width: 100%;
+	overflow-y: auto;
+	_overflow: auto;
+	margin: 0 0 1em;
+}
+
+.responsive-table-wrapper::-webkit-scrollbar {
+	-webkit-appearance: none;
+	width: 14px;
+	height: 14px;
+}
+
+.responsive-table-wrapper::-webkit-scrollbar-thumb {
+	border-radius: 8px;
+	border: 3px solid #fff;
+	background-color: rgba(0, 0, 0, .3);
+}
+
+/* Footer */
+footer ul li {
+	display: inline-block;
+}
+
+footer ul li a {
+	color: inherit !important;
+	padding: 15px;
+	font-weight: 500;
+	font-size: 12px;
+	text-transform: uppercase;
+	border-radius: 3px;
+	text-decoration: none;
+	position: relative;
+	display: block;
+}
+
+footer .copyright {
+	margin: 15px 0;
+	padding: 15px 0;
+  font-size: 14px;
+  font-weight: 300;
+	.material-icons {
+    font-size: 14px;
+    vertical-align: middle;
+	}
+}
+
+.footer-terms {
+  @extend .grey, .darken-2;
+  @extend .grey-text, .text-lighten-1;
+	.row {
+		margin: 0;
+	}
+	ul {
+		margin: 5px 0;
+	}
+	a {
+    @extend .grey-text, .text-lighten-1;
+	}
+}
