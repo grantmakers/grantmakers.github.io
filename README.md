@@ -1,11 +1,8 @@
 # Grantmakers.io - A Community Project
 
-[![Stories in Ready](https://badge.waffle.io/grantmakers/grantmakers.github.io.png?label=ready&title=Ready)](http://waffle.io/grantmakers/grantmakers.github.io)
-
-The Grantmakers.io project is spread across three repos:  
+The Grantmakers.io project is spread across two repos:  
 1. Foundation Search (this repo)
 1. [Foundation Profiles](https://github.com/grantmakers/profiles)
-1. [Grant Search](https://github.com/grantmakers/charity-search)    
 
 ## Goal  
 Demonstrate how open source technologies + hosted microservices can be leveraged to minimize the cost of hosting and sharing philanthropic data.
@@ -13,22 +10,24 @@ Demonstrate how open source technologies + hosted microservices can be leveraged
 Grantmakers.io was built at zero cost and has zero ongoing costs.  
 
 ## Search  
-The search functionality is fully hosted by [Algolia](https://www.algolia.com/). See [`/assets/js/search.js`](https://github.com/grantmakers/grantmakers.github.io/blob/master/assets/js/search.js).  
+The search functionality is fully hosted by [Algolia](https://www.algolia.com/). See [`/assets/js/search-profiles.js`](https://github.com/grantmakers/grantmakers.github.io/blob/master/assets/js/search-profiles.js).
 
 ## Data  
-All data is pulled directly from machine-readable IRS Form 990PF. These files are [hosted publicly by Amazon Web Services](https://aws.amazon.com/public-datasets/irs-990/).
+All data is pulled directly from machine-readable IRS Form 990PF. These files are [hosted publicly by Amazon Web Services](https://registry.opendata.aws/irs990/) and controlled by the IRS.
 
 Download link for the normalized data we sync with Algolia:  
 [JSON | 166MB](https://drive.google.com/open?id=0B_ODHXi37sCcTEFhWmdvX3V3MzA)
 
-Download link for the entire MongoDB database (includes index data, filing data, and normalized data:  
+Download link for the entire MongoDB 990PF database (includes index data, filing data, and normalized data:  
 [BSON | 5GB - please email us for a link](mailto:opensource@grantmakers.io)
+
+To develop your own database, we've published our [Node + MongoDB scripts](https://github.com/smartergiving/irs-990-fetch). Check out the [Nonprofit Open Data Collective](https://github.com/Nonprofit-Open-Data-Collective/irs-990-efiler-database) or do a search on Github if you prefer other platforms.
 
 ## Feature Requests
 If you have a question, feature request, find a bug, or just want to say hi, please open an [issue on GitHub](https://github.com/grantmakers/grantmakers.github.io/issues).
 
 ## Roadmap  
-The roadmap is [openly available](https://waffle.io/grantmakers/grantmakers.github.io)
+Grantmakers.io is developed in the open and uses Github Issues at its core. To view the prioritized list across all repos, simply download the [Zenhub browser extension](https://www.zenhub.com/extension).
 
 ## Tools  
 Cross-browser compatibility provided by [BrowserStack](https://browserstack.com)  
@@ -42,7 +41,7 @@ Cross-browser compatibility provided by [BrowserStack](https://browserstack.com)
 - Images: [Unsplash](https://unsplash.com/)
 
 ## License
-Copyright 2016-2018 Chad Kruse, SmarterGiving
+Copyright 2016-2019 Chad Kruse, SmarterGiving
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
