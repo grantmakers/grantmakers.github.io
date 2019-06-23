@@ -554,6 +554,9 @@ $parallax-height: 75vh;
   }
   input::placeholder {
     color: $text-muted-max;
+    @media #{$medium-and-down} {
+      font-size: 85%;
+    }
   }
 }
 
@@ -594,6 +597,9 @@ $parallax-height: 75vh;
 
 /* Stats */
 .ais-Stats-text span {
+  @media #{$medium-and-down} {
+    display: none;
+  }
   &:before {
     content: "(";
   }
