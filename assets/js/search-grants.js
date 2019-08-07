@@ -51,6 +51,10 @@ ready(function() {
       'facet': 'grantee_state',
       'label': 'State',
     },
+    {
+      'facet': 'grant_amount',
+      'label': 'Amount',
+    },
   ];
 
   // Define toggle helpers
@@ -76,7 +80,7 @@ ready(function() {
     // 'routing': true,
     'routing': {
       'stateMapping': {
-        stateToRoute({query, refinementList, page}) { // could also use stateToRoute(uiState)
+        stateToRoute({query, refinementList, range, page}) { // could also use stateToRoute(uiState)
           return {
             'query': query,
             'grantee_name':
@@ -95,6 +99,10 @@ ready(function() {
               refinementList &&
               refinementList.grantee_state &&
               refinementList.grantee_state.join('~'),
+            'grant_amount':
+              range &&
+              range.grant_amount &&
+              range.grant_amount.replace(':', '~'),
             'page': page,
           };
         },
@@ -106,6 +114,9 @@ ready(function() {
               'organization_name': routeState.organization_name && routeState.organization_name.split('~'),
               'grantee_city': routeState.grantee_city && routeState.grantee_city.split('~'),
               'grantee_state': routeState.grantee_state && routeState.grantee_state.split('~'),
+            },
+            'range': {
+              'grant_amount': routeState.grant_amount && routeState.grant_amount.replace('~', ':'),
             },
             'page': routeState.page,
           };
@@ -182,7 +193,7 @@ ready(function() {
   search.addWidget(
     instantsearch.widgets.currentRefinements({
       'container': '#ais-widget-current-refined-values',
-      'includedAttributes': ['grantee_name', 'organization_name', 'grantee_city', 'grantee_state'],
+      'includedAttributes': ['grantee_name', 'organization_name', 'grantee_city', 'grantee_state', 'grant_amount'],
       'cssClasses': {
         'list': 'list-inline',
         'item': ['btn', 'blue-grey'],
@@ -199,8 +210,49 @@ ready(function() {
     })
   );
 
+  const rangeSliderWithPanel = instantsearch.widgets.panel({
+    'templates': {
+      'header': 'Amount',
+    },
+    hidden(options) {
+      return options.results.nbHits === 0;
+    },
+    'cssClasses': {
+      'root': 'card',
+      'header': [
+        'card-header',
+        // 'grey',
+        // 'lighten-4',
+      ],
+      'body': 'card-content',
+    },
+  })(instantsearch.widgets.rangeInput);
+
+  /* Range Slider */
+  search.addWidget(
+    rangeSliderWithPanel({
+      'container': '#ais-widget-range-slider',
+      'attribute': 'grant_amount',
+      // 'min': 0,
+      // 'max': 500000000,
+      'tooltips': {
+        'format': function(rawValue) {
+          return `$${numberHuman(rawValue, 0)}`;
+        },
+      },
+      'pips': false,
+      'cssClasses': {
+        'submit': ['btn-flat', 'blue-grey', 'white-text'],
+      }
+    })
+  );
+
   /* Create all other refinements */
   facets.forEach((refinement) => {
+    // Amount handled by range widget
+    if (refinement.facet === 'grant_amount') {
+      return;
+    }
     const refinementListWithPanel = instantsearch.widgets.panel({
       'templates': {
         'header': refinement.label,

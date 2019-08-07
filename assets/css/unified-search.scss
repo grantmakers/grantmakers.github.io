@@ -912,6 +912,28 @@ a.hit-name {
   &.grants-search {
     
   }
+  .ais-RangeInput {
+    input {
+      width: unset;
+      height: 2rem;
+      margin: 0 10px;
+      padding: 0 10px;
+      border: none;
+      border-radius: 2px;
+      background-color: white;
+      &:focus {
+        border-bottom: none !important;
+        box-shadow: none !important;
+      }
+    }
+    label:first-child input {
+      margin-left: 0;
+    }
+    button {
+      height: 2rem;
+      padding: 0 5px
+    }
+  }
 }
 /* Mobile Refinememnts */
 #refinements-slide-out {
