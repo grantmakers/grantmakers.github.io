@@ -243,7 +243,7 @@ ready(function() {
       'pips': false,
       'cssClasses': {
         'submit': ['btn-flat', 'blue-grey', 'white-text'],
-      }
+      },
     })
   );
 
