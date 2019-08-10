@@ -933,6 +933,26 @@ a.hit-name {
       height: 2rem;
       padding: 0 5px
     }
+    // Hide input placeholder
+    ::-webkit-input-placeholder {
+      /* WebKit browsers */
+      color: white;
+    }
+    :-moz-placeholder {
+        /* Mozilla Firefox 4 to 18 */
+        color: white;
+    }
+    ::-moz-placeholder {
+        /* Mozilla Firefox 19+ */
+        color: white;
+    }
+    :-ms-input-placeholder {
+        /* Internet Explorer 10+ */
+        color: white;
+    } 
+    input::placeholder {
+      color: white;
+    }
   }
 }
 /* Mobile Refinememnts */
