@@ -648,31 +648,32 @@ $parallax-height: 75vh;
 
 /* Current Refinements */
 #ais-widget-current-refined-values {
+  ul {
+    margin-top: 10px;
+    margin-bottom: 0px;
+    &:empty {
+      margin-top: 0px;
+    }
+  }
   ul li {
-    margin-right: 0.5rem;
-    margin-top: 0.5rem;
+    margin: 0;
+    // margin-right: 0.5rem;
+    // margin-top: 0.5rem;
     margin-bottom: 0.5rem;
-    padding: 0px 10px;
+    padding: 0px 2px;
+    max-width: 100%; // Allows for adding truncate class to button
+    button {
+      max-width: 100%; // Allows for adding truncate class
+    }
   }
   .btn:hover {
     background-color: $grantmakers;
   }
+  .ais-CurrentRefinements-label {
+    font-size: 85%;
+  }
   .ais-CurrentRefinements-category {
     padding-left: 5px;
-  }
-  button {
-    padding-left: 5px;
-    line-height: 100%;
-    &:before {
-      font-family: "Material Icons";
-      content: "remove_circle";
-      color: white;
-      vertical-align: top;
-    } 
-    &:focus {
-      background-color: inherit;
-      color: inherit;
-    }
   }
 }
 

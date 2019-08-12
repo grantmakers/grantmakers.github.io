@@ -190,26 +190,6 @@ ready(function() {
     })
   );
 
-  search.addWidget(
-    instantsearch.widgets.currentRefinements({
-      'container': '#ais-widget-current-refined-values',
-      'includedAttributes': ['grantee_name', 'organization_name', 'grantee_city', 'grantee_state', 'grant_amount'],
-      'cssClasses': {
-        'list': 'list-inline',
-        'item': ['btn', 'blue-grey'],
-        'label': ['small'],
-        'categoryLabel': 'text-bold',
-        'delete': 'blue-grey-text',
-      },
-      transformItems(items) {
-        return items.map(item => ({
-          ...item,
-          'label': getLabel(item),
-        }));
-      },
-    })
-  );
-
   const rangeSliderWithPanel = instantsearch.widgets.panel({
     'templates': {
       'header': 'Amount',
@@ -329,6 +309,50 @@ ready(function() {
     );
     */
   });
+
+  /* Current Refinements */
+  const createDataAttribtues = refinement =>
+    Object.keys(refinement)
+      .map(key => `data-${key}="${refinement[key]}"`)
+      .join(' ');
+
+  const renderListItem = item => `
+    ${item.refinements.map(refinement => `
+      <li>
+        <button class="waves-effect btn blue-grey lighten-3 grey-text text-darken-3 truncate" ${createDataAttribtues(refinement)}><i class="material-icons right">remove_circle</i><small>${getLabel(item.label)}</small> ${formatIfRangeLabel(refinement)} </button>
+      </li>
+    `).join('')}
+  `;
+
+  const renderCurrentRefinements = (renderOptions) => {
+    const { items, refine, widgetParams } = renderOptions;
+
+    widgetParams.container.innerHTML = `<ul class="list list-inline">${items.map(renderListItem).join('')}</ul>`;
+
+    [...widgetParams.container.querySelectorAll('button')].forEach(element => {
+      element.addEventListener('click', event => {
+        const item = Object.keys(event.currentTarget.dataset).reduce(
+          (acc, key) => ({
+            ...acc,
+            [key]: event.currentTarget.dataset[key],
+          }),
+          {}
+        );
+
+        refine(item);
+      });
+    });
+  };
+
+  const customCurrentRefinements = instantsearch.connectors.connectCurrentRefinements(
+    renderCurrentRefinements
+  );
+
+  search.addWidget(
+    customCurrentRefinements({
+      'container': document.querySelector('#ais-widget-current-refined-values'),
+    })
+  );
 
   search.addWidget(
     instantsearch.widgets.clearRefinements({
@@ -454,8 +478,17 @@ ready(function() {
   // MISC HELPER FUNCTIONS
   // ==============
   function getLabel(item) {
-    const obj = facets.filter(each => each.facet === item.attribute);
+    const obj = facets.filter(each => each.facet === item);
     return obj[0].label;
+  }
+
+  function formatIfRangeLabel(refinement) {
+    console.log(refinement);
+    if (refinement.attribute !== 'grant_amount') {
+      return refinement.label;
+    } else {
+      return `${refinement.operator} $${numberHuman(refinement.value)}`;
+    }
   }
 
   function numberHuman(num, decimals) {
