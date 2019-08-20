@@ -531,7 +531,7 @@ $parallax-height: 75vh;
 }
 
 /* Search box */
-#ais-widget-search-box {
+#ais-widget-search-box, *[id^='ais-widget-refinement-list'] {
   .ais-SearchBox-submit {
     height: 3rem; // HACK icon is still too low by a few pixels
     &:hover {
@@ -788,6 +788,10 @@ a.hit-name {
 
 /* Refinements */
 .switch-refinements {
+  &.switch label .lever {
+    margin-left: 5px;
+    margin-right: 0px;
+  }
   label input[type=checkbox]:checked + .lever {
     background-color: #84c7c1;
   }
@@ -874,12 +878,19 @@ a.hit-name {
       border-radius: 3px;
       border-bottom: none;
       height: 2rem;
+      width: calc(100% - 30px) !important;
+      padding-left: 30px;
       &:focus {
         border-bottom: 0;
         box-shadow: none;
       }
-      button.ais-SearchBox-reset {
-        top: 40% // HACK
+    }
+    button {
+      height: 2rem;
+      top: 40%; // HACK
+      .ais-SearchBox-resetIcon {
+        width: 14px;
+        height: 14px;
       }
     }
   }
@@ -926,6 +937,12 @@ a.hit-name {
         border-bottom: none !important;
         box-shadow: none !important;
       }
+    }
+    // Hide number spinners
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+      -webkit-appearance: none; 
+      margin: 0; 
     }
     label:first-child input {
       margin-left: 0;

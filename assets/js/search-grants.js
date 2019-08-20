@@ -70,6 +70,11 @@ ready(function() {
     window.location.href = '/search/profiles/';
   };
 
+  // Toogle advanced search tools
+  // Handled in search.once InstantSearch event
+  const toggleAdvancedElem = document.querySelector('.search-toggle-advanced input[type="checkbox"]');
+  const rangeInputElement = document.getElementById('ais-widget-range-input');
+
   const search = instantsearch({
     'indexName': 'grantmakers_io',
     searchClient,
@@ -190,7 +195,7 @@ ready(function() {
     })
   );
 
-  const rangeSliderWithPanel = instantsearch.widgets.panel({
+  const rangeInputWithPanel = instantsearch.widgets.panel({
     'templates': {
       'header': 'Amount',
     },
@@ -198,7 +203,7 @@ ready(function() {
       return options.results.nbHits === 0;
     },
     'cssClasses': {
-      'root': 'card',
+      'root': ['card', 'hidden'], // Default state for Advanced Search toggle
       'header': [
         'card-header',
         // 'grey',
@@ -208,10 +213,10 @@ ready(function() {
     },
   })(instantsearch.widgets.rangeInput);
 
-  /* Range Slider */
+  /* Range Input */
   search.addWidget(
-    rangeSliderWithPanel({
-      'container': '#ais-widget-range-slider',
+    rangeInputWithPanel({
+      'container': '#ais-widget-range-input',
       'attribute': 'grant_amount',
       // 'min': 0,
       // 'max': 500000000,
@@ -223,6 +228,7 @@ ready(function() {
       'pips': false,
       'cssClasses': {
         'submit': ['btn-flat', 'blue-grey', 'white-text'],
+
       },
     })
   );
@@ -280,14 +286,12 @@ ready(function() {
         'attribute': refinement.facet,
         'limit': 8,
         'showMore': false,
-        // 'searchable': true,
+        'searchable': true,
         'cssClasses': {
           'checkbox': 'filled-in',
           'labelText': 'small',
           'count': ['right', 'small'],
-          // 'selectedItem': ['grants-search-text'],
-          // 'searchableRoot': 'ais-SearchBox-refinements',
-          // 'searchableSubmit': 'hidden',
+          'searchableRoot': 'hidden', // Default state for Advanced Search toggle
         },
       })
     );
@@ -384,6 +388,7 @@ ready(function() {
   search.once('render', function() {
     // Search toggle
     initSelect();
+    setAdvancedSearchToggle();
   });
 
   search.on('render', function() {
@@ -430,6 +435,27 @@ ready(function() {
       'classes': 'btn blue-grey white-text',
     };
     M.FormSelect.init(elem, options);
+  }
+
+  // Toogle Advanced Search
+  function setAdvancedSearchToggle() {
+    // Note: Default hidden states set via InstantSearch widgets
+    toggleAdvancedElem.addEventListener('change', toggleAdvancedFunc, false);
+  }
+
+  function toggleAdvancedFunc(e) {
+    const searchBoxes = document.querySelectorAll('.ais-RefinementList-searchBox');
+    if (e.target.checked) {
+      rangeInputElement.querySelector('.ais-Panel').classList.remove('hidden');
+      searchBoxes.forEach((item) => {
+        item.querySelector('.ais-SearchBox').classList.remove('hidden');
+      });
+    } else {
+      rangeInputElement.querySelector('.ais-Panel').classList.add('hidden');
+      searchBoxes.forEach((item) => {
+        item.querySelector('.ais-SearchBox').classList.add('hidden');
+      });
+    }
   }
   
 
@@ -483,7 +509,6 @@ ready(function() {
   }
 
   function formatIfRangeLabel(refinement) {
-    console.log(refinement);
     if (refinement.attribute !== 'grant_amount') {
       return refinement.label;
     } else {
