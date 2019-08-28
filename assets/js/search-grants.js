@@ -384,15 +384,18 @@ ready(function() {
     })
   );
 
-  // Initialize Materialize JS components created by Instantsearch widgets
   search.once('render', function() {
-    // Search toggle
+    // Initialize static Materialize JS components created by Instantsearch widgets
     initSelect();
-    setAdvancedSearchToggle();
+    // Show range input if initial URL contains an amount refinement
+    // Note: Advanced search features are hidden by default via InstantSearch widget settings
+    setInitialAdvancedSearchToggleState();
+    // Create advanced search toggle listener
+    toggleAdvancedElem.addEventListener('change', toggleAdvancedListener, false);
   });
 
   search.on('render', function() {
-    // Tooltips
+    // Initialize dynamic Materialize JS components created by Instantsearch widgets
     initTooltips();
     initModals();
   });
@@ -437,28 +440,38 @@ ready(function() {
     M.FormSelect.init(elem, options);
   }
 
-  // Toogle Advanced Search
-  function setAdvancedSearchToggle() {
-    // Note: Default hidden states set via InstantSearch widgets
-    toggleAdvancedElem.addEventListener('change', toggleAdvancedFunc, false);
-  }
-
-  function toggleAdvancedFunc(e) {
-    const searchBoxes = document.querySelectorAll('.ais-RefinementList-searchBox');
-    if (e.target.checked) {
+  function setInitialAdvancedSearchToggleState() {
+    const obj = search.helper.state.numericRefinements;
+    const check = Object.keys(obj).length;
+    if (check > 0) {
+      console.log('has range refinement');
       rangeInputElement.querySelector('.ais-Panel').classList.remove('hidden');
-      searchBoxes.forEach((item) => {
-        item.querySelector('.ais-SearchBox').classList.remove('hidden');
-      });
-    } else {
-      rangeInputElement.querySelector('.ais-Panel').classList.add('hidden');
-      searchBoxes.forEach((item) => {
-        item.querySelector('.ais-SearchBox').classList.add('hidden');
-      });
     }
   }
-  
 
+  function toggleAdvancedListener(e) {
+    const searchBoxes = document.querySelectorAll('.ais-RefinementList-searchBox');
+    if (e.target.checked) {
+      showAdvancedSearchTools(searchBoxes);
+    } else {
+      hideAdvancedSearchTools(searchBoxes);
+    }
+  }
+
+  function showAdvancedSearchTools(targets) {
+    rangeInputElement.querySelector('.ais-Panel').classList.remove('hidden');
+    targets.forEach((item) => {
+      item.querySelector('.ais-SearchBox').classList.remove('hidden');
+    });
+  }
+
+  function hideAdvancedSearchTools(targets) {
+    rangeInputElement.querySelector('.ais-Panel').classList.add('hidden');
+    targets.forEach((item) => {
+      item.querySelector('.ais-SearchBox').classList.add('hidden');
+    });
+  }
+  
   // QUERY HOOKS
   // ==============
   // Handle EINs entered in searchbox with a hyphen
