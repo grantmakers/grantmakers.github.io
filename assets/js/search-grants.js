@@ -25,6 +25,15 @@ ready(function() {
   const elemsMO = document.querySelectorAll('.modal');
   M.Modal.init(elemsMO);
 
+  const elemsDD = document.querySelectorAll('.dropdown-trigger');
+  const optionsDD = {
+    // 'container': '.search-box-dropdown-wrapper',
+    'constrainWidth': false,
+    'coverTrigger': false,
+    'closeOnClick': false,
+  };
+  M.Dropdown.init(elemsDD, optionsDD);
+
   if (!isMobile.matches) { // Use pushpin on desktop only
     const elemPP = document.querySelector('.nav-search nav');
     const optionsPP = {

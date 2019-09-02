@@ -482,7 +482,7 @@ $parallax-height: 75vh;
   padding: 0 15px;
 }
 
-/* Search toggle / dropdown */
+/* Search toggle / select box */
 #search-toggle {
   height: 64px;
   select {
@@ -569,6 +569,42 @@ $parallax-height: 75vh;
 .ais-SearchBox-submit, .ais-SearchBox-reset {
   &:focus {
     background-color: white;
+  }
+}
+
+#search-box-dropdown-trigger {
+  a {
+    color: $text-color;
+  }
+  position: relative;
+  float: right;
+  top: -64px;
+  margin-right: 10px;
+  #search-box-dropdown {
+    width: 180px;
+    border-radius: 3px;
+  }
+  .dropdown-wrapper {
+    padding: 0 20px;
+  }
+  .dropdown-header {
+    color: $text-muted-max;
+  }
+  label {
+    color: $text-color;
+  }
+}
+.search-box-dropdown-wrapper {
+  position: relative;
+  top: -7px;
+  border-radius: 3px;
+  #search-box-dropdown {
+    display: inline-block;
+    padding: 0px 40px;
+    .dropdown-header {
+      display: block;
+      height: 55px;
+    }
   }
 }
 
