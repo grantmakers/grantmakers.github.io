@@ -218,8 +218,8 @@ ready(function() {
     rangeInputWithPanel({
       'container': '#ais-widget-range-input',
       'attribute': 'grant_amount',
-      // 'min': 0,
-      // 'max': 500000000,
+      'min': 0,
+      'max': 1051049025,
       'tooltips': {
         'format': function(rawValue) {
           return `$${numberHuman(rawValue, 0)}`;
@@ -355,6 +355,7 @@ ready(function() {
   search.addWidget(
     customCurrentRefinements({
       'container': document.querySelector('#ais-widget-current-refined-values'),
+      // 'excludedAttributes': 'grant_amount',
     })
   );
 
@@ -392,6 +393,8 @@ ready(function() {
     setInitialAdvancedSearchToggleState();
     // Create advanced search toggle listener
     toggleAdvancedElem.addEventListener('change', toggleAdvancedListener, false);
+    // Improve Range Input UX by removing min/max
+    clearRangeInputMinMax();
   });
 
   search.on('render', function() {
@@ -409,6 +412,7 @@ ready(function() {
       renderForbidden();
       console.log('Origin forbidden');
     }
+    console.log(e);
   });
 
   // Initialize search
@@ -496,6 +500,17 @@ ready(function() {
       'top': scrollAnchor.offsetTop,
       'left': 0,
       'behavior': 'auto',
+    });
+  }
+
+  function clearRangeInputMinMax() {
+    const input = document.querySelectorAll('.ais-RangeInput-input');
+    input.forEach((item) => {
+      // item.removeAttribute('min');
+      // item.removeAttribute('max');
+      // item.removeAttribute('placeholder');
+      // item.setAttribute('min', '0');
+      // item.setAttribute('max', '1000000000');
     });
   }
 

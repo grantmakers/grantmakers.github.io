@@ -809,6 +809,7 @@ a.hit-name {
 }
 
 /* Range Input */
+/* See also Range Input below */
 .input-algolia {
   background-color: white !important;
   border: none !important;
@@ -924,9 +925,14 @@ a.hit-name {
   &.grants-search {
     
   }
+  /* Range Input */
   .ais-RangeInput {
+    label {
+      width: 40%; // Increase spacing
+    }
     input {
       width: unset;
+      width: 75%; // Increase spacing
       height: 2rem;
       margin: 0 10px;
       padding: 0 10px;
@@ -946,6 +952,7 @@ a.hit-name {
     }
     label:first-child input {
       margin-left: 0;
+      padding-right: 15px; // Increase spacing
     }
     button {
       height: 2rem;
