@@ -70,6 +70,10 @@ ready(function() {
   const toggleParent = document.getElementById('search-toggle');
   const toggle = toggleParent.querySelector('select');
 
+  // Define range input max/min
+  const rangeMin = 1; // -1659416
+  const rangeMax = 1051049025; // 1051049025
+
   // Ensure initial toggle state set to grants search
   toggle.value = 'grants';
 
@@ -227,8 +231,8 @@ ready(function() {
     rangeInputWithPanel({
       'container': '#ais-widget-range-input',
       'attribute': 'grant_amount',
-      'min': 0,
-      'max': 1051049025,
+      'min': rangeMin,
+      'max': rangeMax,
       'tooltips': {
         'format': function(rawValue) {
           return `$${numberHuman(rawValue, 0)}`;
@@ -365,6 +369,15 @@ ready(function() {
     customCurrentRefinements({
       'container': document.querySelector('#ais-widget-current-refined-values'),
       // 'excludedAttributes': 'grant_amount',
+      transformItems(items) {
+        return items.filter(item => {
+          console.log(item);
+          const defaultExists = item.attribute === 'grant_amount';
+          const isDefaultRefinement = defaultExists && (item.refinements[0].value === rangeMin && item.refinements[1].value === rangeMax);
+          console.log(isDefaultRefinement);
+          return !isDefaultRefinement
+        });
+      },
     })
   );
 
@@ -457,7 +470,7 @@ ready(function() {
     const obj = search.helper.state.numericRefinements;
     const check = Object.keys(obj).length;
     if (check > 0) {
-      console.log('has range refinement');
+      // console.log('has range refinement');
       rangeInputElement.querySelector('.ais-Panel').classList.remove('hidden');
     }
   }
