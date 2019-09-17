@@ -70,10 +70,6 @@ ready(function() {
   const toggleParent = document.getElementById('search-toggle');
   const toggle = toggleParent.querySelector('select');
 
-  // Define range input max/min
-  const rangeMin = 1; // -1659416
-  const rangeMax = 1051049025; // 1051049025
-
   // Ensure initial toggle state set to grants search
   toggle.value = 'grants';
 
@@ -208,6 +204,66 @@ ready(function() {
     })
   );
 
+  // Create the render function
+  const renderRangeInput = (renderOptions, isFirstRender) => {
+    const { start, range, refine, widgetParams } = renderOptions;
+    const [min, max] = start;
+
+    if (isFirstRender) {
+      // Create panel
+      const wrapper = document.createElement('div');
+      wrapper.setAttribute('class', 'ais-RangeInput');
+      const form = document.createElement('form');
+      form.setAttribute('class', 'ais-RangeInput-form');
+
+      form.addEventListener('submit', event => {
+        event.preventDefault();
+
+        const rawMinInputValue = parseFloat(event.target.elements.min.value);
+        const rawMaxInputValue = parseFloat(event.target.elements.max.value);
+
+        refine([
+          Number.isFinite(rawMinInputValue) ? rawMinInputValue : undefined,
+          Number.isFinite(rawMaxInputValue) ? rawMaxInputValue : undefined,
+        ]);
+      });
+
+      widgetParams.container.appendChild(wrapper);
+      wrapper.appendChild(form);
+
+      return;
+    }
+
+    widgetParams.container.querySelector('form').innerHTML = `
+      <label class="ais-RangeInput-label">
+        <input
+          class="ais-RangeInput-input ais-RangeInput-input--min"
+          type="number"
+          name="min"
+          placeholder="${range.min}"
+          value="${Number.isFinite(min) ? min : ''}"
+        />
+      </label>
+      <span>to</span>
+      <label class="ais-RangeInput-label">
+        <input
+          class="ais-RangeInput-input ais-RangeInput-input--max"
+          type="number"
+          name="max"
+          placeholder="${range.max}"
+          value="${Number.isFinite(max) ? max : ''}"
+        />
+      </label>
+      <button class="ais-RangeInput-submit btn-flat blue-grey white-text" type="submit">Go</button>
+    `;
+  };
+
+  // Create the custom range input widget
+  const customRangeInput = instantsearch.connectors.connectRange(
+    renderRangeInput
+  );
+
+  // Create the panel widget wrapper
   const rangeInputWithPanel = instantsearch.widgets.panel({
     'templates': {
       'header': 'Amount',
@@ -219,30 +275,16 @@ ready(function() {
       'root': ['card', 'hidden'], // Default state for Advanced Search toggle
       'header': [
         'card-header',
-        // 'grey',
-        // 'lighten-4',
       ],
       'body': 'card-content',
     },
-  })(instantsearch.widgets.rangeInput);
+})(customRangeInput);
 
-  /* Range Input */
+  // Instantiate the custom widget
   search.addWidget(
     rangeInputWithPanel({
-      'container': '#ais-widget-range-input',
-      'attribute': 'grant_amount',
-      'min': rangeMin,
-      'max': rangeMax,
-      'tooltips': {
-        'format': function(rawValue) {
-          return `$${numberHuman(rawValue, 0)}`;
-        },
-      },
-      'pips': false,
-      'cssClasses': {
-        'submit': ['btn-flat', 'blue-grey', 'white-text'],
-
-      },
+      container: document.querySelector('#ais-widget-range-input'),
+      attribute: 'grant_amount',
     })
   );
 
@@ -368,16 +410,6 @@ ready(function() {
   search.addWidget(
     customCurrentRefinements({
       'container': document.querySelector('#ais-widget-current-refined-values'),
-      // 'excludedAttributes': 'grant_amount',
-      transformItems(items) {
-        return items.filter(item => {
-          console.log(item);
-          const defaultExists = item.attribute === 'grant_amount';
-          const isDefaultRefinement = defaultExists && (item.refinements[0].value === rangeMin && item.refinements[1].value === rangeMax);
-          console.log(isDefaultRefinement);
-          return !isDefaultRefinement
-        });
-      },
     })
   );
 
@@ -415,8 +447,6 @@ ready(function() {
     setInitialAdvancedSearchToggleState();
     // Create advanced search toggle listener
     toggleAdvancedElem.addEventListener('change', toggleAdvancedListener, false);
-    // Improve Range Input UX by removing min/max
-    clearRangeInputMinMax();
   });
 
   search.on('render', function() {
@@ -522,17 +552,6 @@ ready(function() {
       'top': scrollAnchor.offsetTop,
       'left': 0,
       'behavior': 'auto',
-    });
-  }
-
-  function clearRangeInputMinMax() {
-    const input = document.querySelectorAll('.ais-RangeInput-input');
-    input.forEach((item) => {
-      // item.removeAttribute('min');
-      // item.removeAttribute('max');
-      // item.removeAttribute('placeholder');
-      // item.setAttribute('min', '0');
-      // item.setAttribute('max', '1000000000');
     });
   }
 
