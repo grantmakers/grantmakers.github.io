@@ -70,6 +70,10 @@ ready(function() {
   const toggleParent = document.getElementById('search-toggle');
   const toggle = toggleParent.querySelector('select');
 
+  // Define RangeInput min/max - for placeholders only
+  const rangeMin = 0;
+  const rangeMax = 1051049025;
+
   // Ensure initial toggle state set to grants search
   toggle.value = 'grants';
 
@@ -240,7 +244,8 @@ ready(function() {
           class="ais-RangeInput-input ais-RangeInput-input--min"
           type="number"
           name="min"
-          placeholder="${range.min}"
+          placeholder="${rangeMin}"
+          step="1000"
           value="${Number.isFinite(min) ? min : ''}"
         />
       </label>
@@ -250,7 +255,8 @@ ready(function() {
           class="ais-RangeInput-input ais-RangeInput-input--max"
           type="number"
           name="max"
-          placeholder="${range.max}"
+          placeholder="${rangeMax}"
+          step="1000"
           value="${Number.isFinite(max) ? max : ''}"
         />
       </label>

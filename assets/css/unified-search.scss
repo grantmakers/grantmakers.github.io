@@ -980,12 +980,6 @@ a.hit-name {
         box-shadow: none !important;
       }
     }
-    // Hide number spinners
-    input[type=number]::-webkit-inner-spin-button, 
-    input[type=number]::-webkit-outer-spin-button { 
-      -webkit-appearance: none; 
-      margin: 0; 
-    }
     label:first-child input {
       margin-left: 0;
       padding-right: 15px; // Increase spacing
@@ -993,26 +987,6 @@ a.hit-name {
     button {
       height: 2rem;
       padding: 0 5px
-    }
-    // Hide input placeholder
-    ::-webkit-input-placeholder {
-      /* WebKit browsers */
-      color: white;
-    }
-    :-moz-placeholder {
-        /* Mozilla Firefox 4 to 18 */
-        color: white;
-    }
-    ::-moz-placeholder {
-        /* Mozilla Firefox 19+ */
-        color: white;
-    }
-    :-ms-input-placeholder {
-        /* Internet Explorer 10+ */
-        color: white;
-    } 
-    input::placeholder {
-      color: white;
     }
   }
 }
