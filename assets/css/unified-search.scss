@@ -204,13 +204,14 @@ i.md-18 {
 /****************************
 Layout
 *****************************/
+$searchBarHeight: 64px;
 header {
   z-index: 996;
 }
 main {
   z-index: 995;
   position: relative;
-  top: -64px;
+  top: -$searchBarHeight;
 }
 canvas {
   position: absolute;
@@ -353,7 +354,7 @@ nav.navbar-unified-search {
       border-bottom: none;
       // padding: inherit;
       &.avatar {
-        padding-left: 64px;
+        padding-left: $searchBarHeight;
         padding-top: 12px;
         padding-bottom: 0;
         .circle {
@@ -435,7 +436,7 @@ nav.nav-center ul.ul-center li .ais-search-box {
 $parallax-height: 75vh;
 .parallax-container {
   height: $parallax-height;
-  // top: -64px;
+  // top: -$searchBarHeight;
 }
 .overlay {
   background: rgba(44,45,51,0.8);
@@ -468,7 +469,7 @@ $parallax-height: 75vh;
 
 /* Searchbar */
 .nav-search {
-  height: 64px;
+  height: $searchBarHeight;
 }
 .nav-search nav {
   margin-bottom: 10px;
@@ -482,9 +483,9 @@ $parallax-height: 75vh;
   padding: 0 15px;
 }
 
-/* Search toggle / dropdown */
+/* Search toggle / select box */
 #search-toggle {
-  height: 64px;
+  height: $searchBarHeight;
   select {
     @extend .grantmakers;
     &.grants-search {
@@ -531,7 +532,10 @@ $parallax-height: 75vh;
 }
 
 /* Search box */
-#ais-widget-search-box {
+.search-box-wrapper {
+  height: $searchBarHeight;
+}
+#ais-widget-search-box, *[id^='ais-widget-refinement-list'] {
   .ais-SearchBox-submit {
     height: 3rem; // HACK icon is still too low by a few pixels
     &:hover {
@@ -572,8 +576,44 @@ $parallax-height: 75vh;
   }
 }
 
+#search-box-dropdown-trigger {
+  a {
+    color: $text-color;
+  }
+  position: relative;
+  float: right;
+  top: -$searchBarHeight;
+  margin-right: 10px;
+  #search-box-dropdown {
+    width: 180px;
+    border-radius: 3px;
+  }
+  .dropdown-wrapper {
+    padding: 0 20px;
+  }
+  .dropdown-header {
+    color: $text-muted-max;
+  }
+  label {
+    color: $text-color;
+  }
+}
+.search-box-dropdown-wrapper {
+  position: relative;
+  top: -7px;
+  border-radius: 3px;
+  #search-box-dropdown {
+    display: inline-block;
+    padding: 0px 40px;
+    .dropdown-header {
+      display: block;
+      height: 55px;
+    }
+  }
+}
+
 #powered-by {
-  height: 64px; 
+  height: $searchBarHeight; 
   .ais-PoweredBy {
     height: 100%;
   }
@@ -648,31 +688,32 @@ $parallax-height: 75vh;
 
 /* Current Refinements */
 #ais-widget-current-refined-values {
+  ul {
+    margin-top: 10px;
+    margin-bottom: 0px;
+    &:empty {
+      margin-top: 0px;
+    }
+  }
   ul li {
-    margin-right: 0.5rem;
-    margin-top: 0.5rem;
+    margin: 0;
+    // margin-right: 0.5rem;
+    // margin-top: 0.5rem;
     margin-bottom: 0.5rem;
-    padding: 0px 10px;
+    padding: 0px 2px;
+    max-width: 100%; // Allows for adding truncate class to button
+    button {
+      max-width: 100%; // Allows for adding truncate class
+    }
   }
   .btn:hover {
     background-color: $grantmakers;
   }
+  .ais-CurrentRefinements-label {
+    font-size: 85%;
+  }
   .ais-CurrentRefinements-category {
     padding-left: 5px;
-  }
-  button {
-    padding-left: 5px;
-    line-height: 100%;
-    &:before {
-      font-family: "Material Icons";
-      content: "remove_circle";
-      color: white;
-      vertical-align: top;
-    } 
-    &:focus {
-      background-color: inherit;
-      color: inherit;
-    }
   }
 }
 
@@ -787,6 +828,10 @@ a.hit-name {
 
 /* Refinements */
 .switch-refinements {
+  &.switch label .lever {
+    margin-left: 5px;
+    margin-right: 0px;
+  }
   label input[type=checkbox]:checked + .lever {
     background-color: #84c7c1;
   }
@@ -804,6 +849,7 @@ a.hit-name {
 }
 
 /* Range Input */
+/* See also Range Input below */
 .input-algolia {
   background-color: white !important;
   border: none !important;
@@ -840,7 +886,7 @@ a.hit-name {
   }
 }
 // HACK
-#ais-widget-refinement-list--grantee_name {
+#ais-widget-range-slider {
   .card-header {
     padding: 0;
   }
@@ -873,12 +919,19 @@ a.hit-name {
       border-radius: 3px;
       border-bottom: none;
       height: 2rem;
+      width: calc(100% - 30px) !important;
+      padding-left: 30px;
       &:focus {
         border-bottom: 0;
         box-shadow: none;
       }
-      button.ais-SearchBox-reset {
-        top: 40% // HACK
+    }
+    button {
+      height: 2rem;
+      top: 40%; // HACK
+      .ais-SearchBox-resetIcon {
+        width: 14px;
+        height: 14px;
       }
     }
   }
@@ -911,6 +964,34 @@ a.hit-name {
   }
   &.grants-search {
     
+  }
+  /* Range Input */
+  .ais-RangeInput {
+    label {
+      width: 40%; // Increase spacing
+    }
+    input {
+      width: unset;
+      width: 75%; // Increase spacing
+      height: 2rem;
+      margin: 0 10px;
+      padding: 0 10px;
+      border: none;
+      border-radius: 2px;
+      background-color: white;
+      &:focus {
+        border-bottom: none !important;
+        box-shadow: none !important;
+      }
+    }
+    label:first-child input {
+      margin-left: 0;
+      padding-right: 15px; // Increase spacing
+    }
+    button {
+      height: 2rem;
+      padding: 0 5px
+    }
   }
 }
 /* Mobile Refinememnts */

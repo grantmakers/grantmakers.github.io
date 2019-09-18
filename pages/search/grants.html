@@ -34,8 +34,8 @@ redirect_from:
     <!-- JavaScript -->
     <!-- <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script> --> <!-- jQuery no longer required -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/algoliasearch@3.32.1/dist/algoliasearchLite.js" integrity="sha256-pMaJf0I78weeXGkRMBDO6jSulxC/q3sb0aPdtV2N8n0=" crossorigin="anonymous"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/instantsearch.js@3.5.3/dist/instantsearch.production.min.js" integrity="sha256-uAYe5XYExBdWZsgJ1BFlhePETWvUiaMHzMBIWlv6zDA=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/algoliasearch@3.33.0/dist/algoliasearchLite.min.js" integrity="sha256-3Laj91VXexjTlFLgL8+vvIq27laXdRmFIcO2miulgEs=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@3.6.0/dist/instantsearch.production.min.js" integrity="sha256-N/ZioXfJ7+qk2cejhAJsm0+ed/l/445mZGjpEWeyeR4=" crossorigin="anonymous"></script>
     <script src="{{ site.baseurl }}/assets/js/search-grants.js?v={{ site.time | date: '%Y%m%d'}}"></script>
   </head>
   <body class="unified-search">
@@ -90,15 +90,13 @@ redirect_from:
             <!-- Filters / Refinements header -->
             <div class="text-muted hide-on-med-and-down">
               Filters 
-              <!--
               <div class="switch switch-refinements right">
-                <label>
-                  Advanced
+                <label class="search-toggle-advanced">
+                  Show advanced tools
                   <input type="checkbox">
                   <span class="lever"></span>
                 </label>
               </div>
-              -->
               <!-- <span class="right text-muted-max">some shiz</span> -->
             </div>
             <div class="hidden">
@@ -117,13 +115,6 @@ redirect_from:
               <div> <!-- Add row class to remove added white space / padding -->
                 <div class="col s12">
                   <div id="ais-widget-range-input"></div>
-                  <div id="range-input-helpers">
-                    <ul class="list-inline">
-                      <li id="range-input-helper-min"></li>
-                      <li id="range-input-helper-max"></li>
-                    </ul>
-                  </div> 
-                  <!-- TODO Place range widgets here -->
                   <div id="ais-widget-refinement-list--grantee_name"></div>
                   <div id="ais-widget-refinement-list--organization_name"></div>
                   <div id="ais-widget-refinement-list--grantee_city"></div>
