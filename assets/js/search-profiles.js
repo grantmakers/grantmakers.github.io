@@ -85,15 +85,15 @@ ready(function() {
             'page': page,
           };
         },
-        routeToState({query, cities, states, page}) {
+        routeToState(routeState) {
           return {
             // 'type': type,
-            'query': query,
+            'query': routeState.query,
             'refinementList': {
-              'city': cities && cities.split('~'),
-              'state': states && states.split('~'),
+              'city': routeState.city && routeState.city.split('~'),
+              'state': routeState.state && routeState.state.split('~'),
             },
-            'page': page,
+            'page': routeState.page,
           };
         },
       },
@@ -164,23 +164,47 @@ ready(function() {
     })
   );
 
+  /* Current Refinements */
+  const createDataAttribtues = refinement =>
+    Object.keys(refinement)
+      .map(key => `data-${key}="${refinement[key]}"`)
+      .join(' ');
+
+  const renderListItem = item => `
+    ${item.refinements.map(refinement => `
+      <li>
+        <button class="waves-effect btn blue-grey lighten-3 grey-text text-darken-3 truncate" ${createDataAttribtues(refinement)}><i class="material-icons right">remove_circle</i><small>${getLabel(item.label)}</small> ${formatIfRangeLabel(refinement)} </button>
+      </li>
+    `).join('')}
+  `;
+
+  const renderCurrentRefinements = (renderOptions) => {
+    const { items, refine, widgetParams } = renderOptions;
+
+    widgetParams.container.innerHTML = `<ul class="list list-inline">${items.map(renderListItem).join('')}</ul>`;
+
+    [...widgetParams.container.querySelectorAll('button')].forEach(element => {
+      element.addEventListener('click', event => {
+        const item = Object.keys(event.currentTarget.dataset).reduce(
+          (acc, key) => ({
+            ...acc,
+            [key]: event.currentTarget.dataset[key],
+          }),
+          {}
+        );
+
+        refine(item);
+      });
+    });
+  };
+
+  const customCurrentRefinements = instantsearch.connectors.connectCurrentRefinements(
+    renderCurrentRefinements
+  );
+
   search.addWidget(
-    instantsearch.widgets.currentRefinements({
-      'container': '#ais-widget-current-refined-values',
-      'includedAttributes': ['city', 'state'],
-      'cssClasses': {
-        'list': 'list-inline',
-        'item': ['btn'],
-        'label': ['small'],
-        'categoryLabel': 'text-bold',
-        'delete': 'grantmakers-text',
-      },
-      transformItems(items) {
-        return items.map(item => ({
-          ...item,
-          'label': getLabel(item),
-        }));
-      },
+    customCurrentRefinements({
+      'container': document.querySelector('#ais-widget-current-refined-values'),
     })
   );
 
@@ -397,9 +421,18 @@ ready(function() {
   // MISC HELPER FUNCTIONS
   // ==============
   function getLabel(item) {
-    const obj = facets.filter(each => each.facet === item.attribute);
+    const obj = facets.filter(each => each.facet === item);
     return obj[0].label;
   }
+
+  function formatIfRangeLabel(refinement) {
+    if (refinement.attribute !== 'grant_amount') {
+      return refinement.label;
+    } else {
+      return `${refinement.operator} $${numberHuman(refinement.value)}`;
+    }
+  }
+
   function numberHuman(num, decimals) {
     if (num === null) { return null; } // terminate early
     if (num === 0) { return '0'; } // terminate early

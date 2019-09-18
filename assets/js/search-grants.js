@@ -25,6 +25,15 @@ ready(function() {
   const elemsMO = document.querySelectorAll('.modal');
   M.Modal.init(elemsMO);
 
+  const elemsDD = document.querySelectorAll('.dropdown-trigger');
+  const optionsDD = {
+    // 'container': '.search-box-dropdown-wrapper',
+    'constrainWidth': false,
+    'coverTrigger': false,
+    'closeOnClick': false,
+  };
+  M.Dropdown.init(elemsDD, optionsDD);
+
   if (!isMobile.matches) { // Use pushpin on desktop only
     const elemPP = document.querySelector('.nav-search nav');
     const optionsPP = {
@@ -51,11 +60,19 @@ ready(function() {
       'facet': 'grantee_state',
       'label': 'State',
     },
+    {
+      'facet': 'grant_amount',
+      'label': 'Amount',
+    },
   ];
 
   // Define toggle helpers
   const toggleParent = document.getElementById('search-toggle');
   const toggle = toggleParent.querySelector('select');
+
+  // Define RangeInput min/max - for placeholders only
+  const rangeMin = 0;
+  const rangeMax = 1051049025;
 
   // Ensure initial toggle state set to grants search
   toggle.value = 'grants';
@@ -65,6 +82,11 @@ ready(function() {
     console.log('switch');
     window.location.href = '/search/profiles/';
   };
+
+  // Toogle advanced search tools
+  // Handled in search.once InstantSearch event
+  const toggleAdvancedElem = document.querySelector('.search-toggle-advanced input[type="checkbox"]');
+  const rangeInputElement = document.getElementById('ais-widget-range-input');
 
   const search = instantsearch({
     'indexName': 'grantmakers_io',
@@ -76,7 +98,7 @@ ready(function() {
     // 'routing': true,
     'routing': {
       'stateMapping': {
-        stateToRoute({query, refinementList, page}) { // could also use stateToRoute(uiState)
+        stateToRoute({query, refinementList, range, page}) { // could also use stateToRoute(uiState)
           return {
             'query': query,
             'grantee_name':
@@ -95,6 +117,10 @@ ready(function() {
               refinementList &&
               refinementList.grantee_state &&
               refinementList.grantee_state.join('~'),
+            'grant_amount':
+              range &&
+              range.grant_amount &&
+              range.grant_amount.replace(':', '~'),
             'page': page,
           };
         },
@@ -106,6 +132,9 @@ ready(function() {
               'organization_name': routeState.organization_name && routeState.organization_name.split('~'),
               'grantee_city': routeState.grantee_city && routeState.grantee_city.split('~'),
               'grantee_state': routeState.grantee_state && routeState.grantee_state.split('~'),
+            },
+            'range': {
+              'grant_amount': routeState.grant_amount && routeState.grant_amount.replace('~', ':'),
             },
             'page': routeState.page,
           };
@@ -179,28 +208,98 @@ ready(function() {
     })
   );
 
+  // Create the render function
+  const renderRangeInput = (renderOptions, isFirstRender) => {
+    const { start, range, refine, widgetParams } = renderOptions;
+    const [min, max] = start;
+
+    if (isFirstRender) {
+      // Create panel
+      const wrapper = document.createElement('div');
+      wrapper.setAttribute('class', 'ais-RangeInput');
+      const form = document.createElement('form');
+      form.setAttribute('class', 'ais-RangeInput-form');
+
+      form.addEventListener('submit', event => {
+        event.preventDefault();
+
+        const rawMinInputValue = parseFloat(event.target.elements.min.value);
+        const rawMaxInputValue = parseFloat(event.target.elements.max.value);
+
+        refine([
+          Number.isFinite(rawMinInputValue) ? rawMinInputValue : undefined,
+          Number.isFinite(rawMaxInputValue) ? rawMaxInputValue : undefined,
+        ]);
+      });
+
+      widgetParams.container.appendChild(wrapper);
+      wrapper.appendChild(form);
+
+      return;
+    }
+
+    widgetParams.container.querySelector('form').innerHTML = `
+      <label class="ais-RangeInput-label">
+        <input
+          class="ais-RangeInput-input ais-RangeInput-input--min"
+          type="number"
+          name="min"
+          placeholder="${rangeMin}"
+          step="1000"
+          value="${Number.isFinite(min) ? min : ''}"
+        />
+      </label>
+      <span>to</span>
+      <label class="ais-RangeInput-label">
+        <input
+          class="ais-RangeInput-input ais-RangeInput-input--max"
+          type="number"
+          name="max"
+          placeholder="${rangeMax}"
+          step="1000"
+          value="${Number.isFinite(max) ? max : ''}"
+        />
+      </label>
+      <button class="ais-RangeInput-submit btn-flat blue-grey white-text" type="submit">Go</button>
+    `;
+  };
+
+  // Create the custom range input widget
+  const customRangeInput = instantsearch.connectors.connectRange(
+    renderRangeInput
+  );
+
+  // Create the panel widget wrapper
+  const rangeInputWithPanel = instantsearch.widgets.panel({
+    'templates': {
+      'header': 'Amount',
+    },
+    hidden(options) {
+      return options.results.nbHits === 0;
+    },
+    'cssClasses': {
+      'root': ['card', 'hidden'], // Default state for Advanced Search toggle
+      'header': [
+        'card-header',
+      ],
+      'body': 'card-content',
+    },
+})(customRangeInput);
+
+  // Instantiate the custom widget
   search.addWidget(
-    instantsearch.widgets.currentRefinements({
-      'container': '#ais-widget-current-refined-values',
-      'includedAttributes': ['grantee_name', 'organization_name', 'grantee_city', 'grantee_state'],
-      'cssClasses': {
-        'list': 'list-inline',
-        'item': ['btn', 'blue-grey'],
-        'label': ['small'],
-        'categoryLabel': 'text-bold',
-        'delete': 'blue-grey-text',
-      },
-      transformItems(items) {
-        return items.map(item => ({
-          ...item,
-          'label': getLabel(item),
-        }));
-      },
+    rangeInputWithPanel({
+      container: document.querySelector('#ais-widget-range-input'),
+      attribute: 'grant_amount',
     })
   );
 
   /* Create all other refinements */
   facets.forEach((refinement) => {
+    // Amount handled by range widget
+    if (refinement.facet === 'grant_amount') {
+      return;
+    }
     const refinementListWithPanel = instantsearch.widgets.panel({
       'templates': {
         'header': refinement.label,
@@ -248,14 +347,12 @@ ready(function() {
         'attribute': refinement.facet,
         'limit': 8,
         'showMore': false,
-        // 'searchable': true,
+        'searchable': true,
         'cssClasses': {
           'checkbox': 'filled-in',
           'labelText': 'small',
           'count': ['right', 'small'],
-          // 'selectedItem': ['grants-search-text'],
-          // 'searchableRoot': 'ais-SearchBox-refinements',
-          // 'searchableSubmit': 'hidden',
+          'searchableRoot': 'hidden', // Default state for Advanced Search toggle
         },
       })
     );
@@ -277,6 +374,50 @@ ready(function() {
     );
     */
   });
+
+  /* Current Refinements */
+  const createDataAttribtues = refinement =>
+    Object.keys(refinement)
+      .map(key => `data-${key}="${refinement[key]}"`)
+      .join(' ');
+
+  const renderListItem = item => `
+    ${item.refinements.map(refinement => `
+      <li>
+        <button class="waves-effect btn blue-grey lighten-3 grey-text text-darken-3 truncate" ${createDataAttribtues(refinement)}><i class="material-icons right">remove_circle</i><small>${getLabel(item.label)}</small> ${formatIfRangeLabel(refinement)} </button>
+      </li>
+    `).join('')}
+  `;
+
+  const renderCurrentRefinements = (renderOptions) => {
+    const { items, refine, widgetParams } = renderOptions;
+
+    widgetParams.container.innerHTML = `<ul class="list list-inline">${items.map(renderListItem).join('')}</ul>`;
+
+    [...widgetParams.container.querySelectorAll('button')].forEach(element => {
+      element.addEventListener('click', event => {
+        const item = Object.keys(event.currentTarget.dataset).reduce(
+          (acc, key) => ({
+            ...acc,
+            [key]: event.currentTarget.dataset[key],
+          }),
+          {}
+        );
+
+        refine(item);
+      });
+    });
+  };
+
+  const customCurrentRefinements = instantsearch.connectors.connectCurrentRefinements(
+    renderCurrentRefinements
+  );
+
+  search.addWidget(
+    customCurrentRefinements({
+      'container': document.querySelector('#ais-widget-current-refined-values'),
+    })
+  );
 
   search.addWidget(
     instantsearch.widgets.clearRefinements({
@@ -304,14 +445,18 @@ ready(function() {
     })
   );
 
-  // Initialize Materialize JS components created by Instantsearch widgets
   search.once('render', function() {
-    // Search toggle
-    initSelect();
+    // Initialize static Materialize JS components created by Instantsearch widgets
+    // initSelect();
+    // Show range input if initial URL contains an amount refinement
+    // Note: Advanced search features are hidden by default via InstantSearch widget settings
+    setInitialAdvancedSearchToggleState();
+    // Create advanced search toggle listener
+    toggleAdvancedElem.addEventListener('change', toggleAdvancedListener, false);
   });
 
   search.on('render', function() {
-    // Tooltips
+    // Initialize dynamic Materialize JS components created by Instantsearch widgets
     initTooltips();
     initModals();
   });
@@ -325,6 +470,7 @@ ready(function() {
       renderForbidden();
       console.log('Origin forbidden');
     }
+    console.log(e);
   });
 
   // Initialize search
@@ -355,8 +501,39 @@ ready(function() {
     };
     M.FormSelect.init(elem, options);
   }
-  
 
+  function setInitialAdvancedSearchToggleState() {
+    const obj = search.helper.state.numericRefinements;
+    const check = Object.keys(obj).length;
+    if (check > 0) {
+      // console.log('has range refinement');
+      rangeInputElement.querySelector('.ais-Panel').classList.remove('hidden');
+    }
+  }
+
+  function toggleAdvancedListener(e) {
+    const searchBoxes = document.querySelectorAll('.ais-RefinementList-searchBox');
+    if (e.target.checked) {
+      showAdvancedSearchTools(searchBoxes);
+    } else {
+      hideAdvancedSearchTools(searchBoxes);
+    }
+  }
+
+  function showAdvancedSearchTools(targets) {
+    rangeInputElement.querySelector('.ais-Panel').classList.remove('hidden');
+    targets.forEach((item) => {
+      item.querySelector('.ais-SearchBox').classList.remove('hidden');
+    });
+  }
+
+  function hideAdvancedSearchTools(targets) {
+    rangeInputElement.querySelector('.ais-Panel').classList.add('hidden');
+    targets.forEach((item) => {
+      item.querySelector('.ais-SearchBox').classList.add('hidden');
+    });
+  }
+  
   // QUERY HOOKS
   // ==============
   // Handle EINs entered in searchbox with a hyphen
@@ -402,8 +579,16 @@ ready(function() {
   // MISC HELPER FUNCTIONS
   // ==============
   function getLabel(item) {
-    const obj = facets.filter(each => each.facet === item.attribute);
+    const obj = facets.filter(each => each.facet === item);
     return obj[0].label;
+  }
+
+  function formatIfRangeLabel(refinement) {
+    if (refinement.attribute !== 'grant_amount') {
+      return refinement.label;
+    } else {
+      return `${refinement.operator} $${numberHuman(refinement.value)}`;
+    }
   }
 
   function numberHuman(num, decimals) {
