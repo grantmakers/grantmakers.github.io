@@ -447,7 +447,7 @@ ready(function() {
 
   search.once('render', function() {
     // Initialize static Materialize JS components created by Instantsearch widgets
-    initSelect();
+    // initSelect();
     // Show range input if initial URL contains an amount refinement
     // Note: Advanced search features are hidden by default via InstantSearch widget settings
     setInitialAdvancedSearchToggleState();

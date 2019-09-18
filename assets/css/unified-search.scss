@@ -204,13 +204,14 @@ i.md-18 {
 /****************************
 Layout
 *****************************/
+$searchBarHeight: 64px;
 header {
   z-index: 996;
 }
 main {
   z-index: 995;
   position: relative;
-  top: -64px;
+  top: -$searchBarHeight;
 }
 canvas {
   position: absolute;
@@ -353,7 +354,7 @@ nav.navbar-unified-search {
       border-bottom: none;
       // padding: inherit;
       &.avatar {
-        padding-left: 64px;
+        padding-left: $searchBarHeight;
         padding-top: 12px;
         padding-bottom: 0;
         .circle {
@@ -435,7 +436,7 @@ nav.nav-center ul.ul-center li .ais-search-box {
 $parallax-height: 75vh;
 .parallax-container {
   height: $parallax-height;
-  // top: -64px;
+  // top: -$searchBarHeight;
 }
 .overlay {
   background: rgba(44,45,51,0.8);
@@ -468,7 +469,7 @@ $parallax-height: 75vh;
 
 /* Searchbar */
 .nav-search {
-  height: 64px;
+  height: $searchBarHeight;
 }
 .nav-search nav {
   margin-bottom: 10px;
@@ -484,7 +485,7 @@ $parallax-height: 75vh;
 
 /* Search toggle / select box */
 #search-toggle {
-  height: 64px;
+  height: $searchBarHeight;
   select {
     @extend .grantmakers;
     &.grants-search {
@@ -531,6 +532,9 @@ $parallax-height: 75vh;
 }
 
 /* Search box */
+.search-box-wrapper {
+  height: $searchBarHeight;
+}
 #ais-widget-search-box, *[id^='ais-widget-refinement-list'] {
   .ais-SearchBox-submit {
     height: 3rem; // HACK icon is still too low by a few pixels
@@ -578,7 +582,7 @@ $parallax-height: 75vh;
   }
   position: relative;
   float: right;
-  top: -64px;
+  top: -$searchBarHeight;
   margin-right: 10px;
   #search-box-dropdown {
     width: 180px;
@@ -609,7 +613,7 @@ $parallax-height: 75vh;
 }
 
 #powered-by {
-  height: 64px; 
+  height: $searchBarHeight; 
   .ais-PoweredBy {
     height: 100%;
   }
