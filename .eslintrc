@@ -1,9 +1,9 @@
 {
   "parserOptions": {
-    "ecmaVersion": 6,
+    "ecmaVersion": 2018,
     "sourceType": "script",
     "ecmaFeatures": {
-      "experimentalObjectRestSpread": true
+      // "experimentalObjectRestSpread": true
     }
   },
   "env": {
@@ -164,6 +164,6 @@
     "space-before-function-paren": [2, "never"], // http://eslint.org/docs/rules/space-before-function-paren
     "space-infix-ops": 2,            // http://eslint.org/docs/rules/space-infix-ops
 //Deprecated    "space-return-throw-case": 2,    // http://eslint.org/docs/rules/space-return-throw-case
-    "spaced-comment": 2,        // http://eslint.org/docs/rules/spaced-comment
+    "spaced-comment": 2              // http://eslint.org/docs/rules/spaced-comment
   }
 }
