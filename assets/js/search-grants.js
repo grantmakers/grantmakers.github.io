@@ -341,21 +341,34 @@ ready(function() {
     */
     
     /* Create desktop refinements */
+    {% raw %}
     search.addWidget(
       refinementListWithPanel({
         'container': `#ais-widget-refinement-list--${refinement.facet}`,
         'attribute': refinement.facet,
         'limit': 8,
-        'showMore': false,
+        'showMore': true,
         'searchable': true,
         'cssClasses': {
           'checkbox': 'filled-in',
           'labelText': 'small',
           'count': ['right', 'small'],
           'searchableRoot': 'hidden', // Default state for Advanced Search toggle
+          'showMore': 'btn-flat grey-text small hidden', // Default state for Advanced Search toggle
+        },
+        'templates': {
+          'showMoreText': `
+            {{#isShowingMore}}
+            [ - ] Show less
+            {{/isShowingMore}}
+            {{^isShowingMore}}
+            [ + ] Show more
+            {{/isShowingMore}}
+          `,
         },
       })
     );
+    {% endraw %}
 
     /* Create mobile refinements */
     /* Hiding on mobile as grants search refinements not useful on mobile
@@ -513,25 +526,32 @@ ready(function() {
 
   function toggleAdvancedListener(e) {
     const searchBoxes = document.querySelectorAll('.ais-RefinementList-searchBox');
+    const showMoreButtons = document.querySelectorAll('.ais-RefinementList-showMore');
     if (e.target.checked) {
-      showAdvancedSearchTools(searchBoxes);
+      showAdvancedSearchTools(searchBoxes, showMoreButtons);
     } else {
-      hideAdvancedSearchTools(searchBoxes);
+      hideAdvancedSearchTools(searchBoxes, showMoreButtons);
     }
   }
 
-  function showAdvancedSearchTools(targets) {
+  function showAdvancedSearchTools(searchBoxes, showMoreButtons) {
     rangeInputElement.querySelector('.ais-Panel').classList.remove('hidden');
-    targets.forEach((item) => {
+    searchBoxes.forEach((item) => {
       item.querySelector('.ais-SearchBox').classList.remove('hidden');
     });
+    showMoreButtons.forEach((item) => {
+      item.classList.remove('hidden');
+    })
   }
 
-  function hideAdvancedSearchTools(targets) {
+  function hideAdvancedSearchTools(searchBoxes, showMoreButtons) {
     rangeInputElement.querySelector('.ais-Panel').classList.add('hidden');
     targets.forEach((item) => {
       item.querySelector('.ais-SearchBox').classList.add('hidden');
     });
+    showMoreButtons.forEach((item) => {
+      item.classList.add('hidden');
+    })
   }
   
   // QUERY HOOKS
