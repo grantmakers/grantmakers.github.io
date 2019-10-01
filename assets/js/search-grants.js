@@ -401,6 +401,7 @@ ready(function() {
         'attribute': refinement.facet,
         'limit': 8,
         'showMore': true,
+        'showMoreLimit': 20,
         'searchable': true,
         'cssClasses': {
           'checkbox': 'filled-in',
