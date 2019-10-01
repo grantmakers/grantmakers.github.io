@@ -407,7 +407,7 @@ ready(function() {
           'labelText': 'small',
           'count': ['right', 'small'],
           'searchableRoot': 'hidden', // Default state for Advanced Search toggle
-          'showMore': 'btn-flat grey-text small hidden', // Default state for Advanced Search toggle
+          'showMore': 'btn-flat grey-text small', // Default state for Advanced Search toggle
         },
         'templates': {
           'showMoreText': `
@@ -574,6 +574,10 @@ ready(function() {
     if (check > 0) {
       rangeInputElement.querySelector('.ais-Panel').classList.remove('hidden');
     }
+    const showMoreButtons = document.querySelectorAll('.ais-RefinementList-showMore');
+    showMoreButtons.forEach((item) => {
+      item.classList.add('hidden');
+    })
   }
 
   function toggleAdvancedListener(e) {
