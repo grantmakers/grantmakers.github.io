@@ -28,6 +28,7 @@ ready(function() {
   const elemsDD = document.querySelectorAll('.dropdown-trigger');
   const optionsDD = {
     // 'container': '.search-box-dropdown-wrapper',
+    'alignment': 'right',
     'constrainWidth': false,
     'coverTrigger': false,
     'closeOnClick': false,
@@ -79,7 +80,6 @@ ready(function() {
 
   // Toggle search type
   toggle.onchange = function() {
-    console.log('switch');
     window.location.href = '/search/profiles/';
   };
 
@@ -151,6 +151,59 @@ ready(function() {
   const templateHits = `{% include search/grants/algolia-template-hits.html %}`;
 
   // Construct widgets
+
+  // Search Box dropdown - limits attributes to search
+  // Create the render function
+  const renderConfigure = (renderOptions, isFirstRender) => {
+    const { refine, widgetParams } = renderOptions;
+    const arr = widgetParams.searchParameters.restrictSearchableAttributes;
+
+    if (isFirstRender) {
+      const searchDropdownItems = document.getElementById('dropdown-body');
+
+      searchDropdownItems.addEventListener('change', (e) => {
+        const attribute = e.target.id;
+        const isChecked = e.target.checked; // Note: this is the status AFTER the change
+        // TODO Ensure at least one item is checked
+        // Note: grantee_state will always remain in searchable attributes
+        // thus array.length should at least be 2, not 1
+        if (widgetParams.searchParameters.restrictSearchableAttributes.length === 2 && isChecked === false) {
+          e.target.checked = !isChecked;
+          M.Toast.dismissAll();
+          M.toast({'html': 'At least one item needs to be searchable'});
+          return;
+        }
+        // TODO Add logic to handle city + state
+        // Currently assumes state will always remain in searchable attributes
+        refine({
+          'restrictSearchableAttributes': addOrRemoveSearchableAttributes(arr, attribute),
+        });
+      });
+    }
+  };
+
+  // Create the custom widget
+  const customConfigure = instantsearch.connectors.connectConfigure(
+    renderConfigure,
+    () => {}
+  );
+
+  // Instantiate the custom widget
+  search.addWidget(
+    customConfigure({
+      'container': document.querySelector('#search-box-dropdown'),
+      'searchParameters': {
+        'restrictSearchableAttributes': [
+          'grantee_name',
+          'grant_purpose',
+          'grantee_city',
+          'grantee_state',
+          'organization_name',
+        ],
+      },
+    })
+  );
+
   search.addWidget(
     instantsearch.widgets.searchBox({
       'container': '#ais-widget-search-box',
@@ -284,13 +337,13 @@ ready(function() {
       ],
       'body': 'card-content',
     },
-})(customRangeInput);
+  })(customRangeInput);
 
   // Instantiate the custom widget
   search.addWidget(
     rangeInputWithPanel({
-      container: document.querySelector('#ais-widget-range-input'),
-      attribute: 'grant_amount',
+      'container': document.querySelector('#ais-widget-range-input'),
+      'attribute': 'grant_amount',
     })
   );
 
@@ -460,7 +513,7 @@ ready(function() {
 
   search.once('render', function() {
     // Initialize static Materialize JS components created by Instantsearch widgets
-    // initSelect();
+    initSelect();
     // Show range input if initial URL contains an amount refinement
     // Note: Advanced search features are hidden by default via InstantSearch widget settings
     setInitialAdvancedSearchToggleState();
@@ -483,7 +536,7 @@ ready(function() {
       renderForbidden();
       console.log('Origin forbidden');
     }
-    console.log(e);
+    // console.log(e);
   });
 
   // Initialize search
@@ -519,7 +572,6 @@ ready(function() {
     const obj = search.helper.state.numericRefinements;
     const check = Object.keys(obj).length;
     if (check > 0) {
-      // console.log('has range refinement');
       rangeInputElement.querySelector('.ais-Panel').classList.remove('hidden');
     }
   }
@@ -598,6 +650,24 @@ ready(function() {
   }
   // MISC HELPER FUNCTIONS
   // ==============
+  function addOrRemoveSearchableAttributes(array, value) {
+    const tmpArr = array;
+    let index = array.indexOf(value);
+
+    if (index === -1) {
+      array.push(value);
+    } else {
+      array.splice(index, 1);
+    }
+    // Ensure at least one item is checked
+    if (array.length < 2) { // grantee_state will always be there
+      // TODO Add toast
+      return tmpArr;
+    } else {
+      return array;
+    }
+  }
+
   function getLabel(item) {
     const obj = facets.filter(each => each.facet === item);
     return obj[0].label;

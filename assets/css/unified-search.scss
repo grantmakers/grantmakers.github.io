@@ -242,6 +242,18 @@ main {
   }
 }
 
+#toast-container {
+  top: auto !important;
+  right: auto !important;
+  bottom: 10%;
+	left:7%;
+	z-index: 2147483648; // Add 1 point to z-index of Drift widget
+	@media #{$small-and-down} {
+		left: 0;
+		bottom: 0;
+	}
+}
+
 /****************************
 Algolia theme overrides
 *****************************/
@@ -548,13 +560,18 @@ $parallax-height: 75vh;
     height: 16px;
   }
   input {
-    width: calc(100% - 40px);
+    width: calc(100% - 40px - 70px);
     padding-left: 40px;
+    padding-right: 70px;
     background-color: white;
     border: none;
     box-shadow: none;
     margin-bottom: 0;
     border-radius: 3px;
+    @media #{$small-and-down} {
+      width: calc(100% - 80px);
+      padding-right: 40px;
+    }
   }
   input::placeholder {
     color: $text-muted-max;
@@ -576,6 +593,15 @@ $parallax-height: 75vh;
   }
 }
 
+// TODO Improve search-box CSS naming conventions
+#ais-widget-search-box {
+  .ais-SearchBox-reset {
+    right: 2.5rem; // HACK Allows for more whitespace with dropdown menu
+    @media #{$small-and-down} {
+      right: 1rem;
+    }
+  }
+}
 #search-box-dropdown-trigger {
   a {
     color: $text-color;
@@ -587,6 +613,7 @@ $parallax-height: 75vh;
   #search-box-dropdown {
     width: 180px;
     border-radius: 3px;
+    left: calc(-180px + 34px) !important; // HACK
   }
   .dropdown-wrapper {
     padding: 0 20px;
@@ -602,13 +629,17 @@ $parallax-height: 75vh;
   position: relative;
   top: -7px;
   border-radius: 3px;
-  #search-box-dropdown {
-    display: inline-block;
-    padding: 0px 40px;
-    .dropdown-header {
-      display: block;
-      height: 55px;
-    }
+}
+
+#search-box-dropdown {
+  .dropdown-wrapper:focus {
+    outline: none;
+  }
+  .dropdown-header {
+    // height: 55px; // Reduces whitespace
+  }
+  #dropdown-body li:hover {
+    background-color: inherit;
   }
 }
 
