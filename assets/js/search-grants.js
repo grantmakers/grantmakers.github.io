@@ -546,7 +546,7 @@ ready(function() {
 
   function hideAdvancedSearchTools(searchBoxes, showMoreButtons) {
     rangeInputElement.querySelector('.ais-Panel').classList.add('hidden');
-    targets.forEach((item) => {
+    searchBoxes.forEach((item) => {
       item.querySelector('.ais-SearchBox').classList.add('hidden');
     });
     showMoreButtons.forEach((item) => {
