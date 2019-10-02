@@ -572,6 +572,7 @@ ready(function() {
 
   function toggleAdvancedListener(e) {
     const showMoreButtons = document.querySelectorAll('.ais-RefinementList-showMore');
+    // TODO Create GA event
     if (e.target.checked) {
       showAdvancedSearchTools(showMoreButtons);
     } else {
