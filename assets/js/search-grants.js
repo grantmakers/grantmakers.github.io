@@ -263,7 +263,7 @@ ready(function() {
 
   // Create the render function
   const renderRangeInput = (renderOptions, isFirstRender) => {
-    const { start, range, refine, widgetParams } = renderOptions;
+    const { start, refine, widgetParams } = renderOptions; // Not using 'range' argument
     const [min, max] = start;
 
     if (isFirstRender) {
@@ -648,7 +648,6 @@ ready(function() {
     }
     // Ensure at least one item is checked
     if (array.length < 2) { // grantee_state will always be there
-      // TODO Add toast
       return tmpArr;
     } else {
       return array;
