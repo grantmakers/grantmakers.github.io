@@ -394,7 +394,6 @@ ready(function() {
     */
     
     /* Create desktop refinements */
-    {% raw %}
     search.addWidget(
       refinementListWithPanel({
         'container': `#ais-widget-refinement-list--${refinement.facet}`,
@@ -411,18 +410,10 @@ ready(function() {
           'showMore': 'btn-flat grey-text small', // Default state for Advanced Search toggle
         },
         'templates': {
-          'showMoreText': `
-            {{#isShowingMore}}
-            [ - ] Show less
-            {{/isShowingMore}}
-            {{^isShowingMore}}
-            [ + ] Show more
-            {{/isShowingMore}}
-          `,
+          'showMoreText': `{% include search/grants/algolia-refinementList-showMore.html %}`,
         },
       })
     );
-    {% endraw %}
 
     /* Create mobile refinements */
     /* Hiding on mobile as grants search refinements not useful on mobile
