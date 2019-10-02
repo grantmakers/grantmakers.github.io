@@ -401,12 +401,10 @@ ready(function() {
         'limit': 8,
         'showMore': true,
         'showMoreLimit': 20,
-        'searchable': true,
         'cssClasses': {
           'checkbox': 'filled-in',
           'labelText': 'small',
           'count': ['right', 'small'],
-          'searchableRoot': 'hidden', // Default state for Advanced Search toggle
           'showMore': 'btn-flat grey-text small', // Default state for Advanced Search toggle
         },
         'templates': {
@@ -569,37 +567,30 @@ ready(function() {
     const showMoreButtons = document.querySelectorAll('.ais-RefinementList-showMore');
     showMoreButtons.forEach((item) => {
       item.classList.add('hidden');
-    })
+    });
   }
 
   function toggleAdvancedListener(e) {
-    const searchBoxes = document.querySelectorAll('.ais-RefinementList-searchBox');
     const showMoreButtons = document.querySelectorAll('.ais-RefinementList-showMore');
     if (e.target.checked) {
-      showAdvancedSearchTools(searchBoxes, showMoreButtons);
+      showAdvancedSearchTools(showMoreButtons);
     } else {
-      hideAdvancedSearchTools(searchBoxes, showMoreButtons);
+      hideAdvancedSearchTools(showMoreButtons);
     }
   }
 
-  function showAdvancedSearchTools(searchBoxes, showMoreButtons) {
+  function showAdvancedSearchTools(showMoreButtons) {
     rangeInputElement.querySelector('.ais-Panel').classList.remove('hidden');
-    searchBoxes.forEach((item) => {
-      item.querySelector('.ais-SearchBox').classList.remove('hidden');
-    });
     showMoreButtons.forEach((item) => {
       item.classList.remove('hidden');
-    })
+    });
   }
 
-  function hideAdvancedSearchTools(searchBoxes, showMoreButtons) {
+  function hideAdvancedSearchTools(showMoreButtons) {
     rangeInputElement.querySelector('.ais-Panel').classList.add('hidden');
-    searchBoxes.forEach((item) => {
-      item.querySelector('.ais-SearchBox').classList.add('hidden');
-    });
     showMoreButtons.forEach((item) => {
       item.classList.add('hidden');
-    })
+    });
   }
   
   // QUERY HOOKS
