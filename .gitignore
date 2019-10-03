@@ -5,3 +5,4 @@ _site/
 secrets.js
 node_modules/
 _config_development.yml
+_config_staging.yml

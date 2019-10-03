@@ -19,13 +19,17 @@ redirect_from:
     <title>{{ site.title }}</title>
     <meta name="description" content="{{ site.description }}" />
 
+    <!-- Preconnect -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://qa1231c5w9-dsn.algolia.net" crossorigin>
+    <link rel="preconnect" href="https://www.google-analytics.com" crossorigin>
+
     <!-- Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700">
 
     <!-- Styles -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.css@7.1.1/themes/reset-min.css" integrity="sha256-JQ2nnTmybhOWSjfV3sa8mG0ZVhTCcORER4cyXc5HL10=" crossorigin="anonymous">
-    
     <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/unified-search.css?v={{ site.time | date: '%Y%m%d'}}">
 
     <!-- JavaScript -->
@@ -232,5 +236,8 @@ redirect_from:
       </div>
     </div>
     <!-- End Modals-->
+    {% unless jekyll.environment == 'staging' %}
+      {% include ga.html %}
+    {% endunless %}
   </body>
 </html>
