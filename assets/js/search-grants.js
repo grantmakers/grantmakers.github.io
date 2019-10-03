@@ -575,8 +575,10 @@ ready(function() {
     // TODO Create GA event
     if (e.target.checked) {
       showAdvancedSearchTools(showMoreButtons);
+      gaToggledAdvanced('on');
     } else {
       hideAdvancedSearchTools(showMoreButtons);
+      gaToggledAdvanced('off');
     }
   }
 
@@ -592,6 +594,22 @@ ready(function() {
     showMoreButtons.forEach((item) => {
       item.classList.add('hidden');
     });
+  }
+
+  // Google Analytics Events
+  function gaToggledAdvanced(outcome) {
+    let gaCheck = window[window['GoogleAnalyticsObject'] || 'ga']; // eslint-disable-line dot-notation
+    let gaCount = 0;
+
+    if (typeof gaCheck === 'function' && gaCount === 0) {
+      ga('send', 'event', {
+        'eventCategory': 'Grants Search Events',
+        'eventAction': 'Clicked Toggle Advanced Tools',
+        'eventLabel': 'Advanced Tools Toggled ' + outcome,
+      });
+    }
+
+    gaCount++;
   }
   
   // QUERY HOOKS
