@@ -12,7 +12,9 @@ ready(function() {
   // Helper definitions
   const scrollAnchor = document.querySelector('.nav-search');
   const isMobile = window.matchMedia('only screen and (max-width: 992px)');
-  // Initialize Materialize components
+
+  // INITIALIZE MATERIALIZE COMPONENTS
+  // =================================
   // Note: if the element is created dynamically via Instantsearch widget,
   // the plugin needs to be initialized in the normal Instantsearch workflow
   // using the render method (e.g. search.on('render'...)
@@ -25,15 +27,17 @@ ready(function() {
   const elemsMO = document.querySelectorAll('.modal');
   M.Modal.init(elemsMO);
 
-  const elemsDD = document.querySelectorAll('.dropdown-trigger');
-  const optionsDD = {
-    // 'container': '.search-box-dropdown-wrapper',
+  const elSearchBoxDropdown = document.querySelectorAll('.dropdown-trigger')[0];
+  const optionsSearchBoxDropdown = {
     'alignment': 'right',
     'constrainWidth': false,
     'coverTrigger': false,
     'closeOnClick': false,
+    'onOpenEnd': function() {
+      gaSearchBoxNarrow();
+    },
   };
-  M.Dropdown.init(elemsDD, optionsDD);
+  M.Dropdown.init(elSearchBoxDropdown, optionsSearchBoxDropdown);
 
   if (!isMobile.matches) { // Use pushpin on desktop only
     const elemPP = document.querySelector('.nav-search nav');
@@ -43,6 +47,8 @@ ready(function() {
     M.Pushpin.init(elemPP, optionsPP);
   }
 
+  // ALGOLIA
+  // ==============
   const searchClient = algoliasearch('QA1231C5W9', '{{ site.algolia_public_key_grants }}');
   const facets = [
     {
@@ -164,7 +170,6 @@ ready(function() {
       searchDropdownItems.addEventListener('change', (e) => {
         const attribute = e.target.id;
         const isChecked = e.target.checked; // Note: this is the status AFTER the change
-        // TODO Ensure at least one item is checked
         // Note: grantee_state will always remain in searchable attributes
         // thus array.length should at least be 2, not 1
         if (widgetParams.searchParameters.restrictSearchableAttributes.length === 2 && isChecked === false) {
@@ -596,7 +601,8 @@ ready(function() {
     });
   }
 
-  // Google Analytics Events
+  // GOOGLE ANALYTICS EVENTS
+  // =======================
   function gaToggledAdvanced(outcome) {
     let gaCheck = window[window['GoogleAnalyticsObject'] || 'ga']; // eslint-disable-line dot-notation
     let gaCount = 0;
@@ -606,6 +612,21 @@ ready(function() {
         'eventCategory': 'Grants Search Events',
         'eventAction': 'Clicked Toggle Advanced Tools',
         'eventLabel': 'Advanced Tools Toggled ' + outcome,
+      });
+    }
+
+    gaCount++;
+  }
+
+  function gaSearchBoxNarrow() {
+    let gaCheck = window[window['GoogleAnalyticsObject'] || 'ga']; // eslint-disable-line dot-notation
+    let gaCount = 0;
+
+    if (typeof gaCheck === 'function' && gaCount === 0) {
+      ga('send', 'event', {
+        'eventCategory': 'Grants Search Events',
+        'eventAction': 'Clicked SearchBox Dropdown Trigger',
+        'eventLabel': 'SearchBox Dropdown Opened',
       });
     }
 
