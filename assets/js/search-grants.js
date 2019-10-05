@@ -213,7 +213,6 @@ ready(function() {
     instantsearch.widgets.searchBox({
       'container': '#ais-widget-search-box',
       'placeholder': 'Search by keywords, location, or grantee name',
-      'autofocus': true,
       'showSubmit': true,
       'showReset': true,
       'showLoadingIndicator': false,
