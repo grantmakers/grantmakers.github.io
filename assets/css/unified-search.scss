@@ -575,8 +575,15 @@ $parallax-height: 75vh;
   }
   input::placeholder {
     color: $text-muted-max;
-    @media #{$medium-and-down} {
-      font-size: 85%;
+  }
+  @media #{$medium-and-down} {
+    input {
+      &::placeholder {
+        font-size: 85%;
+      }
+      &::-webkit-input-placeholder {
+        transform:translate3d(0, 3px,0); // HACK
+      }
     }
   }
 }
