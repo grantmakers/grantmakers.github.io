@@ -51,7 +51,7 @@ redirect_from:
           <div class="intro-text center-align white-text">
             <h1 class="text-bold">Grants Search</h1>
             <h5>Discover who foundations are funding</h5>
-            <p>Search through all {{ site.number_of_grants | divided_by: 1000000 }}.{{ site.number_of_grants | modulo: 1000000 | divided_by: 100000 }} million grants contained in the public IRS 990-PF dataset</p>
+            <p>Search through {{ site.number_of_searchable_grants | divided_by: 1000000 }}.{{ site.number_of_searchable_grants | modulo: 1000000 | divided_by: 100000 }} million grants contained in the public IRS 990-PF dataset</p>
           </div>
         </div>
         <canvas></canvas>

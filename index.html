@@ -165,10 +165,10 @@
 										<div class="col-sm-7">
 											<h6 class="category text-info">Research</h6>
 											<h3 class="card-title">
-												Search through {{ site.number_of_grants | divided_by: 1000000 }}.{{ site.number_of_grants | modulo: 1000000 | divided_by: 100000 }} million grants
+												Search through {{ site.number_of_searchable_grants | divided_by: 1000000 }}.{{ site.number_of_searchable_grants | modulo: 1000000 | divided_by: 100000 }} million grants
 											</h3>
 											<p class="card-description">
-												Thanks to our partnership with <a href="{{ site.algolia_link }}">Algolia</a>, we've developed an incredible search tool allowing anyone to search across all {{ site.number_of_grants | divided_by: 1000000 }}.{{ site.number_of_grants | modulo: 1000000 | divided_by: 100000 }} million grants contained in the IRS dataset.
+												Thanks to our partnership with <a href="{{ site.algolia_link }}">Algolia</a>, we've developed an incredible search tool allowing anyone to search across {{ site.number_of_searchable_grants | divided_by: 1000000 }}.{{ site.number_of_searchable_grants | modulo: 1000000 | divided_by: 100000 }} million grants contained in the IRS dataset.
 											</p>
 										</div>
 										<div class="col-sm-5">
