@@ -582,7 +582,10 @@ nav.navbar-unified-search {
         }
       }
       a {
-        padding:0;
+				padding:0;
+				span.title {
+					color: #ffffff;
+				}
         &:hover {
           background-color: inherit;
         }
@@ -956,6 +959,9 @@ footer {
 		}
 		p:first-of-type {
 			margin-top: 0px;
+		}
+		p, p a {
+			font-weight: 300;
 		}
 		p a {
 			color: $text-color !important; // HACK

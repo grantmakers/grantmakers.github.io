@@ -1113,10 +1113,12 @@ footer {
 		}
 		p:first-of-type {
 			margin-top: 0px;
-		}
+    }
+    p, p a {
+      font-weight: 300;
+    }
 		p a {
       color: $text-color !important; // HACK
-      font-weight: 300;
 			&:hover {
 				@extend .blue-grey-text;
 			}
