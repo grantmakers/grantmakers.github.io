@@ -642,7 +642,7 @@ nav.nav-center ul.ul-center li .ais-search-box {
 }
 
 /* Hero */
-.simple-page main .container {
+body.simple-page .header .container {
 	padding-top: 16vh;
 	h1.title {
 		color: #ffffff;
@@ -921,6 +921,12 @@ $parallax-height: 75vh;
 	@media #{$small-and-down} {
 		right: 2rem;
 		bottom: 1rem;
+	}
+}
+
+main {
+	.section-simple-page {
+		padding: 90px 0;
 	}
 }
 
