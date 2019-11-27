@@ -650,6 +650,9 @@ body.simple-page .header .container {
 	}
 	h1.title {
 		font-size: 3.8rem;
+		@media #{$medium-and-down} {
+			font-size: 2.8rem;
+		}
 	}
 }
 $parallax-height: 75vh;

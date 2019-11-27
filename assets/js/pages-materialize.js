@@ -9,5 +9,6 @@ function ready(fn) {
 }
 
 ready(function() {
-
+  const elemsSN = document.querySelectorAll('.sidenav');
+  M.Sidenav.init(elemsSN);
 });
