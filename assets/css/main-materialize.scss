@@ -644,8 +644,12 @@ nav.nav-center ul.ul-center li .ais-search-box {
 /* Hero */
 body.simple-page .header .container {
 	padding-top: 16vh;
-	h1.title {
+	h1, h2, h3, h4, h5, h6 {
 		color: #ffffff;
+		font-weight: 400;
+	}
+	h1.title {
+		font-size: 3.8rem;
 	}
 }
 $parallax-height: 75vh;
@@ -910,7 +914,7 @@ $parallax-height: 75vh;
 	max-height: 160px;
 	margin: -80px auto 0;
 }
-.profile-page .main, .profile-index-page .main, .simple-page .main {
+.profile-page .main, .profile-index-page .main {
 	background-color: $gray-lightest;
 	//z-index: 2000; //HACK Fixed header loses transparent background
 }
