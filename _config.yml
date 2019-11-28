@@ -25,12 +25,12 @@ algolia_public_key_grants: cd47ecb3457441878399b20acc8c3fbc
 algolia_public_key_profiles: ce4d584b0de36ca3f8b4727fdb83c658
 
 # Sitewide helpers
-last_updated: '2019-10-12T00:35:39.620Z'
+last_updated: '2019-11-25T01:51:04.948Z'
 
-number_of_filings: 420335
+number_of_filings: 420336
 number_of_foundations: 88864
-number_of_grants: 5248110
-number_of_searchable_grants: 4741998
+number_of_grants: 5248131
+number_of_searchable_grants: 4742019
 
 # Build settings
 markdown: kramdown
