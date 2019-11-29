@@ -1,184 +1,85 @@
 ---
+layout: simple-no-hero-materialize
+title: Grantmakers.io - About
 permalink: /about/
 ---
-<!doctype html>
-<html lang="en">
-<head>
-	<meta charset="utf-8" />
-	<link rel="apple-touch-icon" sizes="76x76" href="assets/img/apple-icon.jpg">
-	<link rel="icon" type="image/png" href="{{ site.baseurl }}/assets/img/favicon.png">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-
-	<title>{{ site.title }}</title>
-	<meta name="description" content="{{ site.description }}" />
-
-	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
-
-	<!-- Fonts and icons     -->
-	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" />
-  <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.ion.rangeslider/2.0.12/css/ion.rangeSlider.css">
-  <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.ion.rangeslider/2.0.12/css/ion.rangeSlider.skinNice.css">
-
-	<!-- CSS Files -->
-  <link href="{{ site.baseurl }}/assets/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="{{ site.baseurl }}/assets/css/main.css" rel="stylesheet">
-
-</head>
-
-<body class="landing-page">
-
-	{% include nav-no-search.html %}
-
-	<div class="wrapper">
-		<div class="header header-filter" style="background-image: url('{{ site.baseurl }}/assets/img/building.jpg')">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-6">
-						<h1 class="title">Making charitable data more accessible</h1>
-						<h4><strong>Grantmakers.io is a community project.</strong> Its simple goal is to demonstrate how open source technologies can be leveraged to minimize the cost of hosting and sharing philanthropic data.</h4>
-						<br />
-						<a href="{{ site.baseurl }}/" class="btn btn-danger btn-raised btn-lg">
-							<i class="material-icons">search</i> Start your Search
-						</a>
-					</div>
+<main>
+	<div class="header header-filter" style="background-image: url('{{ site.baseurl }}/assets/img/files.jpg')">
+		<div class="container valign-wrapper">
+			<div class="row">
+				<div class="col s12 left-align">
+					<h1 class="title">About</h1>
+					<h6></h6>
 				</div>
 			</div>
 		</div>
+	</div>
 
-		<div class="main main-raised">
-			<div class="container">
-				<div class="section text-center section-landing">
-					<div class="about-headline">
-						<div class="row">
-							<div class="col-md-6 col-md-offset-3">
-								<h2 class="title">Free and open source</h2>
-								<h5 class="description">Grantmakers.io is an open-source project, with the entire code base available for anyone to <a href="https://github.com/grantmakers/grantmakers.github.io">view or download</a>.</h5>
-							</div>
+	<div class="main main-raised">
+		<div class="container-custom">
+			<div class="section section-simple-page section-about">
+				<div id="main-content" class="row">
+					<div class="col s12 m9 offset-m1 l10 offset-l1 xl8 offset-xl1">
+						<div id="toc-intro" class="section scrollspy">
+							<h4>An open window into the IRS 990 dataset</h4>
+							<p>Grantmakers.io makes the machine-readable IRS 990 dataset usable for nonprofit professionals. It was created by me, Chad Kruse. 👋</p>
+							<p>I originally <a href="https://medium.com/@chadkruser/building-grantmakers-io-d1f78326a0b5">built the site for a friend</a>, and open sourced it for the world when I saw how useful the data was. Then the amazing folks at <a href="{{ site.algolia_link }}">Algolia</a> stepped in and provided an expanded free tier to make the dataset entirely searchable. The speed and accuracy of their search is truly remarkable - it's the <a href="https://medium.com/@chadkruser/unlocking-irs-form-990-pf-data-through-hosted-search-f1bfecac2d5e">search nonprofits deserve</a>.</p>
+							<p>From there it's been 🔥.</p>
+							<div class="divider"></div>
+							<p>What you'll find:</p>
+							<ul class="browser-default">
+								<li>990-PF data presented as-is.</li>
+								<li>Searchable grants databases for every foundation contained in the dataset.</li>
+							</ul>
+							<p>What you won't find:</p>
+							<ul class="browser-default">
+								<li>Every foundation in the US - just the ones that file taxes electronically (<a href="https://independentsector.org/news-post/irs-reform-law-makes-electronic-filing-of-form-990-mandatory/">thankfully this will change soon!</a>)</li>
+								<li>A business model - why does there need to be one? This costs me nothing and is a ton of fun to run.</li>
+								<li>No complicated organizational structures, licenses, nada. It's just open data + me and my laptop.</li>
+							</ul>
 						</div>
-
-						<div class="row">
-							<div class="col-md-12">
-								<hr>
-							</div>
+						<div id="toc-freedom" class="section scrollspy">
+							<h4>Free as in freedom and free as in beer</h4>
+							<p>Grantmakers.io serves as an example of the power of Free Open Source Software. Anyone can access it without paying (free as in beer), and anyone can leverage the code to continue innovating in however they please (free as in freedom).</p>
 						</div>
-					</div>
-
-					<div class="features">
-						<div class="row">
-							<div class="col-md-4">
-								<div class="info">
-									<div class="icon icon-info">
-										<i class="material-icons">code</i>
-									</div>
-									<h4 class="info-title">Code meant to inspire</h4>
-									<p>We have no intention of building the next Foundation Center or Guidestar. We aim to inspire, not compete.</p>
-								</div>
-							</div>
-							<div class="col-md-4">
-								<div class="info">
-									<div class="icon icon-warning">
-										<i class="material-icons">people</i>
-									</div>
-									<h4 class="info-title">Built for humans</h4>
-									<p>Search as fast as Google. Data as digestible as your iPhone calendar.</p>
-								</div>
-							</div>
-							<div class="col-md-4">
-								<div class="info">
-									<div class="icon icon-success">
-										<i class="material-icons">money_off</i>
-									</div>
-									<h4 class="info-title">Free forever</h4>
-									<p>The site can handle millions of searches per month at ZERO COST to us or anyone else.</p>
-								</div>
-							</div>
+						<div id="toc-transparency" class="section scrollspy">
+							<h4>Transparency 💯</h4>
+							<p>I run Grantmakers.io like I like to see any business run - completely transparent and self-sustaining. I also run it like I like to see any nonprofit run - completely transparent and self-sustaining. 😉</p>
+							<!-- Defer loading of iframe - see pages-materialize.js -->
+							<iframe src="" data-src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRd9v4_McKmXGjR-pA1cW33vNjwAnky1gtIQlfvaA1miv3PhbR6QXxHVMVV-5x7kqEOTdfIkVoy87YC/pubhtml?widget=true&amp;headers=false"></iframe>
+							<a target="_blank" href="https://docs.google.com/spreadsheets/d/e/2PACX-1vRd9v4_McKmXGjR-pA1cW33vNjwAnky1gtIQlfvaA1miv3PhbR6QXxHVMVV-5x7kqEOTdfIkVoy87YC/pubhtml?gid=0&single=true">View full spreadsheet <i class="material-icons material-icons-inherit">open_in_new</i></a>
+						</div>
+						<div id="toc-chad" class="section section-about scrollspy">
+							<h4>Meet Chad</h4>
+							<p>Before launching my own ventures and dabbling with code, I was often brought on as the first "business hire" at startups of all shapes and sizes, online and offline. I've run development teams, owned product strategy, raised venture, seed, debt, and philanthropic capital, and closed business development deals with companies both large and small. I'm a generalist through and through.</p>
+							<p>My career started as a strategist and dealmaker for large tech companies, and I'm often told I have a unique ability to talk shop with programmers, VC's, designers, boards of directors, philanthropists and everyone in between.</p>
+							<p>My head is in SF, my heart is in Bend (OR), and my body is currently in Chicago.</p>
 						</div>
 					</div>
-				</div>
-
-				<hr class="divider container">
-
-				<div class="section text-center">
-					<div class="about-closing">
-						<div class="row">
-							<div class="col-md-6 col-md-offset-3">
-								<h2 class="title">A community project from</h2>
-								<a href="https://smartergiving.org"><img src="{{ site.baseurl }}/assets/img/smartergiving.png" alt="SmarterGiving Logo"></a>
+					<div class="col m2 l1 xl2 offset-xl1 hide-on-small-only">
+						<div class="toc-wrapper pushpin pin-top">
+							<div>
+								<ul class="table-of-contents">
+									<li><a href="#toc-intro">Open access</a></li>
+									<li><a href="#toc-freedom">Free forever</a></li>
+									<li><a href="#toc-transparency">Transparent</a></li>
+									<li><a href="#toc-chad">Meet Chad</a></li>
+									<li id="pin-anchor-bottom"></li>
+								</ul>
 							</div>
 						</div>
 					</div>
 				</div>
-
-				<hr class="divider container">
-
-				<!--
-				<div class="section">
-					<div class="row">
-						<div class="col-md-8 col-md-offset-2">
-							<h2 class="text-center title">Get in touch</h2>
-							<h4 class="text-center description">Divide details about your product or agency work into parts. Write a few lines about each one and contact us about any further collaboration. We will responde get back to you in a couple of hours.</h4>
-							<form class="contact-form">
-								<div class="row">
-									<div class="col-md-6">
-										<div class="form-group label-floating">
-											<label class="control-label">Your Name</label>
-											<input type="text" class="form-control">
-										</div>
-									</div>
-									<div class="col-md-6">
-										<div class="form-group label-floating">
-											<label class="control-label">Your Email</label>
-											<input type="email" class="form-control">
-										</div>
-									</div>
-								</div>
-
-								<div class="form-group label-floating">
-									<label class="control-label">Your Messge</label>
-									<textarea class="form-control" rows="4"></textarea>
-								</div>
-
-								<div class="row">
-									<div class="col-md-4 col-md-offset-4 text-center">
-										<button class="btn btn-primary btn-raised">
-											Send Message
-										</button>
-									</div>
-								</div>
-							</form>
-
-						</div>
-					</div>
-				</div>
-			-->
-
-				<div class="section landing-section">
-					<div class="row">
-						<div class="col-md-8 col-md-offset-2 text-center">
-							<a href="mailto:opensource@smartergiving.org" class="btn btn-info btn-large btn-raised">
-								<i class="material-icons">email</i> Contact us
-							</a>
-							<a href="{{ site.baseurl }}/" class="btn btn-danger btn-large btn-raised">
-								<i class="material-icons">search</i> Start your search
-							</a>
+				<div class="row">
+					<div class="col s12 m10 offset-m1 xl8 offset-xl1">
+						<div class="divider"></div>
+						<div class="section section-about-cta center-align">
+							<h5>If you've found Grantmakers.io helpful, why not</h5>
+							{% include materialize/buy-me-a-coffee.html %}
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	{% include footer.html %}
-	{% include footer-license-and-links.html %}
-	{% include ga.html %}
-</body>
-
-<!--   Core JS Files   -->
-	<script src="{{ site.baseurl }}/assets/js/jquery.min.js" type="text/javascript"></script>
-	<script src="{{ site.baseurl }}/assets/js/bootstrap.min.js" type="text/javascript"></script>
-	<script src="{{ site.baseurl }}/assets/js/material.min.js"></script>
-
-	<!-- Initialize material design and bootstrap effects + other page-specific JS -->
-	<script src="{{ site.baseurl }}/assets/js/pages.js" type="text/javascript"></script>
-
-</html>
+</main>

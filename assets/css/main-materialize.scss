@@ -163,6 +163,12 @@ ul.striped > li:nth-child(odd) {
 .divider-dark {
 	background-color: #bdbdbd;
 }
+.material-icons-inherit {
+	font-size: inherit;
+	line-height: inherit;
+	height: inherit;
+	vertical-align: bottom;
+}
 /* Inline lists */
 .list-inline {
   padding-left: 0;
@@ -484,35 +490,6 @@ button.tooltipped {
 }
 i.tooltipped {
 	cursor: default;
-}
-
-.pinned {
-	box-shadow: 0 10px 20px -12px rgba(0, 0, 0, 0.42), 0 3px 20px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
-	z-index: 998;
-	&.pushpin-nav-search {
-		@media #{$small-and-down} {
-			width: 304px; // Chrome 
-			//width: 250px; // Firefox
-		}
-		@media #{$medium-and-up} {
-			//width: 596px;
-			width: 90%;
-		}
-		@media #{$large-and-up} {
-			width: 920px;
-		}
-		@media #{$extra-large-and-up} {
-			width: 1117px;
-		}
-	}
-}
-
-.pin-top, .pin-bottom {
-	position: inherit;
-}
-
-.pin-bottom  {
-	display: none;
 }
 
 i.suffix {
@@ -843,6 +820,12 @@ $parallax-height: 75vh;
 	background-color: rgba(0,0,0,0.4);
 }
 
+/* Right Table of Contents Nav */
+.toc-wrapper {
+	position: relative;
+	margin-top: 42px;
+}
+
 .profile-page, .profile-index-page, .simple-page {
 	background-color: #ccc;
 	.navbar-transparent {
@@ -937,7 +920,42 @@ $parallax-height: 75vh;
 main {
 	.section-simple-page {
 		padding: 90px 0;
+		@media #{$medium-and-down} {
+			padding: 30px 0;
+		}
 	}
+}
+
+.main-content {
+	h4 {
+		font-weight: 400;
+	}
+}
+
+.btn-coffee {
+	margin-top: 15px;
+}
+
+// About Page
+.section-about {
+	.pin-bottom {
+		visibility: hidden;
+	}
+	.info-title {
+		font-weight: 400;
+	}
+	iframe {
+		width: 100%;
+		min-height: 250px;
+	}
+	ul.table-of-contents li {
+		a {
+			color: #757575 !important; // HACK a:not causing Safari to override
+		}
+	}
+}
+.section-about-cta {
+	padding-top: 32px;
 }
 
 // Sub pages e.g. non-profile, non-search pages
