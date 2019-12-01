@@ -934,6 +934,7 @@ main {
 
 .btn-coffee {
 	margin-top: 15px;
+	font-weight: 400;
 }
 
 // About Page
@@ -953,6 +954,10 @@ main {
 			color: #757575 !important; // HACK a:not causing Safari to override
 		}
 	}
+}
+.material-icon-flag-emoji {
+	width: 24px;
+	vertical-align: inherit;
 }
 .section-about-cta {
 	padding-top: 32px;
