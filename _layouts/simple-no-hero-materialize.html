@@ -28,7 +28,13 @@
 	
 	<!--   Core JS Files   -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.1/js/materialize.min.js"></script>
-  <script src="{{ site.baseurl }}/assets/js/pages-materialize.js"></script>
+	<script src="{{ site.baseurl }}/assets/js/pages-materialize.js"></script>
+	
+	{% if page.donorbox %}
+	<!-- DonorBox Popup Script-->
+	{% include donorbox/popup.html %}
+	{% endif %}
+
 
 </head>
 

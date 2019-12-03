@@ -32,6 +32,9 @@ number_of_foundations: 88864
 number_of_grants: 5248131
 number_of_searchable_grants: 4742019
 
+# Donation links
+donorbox_coffee_link: https://donorbox.org/buy-chad-a-coffee
+
 # Build settings
 markdown: kramdown
 kramdown:
