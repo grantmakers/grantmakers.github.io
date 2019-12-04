@@ -22,12 +22,15 @@ ready(function() {
 
   const elemsPP = document.querySelectorAll('.pushpin');
   const pinAnchor = document.getElementById('main-content');
-  const pinAnchorTop = getElementOffset(pinAnchor).top - 15; // HACK Remove hard coded offset buffer
-  const optionsPP = {
-    'top': pinAnchorTop,
-    'bottom': pinAnchorTop + pinAnchor.offsetHeight - 90, // HACK Remove hard coded bottom buffer
-  };
-  M.Pushpin.init(elemsPP, optionsPP);
+  
+  if (elemsPP.length > 0) { // Only init if needed
+    const pinAnchorTop = getElementOffset(pinAnchor).top - 15; // HACK Remove hard coded offset buffer
+    const optionsPP = {
+      'top': pinAnchorTop,
+      'bottom': pinAnchorTop + pinAnchor.offsetHeight - 90, // HACK Remove hard coded bottom buffer
+    };
+    M.Pushpin.init(elemsPP, optionsPP);
+  }
 
   /* Load Google Sheets iframe */
   /* ************************* */
@@ -36,7 +39,7 @@ ready(function() {
 
 function getElementOffset(element) {
   let de = document.documentElement;
-  let box = element.getBoundingClientRect();
+  let box = element.getBoundingClientRect(); // FIX Will throw error if element null
   let top = box.top + window.pageYOffset - de.clientTop;
   let left = box.left + window.pageXOffset - de.clientLeft;
   return { 'top': top, 'left': left };
