@@ -18,6 +18,23 @@
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
 	<meta name = "format-detection" content = "telephone=no">
 
+	<!-- Open Graph -->
+	<meta property="og:image" content="{{ site.url }}{{ site.baseurl }}/assets/img/og-image.png" />
+  <meta property="og:title" content="{{ site.title }}" />
+  <meta property="og:site_name" content="Grantmakers.io" />
+  <meta property="og:url" content="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}" />
+  <meta property="og:description" content="{{ site.description }}" />
+	<meta property="og:type" content="website" />
+	<meta property="og:locale" content="en_US" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="{{ site.title }}" />
+  <meta name="twitter:description" content="{{ site.description }}" />
+  <meta name="twitter:site" content="@grantmakersio" />
+  <meta name="twitter:creator" content="@chadkruser" />
+  <meta name="twitter:image:src" content="{{ site.url}}{{ site.baseurl }}/assets/img/twitter-card.png" />
+
 	<!-- Fonts and Icons  -->
   <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
