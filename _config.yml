@@ -4,7 +4,7 @@
 # Site settings
 # Meta tags
 title: Grantmakers.io - A Community Project
-description: Quickly find data on 88,000 grantmaking institutions in the US. A free, open source project.
+description: Quickly find data on 90,000 grantmaking institutions in the US. A free, open source project.
 
 # Jekyll settings
 baseurl: # Leave this blank unless your site is located on a subpath, e.g. /blog
@@ -25,12 +25,12 @@ algolia_public_key_grants: cd47ecb3457441878399b20acc8c3fbc
 algolia_public_key_profiles: ce4d584b0de36ca3f8b4727fdb83c658
 
 # Sitewide helpers
-last_updated: '2019-11-25T01:51:04.948Z'
+last_updated: '2019-12-14T13:00:20.754Z'
 
-number_of_filings: 420336
-number_of_foundations: 88864
-number_of_grants: 5248131
-number_of_searchable_grants: 4742019
+number_of_filings: 433181
+number_of_foundations: 90375
+number_of_grants: 5427195
+number_of_searchable_grants: 4921083
 
 # Donation links
 github_sponsors_link: https://github.com/sponsors/chadokruse
