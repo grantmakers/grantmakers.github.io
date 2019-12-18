@@ -460,6 +460,7 @@ li.collection-item a.dropdown-trigger .valign-wrapper {
 	height: 35px; // HACK Match icon height - used in "More" icon in primary nav
 }
 ul#navbar-more.dropdown-content {
+  font-weight: 400;
 	li.disabled {
 		&:hover {
 			background-color: transparent;

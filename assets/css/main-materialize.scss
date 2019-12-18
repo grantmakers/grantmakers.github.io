@@ -624,6 +624,7 @@ li.collection-item a.dropdown-trigger .valign-wrapper {
 	height: 35px; // HACK Match icon height - used in "More" icon in primary nav
 }
 ul#navbar-more.dropdown-content {
+	font-weight: 400;
 	li.disabled {
 		&:hover {
 			background-color: transparent;
@@ -647,6 +648,7 @@ body.main-landing {
 		height: 600px;
 		min-height: 300px;
 		background-size: cover;
+		font-weight: 400;
 		&:after {
 			height: 600px; // HACK'ish
 		}
@@ -667,6 +669,11 @@ body.main-landing {
 			line-height: 1.5;
 		}
 	}
+	.main-raised {
+		.title {
+			font-weight: 600;
+		}
+	}
 	.main-raised .section-extra-padding {
 		padding: 70px 0;
 	}
@@ -677,9 +684,6 @@ body.main-landing {
 		text-transform: uppercase;
 		font-size: 85%;
 		@extend .blue-grey-text;
-	}
-	.title {
-		font-weight: 600;
 	}
 	.algolia-logo-inline {
     width: 5rem;
