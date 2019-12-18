@@ -24,13 +24,17 @@ ready(function() {
   const elemsSN = document.querySelectorAll('.sidenav');
   M.Sidenav.init(elemsSN);
 
-  const elemsSNMore = document.getElementById('sidenav-more');
-  M.Sidenav.init(elemsSNMore, { 'edge': 'right' });
+  const elemsNavMore = document.getElementById('primary-navbar-dropdown-trigger');
+  const optionsNavMore = {
+    'container': 'primary-navbar',
+    'constrainWidth': false,
+  };
+  M.Dropdown.init(elemsNavMore, optionsNavMore);
 
   const elemsMO = document.querySelectorAll('.modal');
   M.Modal.init(elemsMO);
 
-  const elSearchBoxDropdown = document.querySelectorAll('.dropdown-trigger')[0];
+  const elSearchBoxDropdown = document.querySelectorAll('.dropdown-trigger')[1]; // HACK Hard coding using bracket notation is precarious
   const optionsSearchBoxDropdown = {
     'alignment': 'right',
     'constrainWidth': false,

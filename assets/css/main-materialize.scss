@@ -620,16 +620,21 @@ nav.nav-center ul.ul-center li {
 nav.nav-center ul.ul-center li .ais-search-box {
   display: inline-block;
 }
-.sidenav-trigger.sidenav-trigger-style-overrides {
-	// See scss _navbar.scss
-	height: inherit;
-	line-height: inherit;
-	float: none;
-	position: unset;
-	z-index: inherit;
-	margin: inherit;
+li.collection-item a.dropdown-trigger .valign-wrapper {
+	height: 35px; // HACK Match icon height - used in "More" icon in primary nav
 }
-
+ul#navbar-more.dropdown-content {
+	li.disabled {
+		&:hover {
+			background-color: transparent;
+			cursor: default;
+		}
+		a.title {
+			text-transform: uppercase;
+			font-size: 85%;
+		}
+	};
+}
 
 /* Hero */
 /********/

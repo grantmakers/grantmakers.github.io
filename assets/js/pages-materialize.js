@@ -14,8 +14,12 @@ ready(function() {
   const elemsSN = document.querySelectorAll('.sidenav');
   M.Sidenav.init(elemsSN);
 
-  const elemsSNMore = document.getElementById('sidenav-more');
-  M.Sidenav.init(elemsSNMore, { 'edge': 'right' });
+  const elemsNavMore = document.getElementById('primary-navbar-dropdown-trigger');
+  const optionsNavMore = {
+    'container': 'primary-navbar',
+    'constrainWidth': false,
+  };
+  M.Dropdown.init(elemsNavMore, optionsNavMore);
 
   const elemsSS = document.querySelectorAll('.scrollspy');
   const optionsSS = {

@@ -1,7 +1,7 @@
 <header>
   <!-- Navbar -->
   <div>
-    <nav class="navbar-unified-search transparent">
+    <nav class="navbar-unified-search transparent" id="primary-navbar">
       <div class="nav-wrapper">
         <div class="container-custom">
           <a href="#" data-target="mobile-nav" class="sidenav-trigger right disable-primary-color"><i class="material-icons">menu</i></a>
@@ -10,10 +10,10 @@
               <a href="{{ site.baseurl }}/" data-ga="Homepage" class="brand-logo">
                 <div class="logo-container">
                   <div class="logo">
-                      <img src="{{ site.baseurl }}/assets/img/logo.png" alt="Grantmakers Logo">
+                    <img src="{{ site.baseurl }}/assets/img/logo.png" alt="Grantmakers Logo">
                   </div>
                   <div class="brand brand-name">
-                      Grantmakers.io
+                    Grantmakers.io
                   </div>
                 </div>
               </a>
@@ -21,21 +21,23 @@
             <div class="col m4 l8">
               <ul class="collection right hide-on-med-and-down">
                 <li class="collection-item avatar">
-                  <a href="{{ site.baseurl }}/search/profiles/">
+                  <a href="{{ site.baseurl }}/search/profiles/" title="Profiles Search">
                     <i class="material-icons circle grantmakers">search</i> <span class="title">Find a Foundation Profile</span>
                     <p class="grantmakers-text">Profiles Search</p>
                   </a>
                 </li>
                 <li class="collection-item avatar">
-                  <a href="{{ site.baseurl }}/search/grants/">
+                  <a href="{{ site.baseurl }}/search/grants/" title="Grants Search">
                     <i class="material-icons circle blue-grey">search</i> <span class="title">Search all Grants</span>
                     <p class="blue-grey-text text-lighten-1">Grants Search</p>
                   </a>
                 </li>
                 <li class="collection-item avatar">
-                  <a href="#" data-target="sidenav-more" class="sidenav-trigger sidenav-trigger-style-overrides show-on-medium-and-up">
-                    <i class="material-icons circle grey darken-2">more_horiz</i> <span class="title">Learn</span>
-                    <p class="grey-text">More</p>
+                  <a href="#" data-target="navbar-more" class="dropdown-trigger" id="primary-navbar-dropdown-trigger">
+                    <i class="material-icons circle grey darken-2">keyboard_arrow_down</i>
+                    <div class="valign-wrapper">
+                      <p class="grey-text">More</p>
+                    </div>
                   </a>
                 </li>
               </ul>
@@ -49,13 +51,13 @@
 </header>
 
 <!-- Navbar slide-out menu item -->
-<ul class="nav-primary sidenav" id="sidenav-more" >
-  <li><a class="subheader">The Project</a></li>
-  <li><a href="{{ site.baseurl }}/about/" class="waves-effect waves-light" data-ga="About">About</a></li>
-  <li><a href="{{ site.baseurl }}/faq/" class="waves-effect waves-light" data-ga="FAQ">FAQ</a></li>
+<ul class="dropdown-content" id="navbar-more" >
+  <li class="disabled"><a class="title grey-text">The Project</a></li>
+  <li><a href="{{ site.baseurl }}/about/" class="waves-effect waves-light" data-ga="About" title="About">About</a></li>
+  <li><a href="{{ site.baseurl }}/faq/" class="waves-effect waves-light" data-ga="FAQ" title="FAQ">FAQ</a></li>
   <li class="divider"></li>
-  <li><a class="subheader">Get Involved</a></li>
-  <li><a href="{{ site.baseurl }}/donate/" class="waves-effect waves-light" data-ga="Donate">Donate</a></li>
+  <li class="disabled"><a class="title grey-text">Get Involved</a></li>
+  <li><a href="{{ site.baseurl }}/donate/" class="waves-effect waves-light" data-ga="Donate" title="Donate">Donate</a></li>
 </ul>
 <!-- End navbar slide-out -->
 
