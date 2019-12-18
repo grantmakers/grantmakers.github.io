@@ -456,6 +456,26 @@ nav.nav-center ul.ul-center li {
 nav.nav-center ul.ul-center li .ais-search-box {
   display: inline-block;
 }
+li.collection-item a.dropdown-trigger .valign-wrapper {
+	height: 35px; // HACK Match icon height - used in "More" icon in primary nav
+}
+ul.nav-primary.sidenav .sidenav-header a {
+  height: 100%;
+  padding: 0 10px;
+}
+ul#navbar-more.dropdown-content {
+  font-weight: 400;
+	li.disabled {
+		&:hover {
+			background-color: transparent;
+			cursor: default;
+		}
+		a.title {
+			text-transform: uppercase;
+			font-size: 85%;
+		}
+	};
+}
 
 /* Hero */
 .intro {

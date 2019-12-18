@@ -1,23 +1,29 @@
 ---
+drift: true
 ---
 <!doctype html>
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
-	<link rel="apple-touch-icon" sizes="76x76" href="assets/img/apple-icon.jpg">
-	<link rel="icon" type="image/png" href="{{ site.baseurl }}/assets/img/favicon.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="{{ site.baseurl }}/assets/img/apple-icon.png" />
+	<link rel="icon" type="image/png" href="{{ site.baseurl }}/assets/img/favicon.png" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+	{% if jekyll.environment == 'staging' %}
+  	<meta name="robots" content="noindex, nofollow" />
+ 	{% endif %}
 
 	<title>{{ site.title }}</title>
 	<meta name="description" content="{{ site.description }}" />
 
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+	<meta name = "format-detection" content = "telephone=no" />
 
 	<!-- Open Graph -->
 	<meta property="og:image" content="{{ site.url }}{{ site.baseurl }}/assets/img/og-image.png" />
   <meta property="og:title" content="{{ site.title }}" />
   <meta property="og:site_name" content="Grantmakers.io" />
-  <meta property="og:url" content="{{ site.url }}{{ site.baseurl }}" />
+  <meta property="og:url" content="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}" />
   <meta property="og:description" content="{{ site.description }}" />
 	<meta property="og:type" content="website" />
 	<meta property="og:locale" content="en_US" />
@@ -30,284 +36,224 @@
   <meta name="twitter:creator" content="@chadkruser" />
   <meta name="twitter:image:src" content="{{ site.url}}{{ site.baseurl }}/assets/img/twitter-card.png" />
 
-	<!-- Fonts and icons  -->
-	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+	<!-- Fonts and Icons  -->
   <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
 
 	<!-- CSS Files -->
-  <link href="{{ site.baseurl }}/assets/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="{{ site.baseurl }}/assets/css/main.css" rel="stylesheet">
+	<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.1/css/materialize.min.css"> -->
+	<link href="{{ site.baseurl }}/assets/css/main-materialize.css" rel="stylesheet">
+	
+	<!--   Core JS Files   -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+	<script src="{{ site.baseurl }}/assets/js/pages-materialize.js"></script>
+
 </head>
 
-<body class="landing-page">
-
-	{% include nav-no-search.html %}
-
-	<div class="wrapper">
-		<!--
-		<div class="header header-filter" style="background-image: url('https://images.unsplash.com/photo-1423655156442-ccc11daa4e99?crop=entropy&dpr=2&fit=crop&fm=jpg&h=750&ixjsv=2.1.0&ixlib=rb-0.3.5&q=50&w=1450');">
-		-->
+<body class="main-landing">
+	{% include materialize/header.html %}
+	
+	<main>
 		<div class="header header-filter" style="background-image: url('{{ site.baseurl }}/assets/img/files.jpg')">
-			<div class="container">
+			<div class="container valign-wrapper">
 				<div class="row">
-					<div class="col-md-6">
+					<div class="col s12 m10 l8 left-align">
 						<h1 class="title">Amazing data exists in the <span class="deep-orange-text text-lighten-3">IRS 990-PF</span> dataset</h1>
-						<h4>We make it easy for nonprofit professionals to find the basic information you need, quickly. If a foundation files taxes electronically, you'll find them on Grantmakers.io.</h4>
-						<br />
-						<a href="{{ site.baseurl }}/search/profiles/" class="btn btn-danger btn-raised btn-lg">
-							<i class="material-icons">search</i> Find a Profile
-						</a>
-						<a href="{{ site.baseurl }}/search/grants/" class="btn btn-info btn-raised btn-lg">
-							<i class="material-icons">search</i> Search Grants
-						</a>
+						<h6>We make it easy for nonprofit professionals to find the basic information you need, quickly. If a foundation files taxes electronically, you'll find them on Grantmakers.io.</h6>
+						<ul class="list-inline">
+							<li><a class="btn btn-large grantmakers" href="{{ site.url }}/search/profiles/"><i class="material-icons left">search</i>Find a Profile</a></li>
+							<li><a class="btn btn-large blue-grey" href="{{ site.url }}/search/grants/"><i class="material-icons left">search</i>	Search Grants</a></li>
+						</ul>
 					</div>
 				</div>
 			</div>
 		</div>
 
-		<div class="main main-raised main-landing">
-			<div class="text-center">
-				<div class="section container">
+		<div class="main main-raised">
+			<!-- Profiles Search -->
+			<div class="container">
+				<div class="section section-extra-padding">
 					<div class="row">
-						<div class="col-md-8 col-md-offset-2">
-							<h2 class="title">Foundation Profiles</h2>
-							<h4>Basic stats, full grant listings, and key personnel.</h4>
+						<div class="col s12 m8 offset-m2 center-align">
+							<h4 class="title">Foundation Profiles</h4>
+							<h6>Basic stats, full grant listings, and key personnel.</h6>
 						</div>
 					</div>
 				</div>
-				<hr class="container">
-				<div class="section">
-					<div class="container">
-						<div class="row">
-							<div class="col-md-10 col-md-offset-1">
-								<div class="card card-plain card-feature">
-									<div class="row">
-										<div class="col-sm-5">
-											<div class="card-image">
-												<img class="img img-rounded img-raised img-responsive" src="{{ site.baseurl }}/assets/img/screenshot-summary-zoom.png">
-											</div>
-										</div>
-										<div class="col-sm-7">
-											<h6 class="category text-info">Summary Info</h6>
-											<h3 class="card-title">
-												Fast information at your fingertips
-											</h3>
-											<p class="card-description">
-												What's the average grant size? Is the foundation professionally managed? Get a quick snapshot of every foundation.
-											</p>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="section">
-					<div class="container">
-						<div class="row">
-							<div class="col-md-10 col-md-offset-1">
-								<div class="card card-plain card-feature">
-									<div class="row">
-										<div class="col-sm-7">
-											<h6 class="category text-info">World class search</h6>
-											<h3 class="card-title">
-												Search through past grants
-											</h3>
-											<p class="card-description">
-												Profiles contain an embedded grants database allowing you to search across grants from all years. Search provided by our friends at <a href="{{ site.algolia_link }}"><img class="algolia-logo-inline" src="{{ site.baseurl }}/assets/img/algolia-light-bg.svg" alt="Algolia logo"></a>.
-											</p>
-											<p><a href="{{ site.baseurl }}/search/profiles/" class="btn btn-round btn-danger">Find a profile</a></p>
-										</div>
-										<div class="col-sm-5">
-											<div class="card-image">
-												<img class="img img-raised" src="{{ site.baseurl }}/assets/img/screenshot-facet.png">
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>	
-				</div>
-				<div class="section">
-					<div class="container">
-						<div class="row">
-							<div class="col-md-10 col-md-offset-1">
-								<div class="card card-plain card-feature">
-									<div class="row">
-										<div class="col-sm-5">
-											<div class="card-image">
-												<img class="img img-raised" src="{{ site.baseurl }}/assets/img/screenshot-search-zoom.png">
-											</div>
-										</div>
-										<div class="col-sm-7">
-											<h6 class="category text-info">Giving trends</h6>
-											<h3 class="card-title">
-												Understand giving priorities
-											</h3>
-											<p class="card-description">
-												View a foundation's historical giving trends to see if your organization is a match.
-											</p>
-										</div>
-									</div>
-								</div>
-								<hr>
-								<div class="section">
-									<h4>Open source and forever free</h4>
-									<a href="{{ site.baseurl }}/search/profiles/" class="btn btn-danger btn-lg">Start your search</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="section section-feature-grants-search blue-grey white-text">
-					<h6>Announcing</h6>
-					<h2>In partnership with <a href="{{ site.algolia_link }}"><img src="{{site.baseurl}}/assets/img/algolia-dark-bg.svg" alt="Algolia logo"></a> ...</h2>
-				</div>
-				<div class="section">
+				<div class="divider"></div>
+				<div class="section section-extra-padding valign-wrapper">
 					<div class="row">
-						<div class="col-md-8 col-md-offset-2">
-							<h2 class="title">Global Grants Search<span class="label label-info label-beta hidden-xs">BETA</span></h2>
-							<h4>Now anyone can search across all grants contained in the IRS dataset. <br class="hidden-xs">No sign in required. Forever free.</h4>
-						</div>
-					</div>
-				</div>
-				<hr class="container">
-				<div class="section">
-					<div class="container">
-						<div class="row">
-							<div class="col-md-10 col-md-offset-1">
-								<div class="card card-plain card-feature">
-									<div class="row">
-										<div class="col-sm-7">
-											<h6 class="category text-info">Research</h6>
-											<h3 class="card-title">
-												Search through {{ site.number_of_searchable_grants | divided_by: 1000000 }}.{{ site.number_of_searchable_grants | modulo: 1000000 | divided_by: 100000 }} million grants
-											</h3>
-											<p class="card-description">
-												Thanks to our partnership with <a href="{{ site.algolia_link }}">Algolia</a>, we've developed an incredible search tool allowing anyone to search across {{ site.number_of_searchable_grants | divided_by: 1000000 }}.{{ site.number_of_searchable_grants | modulo: 1000000 | divided_by: 100000 }} million grants contained in the IRS dataset.
-											</p>
-										</div>
-										<div class="col-sm-5">
-											<div class="card-image">
-												<img class="img img-raised" src="{{ site.baseurl }}/assets/img/screenshot-count.png">
-											</div>
-										</div>
-									</div>
+						<div class="col s12 m10 offset-m1 valign-wrapper">
+							<div class="row">
+								<div class="col s12 m5">
+									<img class="img responsive-img z-depth-3" src="{{ site.baseurl }}/assets/img/screenshot-summary-zoom.png">
+								</div>
+								<div class="col s12 m7 center-align">
+									<h6 class="subheader">Summary Info</h6>
+									<h5 class="title">Fast information at your fingertips</h5>
+									<p>What's the average grant size? Is the foundation professionally managed? Get a quick snapshot of every foundation.</p>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="section">
-					<div class="container">
-						<div class="row">
-							<div class="col-md-10 col-md-offset-1">
-								<div class="card card-plain card-feature">
-									<div class="row">
-										<div class="col-sm-5">
-											<div class="card-image">
-												<img class="img img-raised" src="{{ site.baseurl }}/assets/img/screenshot-similar.png">
-											</div>
-										</div>
-										<div class="col-sm-7">
-											<h6 class="category text-info">Prospecting</h6>
-											<h3 class="card-title">
-												Find foundations that fund similar organizations
-											</h3>
-											<p class="card-description">
-												Live search allows you to quickly cover all relevant search terms. One funder's gender equality is another's gender parity.
-											</p>
-											<p><a href="{{ site.baseurl }}/search/grants/" class="btn btn-round btn-info">Search all grants</a></p>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			
-				<div class="section landing-section grey lighten-4">
+				<div class="section section-extra-padding valign-wrapper">
 					<div class="row">
-						<div class="col-md-8 col-md-offset-2">
-							<h2>The mission of Grantmakers.io is to help make charitable data more accesssible</h2>
+						<div class="col s12 m10 offset-m1 valign-wrapper">
+							<div class="row">
+								<div class="col s12 m7 center-align">
+									<h6 class="subheader">World class search</h6>
+									<h5 class="title">Search through past grants</h5>
+									<p>Profiles contain an embedded grants database allowing you to search across grants from all years. Search provided by our friends at <a href="{{ site.algolia_link }}"><img class="algolia-logo-inline" src="{{ site.baseurl }}/assets/img/algolia-light-bg.svg" alt="Algolia logo"></a>.</p>
+								</div>
+								<div class="col s12 m5">
+									<img class="img responsive-img z-depth-3" src="{{ site.baseurl }}/assets/img/screenshot-facet.png">
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
-				<div class="section section-closing">
-					<div class="container">
-						<div class="row">
-							<div class="col-sm-12">
-								<h4 class="white-text">Current stats</h4>
+				<div class="section section-extra-padding valign-wrapper">
+					<div class="row">
+						<div class="col s12 m10 offset-m1 valign-wrapper">
+							<div class="row">
+								<div class="col s12 m5">
+									<img class="img responsive-img z-depth-3" src="{{ site.baseurl }}/assets/img/screenshot-search-zoom.png">
+								</div>
+								<div class="col s12 m7 center-align">
+									<h6 class="subheader">Giving trends</h6>
+									<h5 class="title">Understand giving priorities</h5>
+									<p>View a foundation's historical giving trends to see if your organization is a match.</p>
+								</div>
 							</div>
-							<div class="col-sm-4 col-lg-2 col-lg-offset-3">
-								<div class="panel panel-danger">
-									<div class="panel-heading">
-										<h3 class="panel-title">Foundations</h3>
-									</div>
-									<div class="panel-body">
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- End Profiles Search -->
+			<!-- Grants Search -->
+			<div class="section section-extra-padding section-feature-grants-search">
+				<div class="row row-tight">
+					<div class="col s12 m8 offset-m2 center-align">
+						<h6 class="subheader white-text">Announcing</h6>
+						<h4 class="title">In partnership with <a href="{{ site.algolia_link }}"><img src="{{site.baseurl}}/assets/img/algolia-dark-bg.svg" alt="Algolia logo"></a>...</h4>
+					</div>
+				</div>
+			</div>
+			<div class="container">
+				<div class="section section-extra-padding">
+					<div class="row">
+						<div class="col s12 m8 offset-m2 center-align">
+							<h4 class="title">Grants Search</h4>
+							<h6>It's the free grants search tool nonprofits have long deserved!</h6>
+						</div>
+					</div>
+				</div>
+				<div class="divider"></div>
+				<div class="section section-extra-padding valign-wrapper">
+					<div class="row">
+						<div class="col s12 m10 offset-m1 valign-wrapper">
+							<div class="row">
+								<div class="col s12 m5">
+									<img class="img responsive-img z-depth-3" src="{{ site.baseurl }}/assets/img/screenshot-similar.png">
+								</div>
+								<div class="col s12 m7 center-align">
+									<h6 class="subheader">Prospecting</h6>
+									<h5 class="title">Find foundations that fund similar organizations</h5>
+									<p>Live search allows you to quickly cover all relevant search terms. One funder's gender equality is another's gender parity.</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="section section-extra-padding valign-wrapper">
+					<div class="row">
+						<div class="col s12 m10 offset-m1 valign-wrapper">
+							<div class="row">
+								<div class="col s12 m7 center-align">
+									<h6 class="subheader">Research</h6>
+									<h5 class="title">Search through {{ site.number_of_searchable_grants | divided_by: 1000000 }}.{{ site.number_of_searchable_grants | modulo: 1000000 | divided_by: 100000 }} million grants</h5>
+									<p>Thanks to the generosity of our friends at <a href="{{ site.algolia_link }}">Algolia</a>, nonprofits can conduct research across millions of grants. For free!</p>
+								</div>
+								<div class="col s12 m5">
+									<img class="img responsive-img z-depth-3" src="{{ site.baseurl }}/assets/img/screenshot-count.png">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- End Grants Search Feature-->
+			<div class="section section-extra-padding-2x section-community-driven grey lighten-3">
+				<div class="row row-tight">
+					<div class="col s12 m8 offset-m2 center-align">
+						<h4>Grantmakers.io was created by me, Chad 👋</h4>
+						<h6 class="extra-padding">I built the site to ensure the electronic IRS 990 dataset remained open and free.</h6>
+						<p><a class="btn white grey-text text-darken-2" href="{{ site.baseurl }}/about/">Learn more</a></p>
+					</div>
+				</div>
+			</div>
+			<div class="section section-extra-padding section-current-stats white-text">
+				<div class="row row-tight">
+					<div class="col s12 l6 offset-l3 center-align">
+						<h5 class="white-text">Last updated {{ site.last_updated | date: "%b %d, %Y" }}</h5>
+						<div class="row row-tight">
+							<div class="col s12 m4">
+								<div class="card">
+									<div class="card-content">
+										<div class="card-title grantmakers">
+											Foundations
+										</div>
 										<h1>{{ site.number_of_foundations | divided_by: 1000 | append: "k" }}</h1>
 									</div>
 								</div>
 							</div>
-							<div class="col-sm-4 col-lg-2">
-								<div class="panel panel-danger">
-									<div class="panel-heading">
-										<h3 class="panel-title">Filings</h3>
-									</div>
-									<div class="panel-body">
+							<div class="col s12 m4">
+								<div class="card">
+									<div class="card-content">
+										<div class="card-title grantmakers">
+											Filings
+										</div>
 										<h1>{{ site.number_of_filings | divided_by: 1000 | append: "k" }}</h1>
 									</div>
 								</div>
 							</div>
-							<div class="col-sm-4 col-lg-2">
-								<div class="panel panel-danger">
-									<div class="panel-heading">
-										<h3 class="panel-title">Grants</h3>
-									</div>
-									<div class="panel-body">
+							<div class="col s12 m4">
+								<div class="card">
+									<div class="card-content">
+										<div class="card-title grantmakers">
+											Grants
+										</div>
 										<h1>{{ site.number_of_grants | divided_by: 1000000 }}.{{ site.number_of_grants | modulo: 1000000 | divided_by: 100000 | append: "m" }}</h1>
 									</div>
 								</div>
 							</div>
-							<div class="col-sm-12 white-text">
-								<h6>Last updated {{ site.last_updated | date: "%b %d, %Y" }} </h6>
-							</div>
 						</div>
 					</div>
 				</div>
-				<div class="section grey lighten-4">
-					<div class="row">
-						<div class="col-md-8 col-md-offset-2">
-							<h4>As a community project, your input guides what information we pull from the dataset and show in profiles. Not finding what you need in the foundation profiles? <a href="mailto:hello@grantmakers.io">Just let us know.</a></h4>
-						</div>
-					</div>
-				</div>
-				<div class="section container">
-					<div class="row">
-						<h2>Get started</h2>
-						<a href="{{ site.baseurl }}/search/profiles/" class="btn btn-danger btn-raised btn-lg">
-							<i class="material-icons">search</i> Find a Profile
-						</a>
-						<a href="{{ site.baseurl }}/search/grants/" class="btn btn-info btn-raised btn-lg">
-							<i class="material-icons">search</i> Search Grants
-						</a>
+			</div>
+			<div class="section section-extra-padding-2x section-bottom-cta">
+				<div class="row row-tight">
+					<div class="col s12 l6 offset-l3 center-align">
+						<h4>Get started</h4>
+						<h6>There are two primary ways to search on Grantmakers.io</h6>
+						<ul class="list-inline">
+							<li><a class="btn btn-large grantmakers" href="{{ site.url }}/search/profiles/"><i class="material-icons left">search</i>Find a Profile</a><p class="small">Research a specific funder</p></li>
+							<li><a class="btn btn-large blue-grey" href="{{ site.url }}/search/grants/"><i class="material-icons left">search</i>	Search Grants</a><p class="small">Good for prospect research</p></li>
+						</ul>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-	{% include footer.html %}
-	{% include footer-license-and-links.html %}
-	{% include ga.html %}
+	</main>
+
+
+	{% include materialize/footer.html %}
+	{% unless jekyll.environment == 'staging' %}
+    {% include ga.html %}
+	{% endunless %}
+	{% if page.drift %}
+		{% include drift.html %}
+	{% endif %}
 </body>
-
-<!--   Core JS Files   -->
-	<script src="{{ site.baseurl }}/assets/js/jquery.min.js" type="text/javascript"></script>
-	<script src="{{ site.baseurl }}/assets/js/bootstrap.min.js" type="text/javascript"></script>
-	<script src="{{ site.baseurl }}/assets/js/material.min.js"></script>
-
-	<!-- Initialize material design and bootstrap effects + other page-specific JS -->
-	<script src="{{ site.baseurl }}/assets/js/pages.js" type="text/javascript"></script>
-
 </html>
