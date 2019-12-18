@@ -672,6 +672,9 @@ body.main-landing {
 		h6 {
 			line-height: 1.5;
 		}
+		a.btn {
+			margin: 7px 0;
+		}
 	}
 	.main-raised {
 		.title {
@@ -680,9 +683,15 @@ body.main-landing {
 	}
 	.main-raised .section-extra-padding {
 		padding: 70px 0;
+		@media #{$medium-and-down} {
+			padding: 32px;
+		}
 	}
 	.main-raised .section-extra-padding-2x {
 		padding: 100px 0;
+		@media #{$medium-and-down} {
+			padding: 32px;
+		}
 	}
 	.subheader {
 		text-transform: uppercase;
@@ -720,6 +729,12 @@ body.main-landing {
 		}
 		h6.extra-padding {
 			margin-bottom: 36px;
+		}
+		@media #{$medium-and-down} {
+			h4 {
+				font-size: 1.8rem;
+				line-height: 1;
+			}
 		}
 	}
 	.section-current-stats {
