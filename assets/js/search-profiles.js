@@ -19,6 +19,13 @@ ready(function() {
   const elemsPA = document.querySelectorAll('.parallax');
   M.Parallax.init(elemsPA);
 
+  const elemsNavMore = document.getElementById('primary-navbar-dropdown-trigger');
+  const optionsNavMore = {
+    'container': 'primary-navbar',
+    'constrainWidth': false,
+  };
+  M.Dropdown.init(elemsNavMore, optionsNavMore);
+
   const elemsSN = document.querySelectorAll('.sidenav');
   M.Sidenav.init(elemsSN);
 
