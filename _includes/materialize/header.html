@@ -50,36 +50,33 @@
   <!-- End Navbar -->
 </header>
 
-<!-- Navbar slide-out menu item -->
-<ul class="dropdown-content" id="navbar-more" >
-  <li class="disabled"><a class="title grey-text">The Project</a></li>
-  <li><a href="{{ site.baseurl }}/about/" class="waves-effect waves-light" data-ga="About" title="About">About</a></li>
-  <li><a href="{{ site.baseurl }}/faq/" class="waves-effect waves-light" data-ga="FAQ" title="FAQ">FAQ</a></li>
-  <li class="divider"></li>
-  <li class="disabled"><a class="title grey-text">Get Involved</a></li>
-  <li><a href="{{ site.baseurl }}/donate/" class="waves-effect waves-light" data-ga="Donate" title="Donate">Donate</a></li>
-</ul>
-<!-- End navbar slide-out -->
-
 <!-- Mobile Navbar -->
-<ul class="nav-primary sidenav" id="mobile-nav" >
+<ul class="nav-primary sidenav" id="mobile-nav" >  
+  <li class="grey darken-2 sidenav-header">
+    <a href="{{ site.baseurl }}/" class="waves-effect waves-light" data-ga="Home">
+      <div class="valign-wrapper">
+        <img src="{{ site.baseurl }}/assets/img/logo.png" alt="Grantmakers Logo">
+        <span class="strong white-text"> Grantmakers.io</span>
+      </div>
+    </a>
+  </li>
+  <li class="disabled"><a class="title grey-text">Search</a></li>
   <li>
     <a href="{{ site.baseurl }}/search/profiles/" class="waves-effect waves-light" >
-      <i class="material-icons grantmakers-text">find_in_page</i> Find a Foundation Profile
+      Find a Foundation Profile
     </a>
   </li>
   <li>
     <a href="{{ site.baseurl }}/search/grants" class="waves-effect waves-light" >
-      <i class="material-icons blue-grey-text">find_in_page</i> Search all Grants
+      Search all Grants
     </a>
   </li>
   <li><hr class="divider"></li>
-  <li><a href="{{ site.baseurl }}/" class="waves-effect waves-light" data-ga="Home">Home</a></li>
+  <li class="disabled"><a class="title grey-text">The Project</a></li>
   <li><a href="{{ site.baseurl }}/about/" class="waves-effect waves-light" data-ga="About">About</a></li>
   <li><a href="{{ site.baseurl }}/faq/" class="waves-effect waves-light" data-ga="FAQ">FAQ</a></li>
-  <!--
   <li><hr class="divider"></li>
-  <li><a class="waves-effect waves-light btn-flat grey lighten-3" href="{{ site.baseurl }}/search/profiles/"><i class="material-icons left">search</i> Search</a></li>
-  -->
+  <li class="disabled"><a class="title grey-text">Get Involved</a></li>
+  <li><a href="{{ site.baseurl }}/donate/" class="waves-effect waves-light" data-ga="Donate" title="Donate">Donate</a></li>
 </ul>
 <!-- End Mobile Navbar -->

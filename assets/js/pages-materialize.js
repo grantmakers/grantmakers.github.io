@@ -14,13 +14,6 @@ ready(function() {
   const elemsSN = document.querySelectorAll('.sidenav');
   M.Sidenav.init(elemsSN);
 
-  const elemsNavMore = document.getElementById('primary-navbar-dropdown-trigger');
-  const optionsNavMore = {
-    'container': 'primary-navbar',
-    'constrainWidth': false,
-  };
-  M.Dropdown.init(elemsNavMore, optionsNavMore);
-
   const elemsSS = document.querySelectorAll('.scrollspy');
   const optionsSS = {
     'scrollOffset': 120, // Default is 200
