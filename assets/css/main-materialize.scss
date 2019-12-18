@@ -622,6 +622,117 @@ nav.nav-center ul.ul-center li .ais-search-box {
 }
 
 /* Hero */
+/********/
+
+/* Landing */
+body.main-landing {
+	background-color: #ccc;
+	.header {
+		background-position: center center;
+		height: 600px;
+		min-height: 300px;
+		background-size: cover;
+		&:after {
+			height: 600px; // HACK'ish
+		}
+	}
+	.header .container {
+		height: 100%;
+		h1, h2, h3, h4, h5, h6 {
+			color: #ffffff;
+		}
+		h1.title {
+			font-weight: 600;
+			font-size: 3.8rem;
+			@media #{$medium-and-down} {
+				font-size: 2.8rem;
+			}
+		}
+		h6 {
+			line-height: 1.5;
+		}
+	}
+	.main-raised .section-extra-padding {
+		padding: 70px 0;
+	}
+	.main-raised .section-extra-padding-2x {
+		padding: 100px 0;
+	}
+	.subheader {
+		text-transform: uppercase;
+		font-size: 85%;
+		@extend .blue-grey-text;
+	}
+	.title {
+		font-weight: 600;
+	}
+	.algolia-logo-inline {
+    width: 5rem;
+    vertical-align: sub;
+	}
+	.section-feature-grants-search {
+		background: 
+		linear-gradient(
+			rgba(0, 0, 0, 0.8), 
+			rgba(0, 0, 0, 0.2)
+		),
+		url('{{ site.url }}/{{ site.baseurl }}/assets/img/bridge.jpg');
+		background-size: cover; 
+		h4.title {
+			color: white;
+			font-weight: 400;
+		} 
+		h4.title img {
+			width: 165px;
+			vertical-align: sub;
+		}
+		.subheader.white-text {
+			@extend .white-text;
+		}
+	}
+	.section-mission-statement, .section-community-driven {
+		h4, h5 {
+			margin: 0;
+			line-height: 1.5;
+		}
+		h6.extra-padding {
+			margin-bottom: 36px;
+		}
+	}
+	.section-current-stats {
+		background: 
+		linear-gradient(
+			rgba(0, 0, 0, 0.8), 
+			rgba(0, 0, 0, 0.2)
+		),
+		url('{{ site.url }}/{{ site.baseurl }}/assets/img/colors.jpg');
+		background-size: cover;  
+		background-position: center center;
+		h5 {
+			margin-bottom: 48px;
+		}
+		.subheader.white-text {
+			@extend .white-text;
+		}
+		.card .card-title {
+			padding: 12px;
+		}
+		.card .card-content {
+			padding: 0;
+			padding-bottom: 24px;
+		}
+	}
+	.section-bottom-cta {
+		h4 {
+			margin-top: 0;
+		}
+		h6 {
+			margin-bottom: 36px;
+		}
+	}
+}
+
+/* End Landing */
 body.simple-page .header .container {
 	height: 100%;
 	h1, h2, h3, h4, h5, h6 {
@@ -882,7 +993,7 @@ $parallax-height: 75vh;
 	position: absolute;
 	z-index: 1;
 	width: 100%;
-	height: 380px; // HACK 
+	height: 100%; 
 	display: block;
 	left: 0;
 	top: 0;
