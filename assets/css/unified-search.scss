@@ -456,6 +456,15 @@ nav.nav-center ul.ul-center li {
 nav.nav-center ul.ul-center li .ais-search-box {
   display: inline-block;
 }
+.sidenav-trigger.sidenav-trigger-style-overrides {
+	// See scss _navbar.scss
+	height: inherit;
+	line-height: inherit;
+	float: none;
+	position: unset;
+	z-index: inherit;
+	margin: inherit;
+}
 
 /* Hero */
 .intro {

@@ -14,6 +14,9 @@ ready(function() {
   const elemsSN = document.querySelectorAll('.sidenav');
   M.Sidenav.init(elemsSN);
 
+  const elemsSNMore = document.getElementById('sidenav-more');
+  M.Sidenav.init(elemsSNMore, { 'edge': 'right' });
+
   const elemsSS = document.querySelectorAll('.scrollspy');
   const optionsSS = {
     'scrollOffset': 120, // Default is 200

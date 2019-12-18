@@ -33,7 +33,7 @@
                   </a>
                 </li>
                 <li class="collection-item avatar">
-                  <a href="{{ site.baseurl }}/about/">
+                  <a href="#" data-target="sidenav-more" class="sidenav-trigger sidenav-trigger-style-overrides show-on-medium-and-up">
                     <i class="material-icons circle grey darken-2">more_horiz</i> <span class="title">Learn</span>
                     <p class="grey-text">More</p>
                   </a>
@@ -46,7 +46,20 @@
     </nav>
   </div>
   <!-- End Navbar -->
-</header><!-- Mobile Navbar -->
+</header>
+
+<!-- Navbar slide-out menu item -->
+<ul class="nav-primary sidenav" id="sidenav-more" >
+  <li><a class="subheader">The Project</a></li>
+  <li><a href="{{ site.baseurl }}/about/" class="waves-effect waves-light" data-ga="About">About</a></li>
+  <li><a href="{{ site.baseurl }}/faq/" class="waves-effect waves-light" data-ga="FAQ">FAQ</a></li>
+  <li class="divider"></li>
+  <li><a class="subheader">Get Involved</a></li>
+  <li><a href="{{ site.baseurl }}/donate/" class="waves-effect waves-light" data-ga="Donate">Donate</a></li>
+</ul>
+<!-- End navbar slide-out -->
+
+<!-- Mobile Navbar -->
 <ul class="nav-primary sidenav" id="mobile-nav" >
   <li>
     <a href="{{ site.baseurl }}/search/profiles/" class="waves-effect waves-light" >

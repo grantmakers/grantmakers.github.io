@@ -24,6 +24,9 @@ ready(function() {
   const elemsSN = document.querySelectorAll('.sidenav');
   M.Sidenav.init(elemsSN);
 
+  const elemsSNMore = document.getElementById('sidenav-more');
+  M.Sidenav.init(elemsSNMore, { 'edge': 'right' });
+
   const elemsMO = document.querySelectorAll('.modal');
   M.Modal.init(elemsMO);
 
