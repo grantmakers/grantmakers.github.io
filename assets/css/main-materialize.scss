@@ -1041,6 +1041,9 @@ $parallax-height: 75vh;
 	background: -moz-linear-gradient(rgba(44,45,51,0.9), rgba(44,45,51,0.9));
 	background: -webkit-linear-gradient(rgba(44,45,51,0.9), rgba(44,45,51,0.9));
 }
+.simple-page .header-filter:after {
+	height: 380px;
+}
 .profile-page .header, .profile-index-page .header, .simple-page .header {
 	background-position: center center;
 	height: 380px;
