@@ -22,7 +22,6 @@ ready(function() {
   M.Parallax.init(elemsPA);
 
   const elemsNavMore = document.getElementById('primary-navbar-dropdown-trigger');
-  console.log(elemsNavMore);
   const optionsNavMore = {
     'container': 'primary-navbar',
     'constrainWidth': false,
