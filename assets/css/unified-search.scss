@@ -465,6 +465,9 @@ ul.nav-primary.sidenav .sidenav-header a {
 }
 ul#navbar-more.dropdown-content {
   font-weight: 400;
+  li a {
+		@extend .text-default;
+	}
 	li.disabled {
 		&:hover {
 			background-color: transparent;
