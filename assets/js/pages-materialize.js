@@ -21,16 +21,18 @@ ready(function() {
   };
   M.Dropdown.init(elemsNavMore, optionsNavMore);
 
+  // About page secondary/scrollspy nav
   const elemsSS = document.querySelectorAll('.scrollspy');
   const optionsSS = {
     'scrollOffset': 120, // Default is 200
   };
   M.ScrollSpy.init(elemsSS, optionsSS);
 
+  // About page secondary/scrollspy nav cont'd...
   const elemsPP = document.querySelectorAll('.pushpin');
   const pinAnchor = document.getElementById('main-content');
   
-  if (elemsPP.length > 0) { // Only init if needed
+  if (pinAnchor && elemsPP.length > 0) { // Only init if needed
     const pinAnchorTop = getElementOffset(pinAnchor).top - 15; // HACK Remove hard coded offset buffer
     const optionsPP = {
       'top': pinAnchorTop,
@@ -39,9 +41,15 @@ ready(function() {
     M.Pushpin.init(elemsPP, optionsPP);
   }
 
+  // FAQ embedded collapsibles
+  const elemsC = document.querySelectorAll('.collapsible');
+  M.Collapsible.init(elemsC);
+
   /* Load Google Sheets iframe */
   /* ************************* */
-  initGoogleSheets();
+  if (document.getElementById('gsheets')) {
+    initGoogleSheets();
+  }
 });
 
 function getElementOffset(element) {
