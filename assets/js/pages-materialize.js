@@ -41,7 +41,9 @@ ready(function() {
 
   /* Load Google Sheets iframe */
   /* ************************* */
-  initGoogleSheets();
+  if (document.getElementById('gsheets')) {
+    initGoogleSheets();
+  }
 });
 
 function getElementOffset(element) {
