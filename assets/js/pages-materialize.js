@@ -41,6 +41,10 @@ ready(function() {
     M.Pushpin.init(elemsPP, optionsPP);
   }
 
+  // FAQ embedded collapsibles
+  const elemsC = document.querySelectorAll('.collapsible');
+  M.Collapsible.init(elemsC);
+
   /* Load Google Sheets iframe */
   /* ************************* */
   if (document.getElementById('gsheets')) {

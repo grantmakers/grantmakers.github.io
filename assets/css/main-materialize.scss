@@ -1102,6 +1102,13 @@ main {
 	}
 }
 
+// FAQ Page
+.section-faq {
+	h5 {
+		font-weight: 400;
+	}
+}
+
 // About Page
 .section-about {
 	.pin-bottom {
@@ -1118,6 +1125,23 @@ main {
 		a {
 			color: #757575 !important; // HACK a:not causing Safari to override
 		}
+	}
+}
+.collapsible-faq {
+	border: none;
+	@extend .z-depth-0;
+	.collapsible-header, .collapsible-body {
+		padding: 0;
+		border-bottom: none;
+	}
+	.collapsible-header p {
+		margin: 0;
+	}
+	.collapsible-body ul {
+		margin-top: 15px;
+	}
+	.collapsible-body li {
+		list-style-type: disc;
 	}
 }
 .material-icon-flag-emoji {
