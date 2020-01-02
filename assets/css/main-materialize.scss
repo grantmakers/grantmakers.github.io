@@ -520,6 +520,9 @@ i.suffix {
 /****************************
 Page styling
 *****************************/
+.btn-cta {
+	margin-top: 36px; // btn height is 36px, btn-large height is 54px
+}
 /* Navbar */
 nav.navbar-unified-search {
   background-color: transparent!important;
