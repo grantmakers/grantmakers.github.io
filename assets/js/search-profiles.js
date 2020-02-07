@@ -260,15 +260,20 @@ ready(function() {
         'container': `#ais-widget-refinement-list--${refinement.facet}`,
         'attribute': refinement.facet,
         'limit': 8,
-        'showMore': false,
+        'showMore': true,
+        'showMoreLimit': 20,
         // 'searchable': true,
         'cssClasses': {
           'checkbox': 'filled-in',
           'labelText': 'small',
           'count': ['right', 'small'],
+          'showMore': 'btn-flat grey-text small',
           // 'selectedItem': ['grants-search-text'],
           // 'searchableRoot': 'ais-SearchBox-refinements',
           // 'searchableSubmit': 'hidden',
+        },
+        'templates': {
+          'showMoreText': `{% include search/algolia-refinementList-showMore.html %}`,
         },
       })
     );

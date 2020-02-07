@@ -419,7 +419,7 @@ ready(function() {
           'showMore': 'btn-flat grey-text small', // Default state for Advanced Search toggle
         },
         'templates': {
-          'showMoreText': `{% include search/grants/algolia-refinementList-showMore.html %}`,
+          'showMoreText': `{% include search/algolia-refinementList-showMore.html %}`,
         },
       })
     );
