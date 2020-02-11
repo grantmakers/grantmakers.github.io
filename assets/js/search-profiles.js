@@ -127,13 +127,13 @@ ready(function() {
         searchInstance(queryCleaned);
         initTooltips();
       },
-    })
+    }),
   );
 
   search.addWidget(
     instantsearch.widgets.poweredBy({
       'container': '#powered-by',
-    })
+    }),
   );
 
   // Profiles search
@@ -156,7 +156,7 @@ ready(function() {
           'assets': `$${numberHuman(item.assets, 0)}`,
         }));
       },
-    })
+    }),
   );
 
   search.addWidget(
@@ -168,7 +168,7 @@ ready(function() {
       'cssClasses': {
         'text': 'text-muted',
       },
-    })
+    }),
   );
 
   /* Current Refinements */
@@ -197,7 +197,7 @@ ready(function() {
             ...acc,
             [key]: event.currentTarget.dataset[key],
           }),
-          {}
+          {},
         );
 
         refine(item);
@@ -206,13 +206,13 @@ ready(function() {
   };
 
   const customCurrentRefinements = instantsearch.connectors.connectCurrentRefinements(
-    renderCurrentRefinements
+    renderCurrentRefinements,
   );
 
   search.addWidget(
     customCurrentRefinements({
       'container': document.querySelector('#ais-widget-current-refined-values'),
-    })
+    }),
   );
 
   /* Create all other refinements */
@@ -275,7 +275,7 @@ ready(function() {
         'templates': {
           'showMoreText': `{% include search/algolia-refinementList-showMore.html %}`,
         },
-      })
+      }),
     );
 
     /* Create mobile refinements */
@@ -290,7 +290,7 @@ ready(function() {
           'count': ['right', 'small'],
           'selectedItem': ['grantmakers-text'],
         },
-      })
+      }),
     );
   });
   
@@ -304,7 +304,7 @@ ready(function() {
       'templates': {
         'resetLabel': 'Clear filters',
       },
-    })
+    }),
   );
 
   search.addWidget(
@@ -317,7 +317,7 @@ ready(function() {
       'templates': {
         'resetLabel': 'Clear filters',
       },
-    })
+    }),
   );
 
   search.addWidget(
@@ -331,7 +331,7 @@ ready(function() {
         'selectedItem': 'active',
         'disabledItem': 'disabled',
       },
-    })
+    }),
   );
 
   // Initialize Materialize JS components created by Instantsearch widgets
