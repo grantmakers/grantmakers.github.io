@@ -26,6 +26,9 @@ ready(function() {
   };
   M.Dropdown.init(elemsNavMore, optionsNavMore);
 
+  const elemsCollapsible = document.querySelectorAll('.collapsible');
+  M.Collapsible.init(elemsCollapsible);
+
   const elemsSN = document.querySelectorAll('.sidenav');
   M.Sidenav.init(elemsSN);
 
