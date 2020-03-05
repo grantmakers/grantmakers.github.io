@@ -131,6 +131,21 @@ $text-color: rgba(0,0,0,0.87);
 .hidden {
   display: none;
 }
+/* Apply flexbox to match height */
+@media #{$medium-and-up} {
+	.flex {
+		display: flex !important;
+	}
+	.flex-grow-1 {
+		flex-grow: 1 !important;
+	}
+	.flex-direction-column {
+		flex-direction: column;
+	}
+	.card-flex {
+		width: 100%;
+	}
+}
 .no-wrap, .text-nowrap {
   white-space: nowrap;
 }
