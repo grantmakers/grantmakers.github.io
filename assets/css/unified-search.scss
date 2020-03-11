@@ -131,6 +131,21 @@ $text-color: rgba(0,0,0,0.87);
 .hidden {
   display: none;
 }
+/* Apply flexbox to match height */
+@media #{$medium-and-up} {
+	.flex {
+		display: flex !important;
+	}
+	.flex-grow-1 {
+		flex-grow: 1 !important;
+	}
+	.flex-direction-column {
+		flex-direction: column;
+	}
+	.card-flex {
+		width: 100%;
+	}
+}
 .no-wrap, .text-nowrap {
   white-space: nowrap;
 }
@@ -762,6 +777,39 @@ $parallax-height: 75vh;
       // color: #9e9e9e; // TODO This should be default text-muted (but current text-muted is too dark)
       // text-decoration: underline solid $text-muted-max;
     }
+  }
+}
+
+/* Dataset info card */
+#dataset-info {
+  .collapsible {
+    border: none;
+  }
+  .collapsible-header {
+    padding: 0.5rem 0rem;
+    border: none;
+    @extend .grey, .lighten-4;
+    // @extend .white-text;
+    i {
+      margin-right: 0;
+      line-height: 1.25rem;
+      width: 1.5rem;
+    }
+  }
+  .collapsible-body {
+    padding: 1rem;
+    border: none;
+    @extend .grey, .lighten-4;
+  }
+  ul li {
+    font-size: 13px;
+  }
+  ul li h6 {
+    font-size: 14px;
+  }
+  p {
+    font-size: 85%;
+    color: $text-muted-max;
   }
 }
 

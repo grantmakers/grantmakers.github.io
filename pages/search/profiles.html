@@ -142,7 +142,7 @@ redirect_from:
                 </div>
                 <div class="col m3 l2 hide-on-small-only">
                   <div id="ais-widget-sort-by" class="small text-muted-max right">
-                    <a href="#modal-tips" class="modal-trigger text-muted-max">Search tips <i class="tiny material-icons material-icons-rounded grey lighten-2 icon-idea left">wb_incandescent</i></a>
+                    <a href="#modal-tips" class="modal-trigger text-muted-max">Search types <i class="tiny material-icons material-icons-rounded grey lighten-2 icon-idea left">wb_incandescent</i></a>
                   </div>
                 </div>
             </div>
@@ -152,7 +152,7 @@ redirect_from:
               </div>
             </div>
             <div class="row"> <!-- Add row class to remove added white space / padding -->
-              <div class="col s12">
+              <div class="col s12 l9">
                   <div id="ais-widget-current-refined-values"></div>
                   <!-- Profiles ais-widge-hits goes here-->
                 <div> <!-- Use class card for grants results-->
@@ -161,9 +161,45 @@ redirect_from:
                   </div>
                 </div>
               </div>
+              <div id="dataset-info" class="col l3">
+                <div class="card z-depth-0">
+                  <div class="card-content">
+                    <h6 class="subheader">Get to know the data</h6>
+                    <p>Grantmakers.io pulls from an open dataset published by the IRS. The dataset is comprised of: </p>
+                    <ul class="collapsible z-depth-0">
+                      <li>
+                        <div class="collapsible-header"><i class="material-icons">arrow_right</i>Electronically filed returns</div>
+                        <div class="collapsible-body"><span>Recent legislation will soon require all private foundations to file their returns electronically. Until then, the dataset covers approx. 50%-75% of private foundations.</span></div>
+                      </li>
+                    </ul>
+                    <!--<p>Built exclusively for nonprofit fundraising professionals, Grantmakers.io focuses on:</p>-->
+                    <p>Data is extracted exclusively from Form 990-PF, the form filed by:</p>
+                    <ul class="collapsible z-depth-0">
+                      <li>
+                        <div class="collapsible-header"><i class="material-icons">arrow_right</i>Private foundations</div>
+                        <div class="collapsible-body"><span>Keep in mind many community foundations and certain other foundations file Form 990.</span></div>
+                      </li>
+                    </ul>
+                    <p>If a private foundation files electronically, you'll find them on Grantmakers.io.</p>
+                  </div>
+                </div>
+                <div class="center-align">
+                  <div class="waves-effect waves-light btn-flat">
+                    <a href="{{ site.baseurl }}/about/">Learn more</a>
+                  </div>
+                </div>
+                <!--
+                <div class="card z-depth-0 grey lighten-3">
+                  <div class="card-content">
+                    <h6 class="subheader">Support open data</h6>
+                    <p>If you found this site useful, why not <a href="{{ site.baseurl }}/buy-chad-a-coffee/">buy me a coffee</a>?</p>
+                  </div>
+                </div>
+              -->
+              </div>
             </div>
           </div>
-          <div class="col s12 l9 offset-l3">
+          <div class="col s12 l6 offset-l3">
             <div class="section center-align">
               <div id="ais-widget-pagination"></div>
             </div>

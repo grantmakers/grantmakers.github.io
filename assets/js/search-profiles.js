@@ -26,6 +26,9 @@ ready(function() {
   };
   M.Dropdown.init(elemsNavMore, optionsNavMore);
 
+  const elemsCollapsible = document.querySelectorAll('.collapsible');
+  M.Collapsible.init(elemsCollapsible);
+
   const elemsSN = document.querySelectorAll('.sidenav');
   M.Sidenav.init(elemsSN);
 
@@ -127,13 +130,13 @@ ready(function() {
         searchInstance(queryCleaned);
         initTooltips();
       },
-    })
+    }),
   );
 
   search.addWidget(
     instantsearch.widgets.poweredBy({
       'container': '#powered-by',
-    })
+    }),
   );
 
   // Profiles search
@@ -156,7 +159,7 @@ ready(function() {
           'assets': `$${numberHuman(item.assets, 0)}`,
         }));
       },
-    })
+    }),
   );
 
   search.addWidget(
@@ -168,7 +171,7 @@ ready(function() {
       'cssClasses': {
         'text': 'text-muted',
       },
-    })
+    }),
   );
 
   /* Current Refinements */
@@ -197,7 +200,7 @@ ready(function() {
             ...acc,
             [key]: event.currentTarget.dataset[key],
           }),
-          {}
+          {},
         );
 
         refine(item);
@@ -206,13 +209,13 @@ ready(function() {
   };
 
   const customCurrentRefinements = instantsearch.connectors.connectCurrentRefinements(
-    renderCurrentRefinements
+    renderCurrentRefinements,
   );
 
   search.addWidget(
     customCurrentRefinements({
       'container': document.querySelector('#ais-widget-current-refined-values'),
-    })
+    }),
   );
 
   /* Create all other refinements */
@@ -275,7 +278,7 @@ ready(function() {
         'templates': {
           'showMoreText': `{% include search/algolia-refinementList-showMore.html %}`,
         },
-      })
+      }),
     );
 
     /* Create mobile refinements */
@@ -290,7 +293,7 @@ ready(function() {
           'count': ['right', 'small'],
           'selectedItem': ['grantmakers-text'],
         },
-      })
+      }),
     );
   });
   
@@ -304,7 +307,7 @@ ready(function() {
       'templates': {
         'resetLabel': 'Clear filters',
       },
-    })
+    }),
   );
 
   search.addWidget(
@@ -317,7 +320,7 @@ ready(function() {
       'templates': {
         'resetLabel': 'Clear filters',
       },
-    })
+    }),
   );
 
   search.addWidget(
@@ -331,7 +334,7 @@ ready(function() {
         'selectedItem': 'active',
         'disabledItem': 'disabled',
       },
-    })
+    }),
   );
 
   // Initialize Materialize JS components created by Instantsearch widgets
@@ -344,6 +347,9 @@ ready(function() {
     // Tooltips
     initTooltips();
     initModals();
+    // Google Analytics events
+    document.querySelectorAll('#no-results-ctas a')
+      .forEach(e => e.addEventListener('click', gaEventsNoResults));
   });
 
   search.on('error', function(e) {
@@ -384,6 +390,19 @@ ready(function() {
       'classes': 'btn blue-grey white-text',
     };
     M.FormSelect.init(elem, options);
+  }
+
+  // GOOGLE ANALYTICS EVENTS
+  // =======================
+  function gaEventsNoResults() {
+    let gaCheck = window[window['GoogleAnalyticsObject'] || 'ga']; // eslint-disable-line dot-notation
+    if (typeof gaCheck === 'function') {
+      ga('send', 'event', {
+        'eventCategory': 'Profiles Search Events',
+        'eventAction': 'Profiles Search No Results CTA Click',
+        'eventLabel': this.dataset.ga,
+      });
+    }
   }
   
 
