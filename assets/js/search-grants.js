@@ -41,7 +41,7 @@ ready(function() {
     'coverTrigger': false,
     'closeOnClick': false,
     'onOpenEnd': function() {
-      gaSearchBoxNarrow();
+      gaEventsSearchBoxNarrow();
     },
   };
   M.Dropdown.init(elSearchBoxDropdown, optionsSearchBoxDropdown);
@@ -526,6 +526,9 @@ ready(function() {
     // Initialize dynamic Materialize JS components created by Instantsearch widgets
     initTooltips();
     initModals();
+    // Google Analytics events
+    document.querySelectorAll('#no-results-ctas a')
+      .forEach(e => e.addEventListener('click', gaEventsNoResults));
   });
 
   search.on('error', function(e) {
@@ -586,10 +589,10 @@ ready(function() {
     // TODO Create GA event
     if (e.target.checked) {
       showAdvancedSearchTools(showMoreButtons);
-      gaToggledAdvanced('on');
+      gaEventsToggledAdvanced('on');
     } else {
       hideAdvancedSearchTools(showMoreButtons);
-      gaToggledAdvanced('off');
+      gaEventsToggledAdvanced('off');
     }
   }
 
@@ -609,8 +612,8 @@ ready(function() {
 
   // GOOGLE ANALYTICS EVENTS
   // =======================
-  function gaToggledAdvanced(outcome) {
-    let gaCheck = window[window['GoogleAnalyticsObject'] || 'ga']; // eslint-disable-line dot-notation
+  let gaCheck = window[window['GoogleAnalyticsObject'] || 'ga']; // eslint-disable-line dot-notation
+  function gaEventsToggledAdvanced(outcome) {
     let gaCount = 0;
 
     if (typeof gaCheck === 'function' && gaCount === 0) {
@@ -624,8 +627,7 @@ ready(function() {
     gaCount++;
   }
 
-  function gaSearchBoxNarrow() {
-    let gaCheck = window[window['GoogleAnalyticsObject'] || 'ga']; // eslint-disable-line dot-notation
+  function gaEventsSearchBoxNarrow() {
     let gaCount = 0;
 
     if (typeof gaCheck === 'function' && gaCount === 0) {
@@ -637,6 +639,17 @@ ready(function() {
     }
 
     gaCount++;
+  }
+
+  function gaEventsNoResults(e) {
+    e.preventDefault();
+    if (typeof gaCheck === 'function') {
+      ga('send', 'event', {
+        'eventCategory': 'Grants Search Events',
+        'eventAction': 'Grants Search No Results CTA Click',
+        'eventLabel': this.dataset.ga,
+      });
+    }
   }
   
   // QUERY HOOKS

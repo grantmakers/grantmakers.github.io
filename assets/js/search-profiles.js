@@ -347,6 +347,9 @@ ready(function() {
     // Tooltips
     initTooltips();
     initModals();
+    // Google Analytics events
+    document.querySelectorAll('#no-results-ctas a')
+      .forEach(e => e.addEventListener('click', gaEventsNoResults));
   });
 
   search.on('error', function(e) {
@@ -387,6 +390,19 @@ ready(function() {
       'classes': 'btn blue-grey white-text',
     };
     M.FormSelect.init(elem, options);
+  }
+
+  // GOOGLE ANALYTICS EVENTS
+  // =======================
+  function gaEventsNoResults() {
+    let gaCheck = window[window['GoogleAnalyticsObject'] || 'ga']; // eslint-disable-line dot-notation
+    if (typeof gaCheck === 'function') {
+      ga('send', 'event', {
+        'eventCategory': 'Profiles Search Events',
+        'eventAction': 'Profiles Search No Results CTA Click',
+        'eventLabel': this.dataset.ga,
+      });
+    }
   }
   
 
