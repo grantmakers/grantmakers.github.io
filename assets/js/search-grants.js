@@ -641,8 +641,7 @@ ready(function() {
     gaCount++;
   }
 
-  function gaEventsNoResults(e) {
-    e.preventDefault();
+  function gaEventsNoResults() {
     if (typeof gaCheck === 'function') {
       ga('send', 'event', {
         'eventCategory': 'Grants Search Events',
