@@ -21,7 +21,7 @@ google_analytics: UA-84268197-1
 algolia_link: http://goto.algolia.com/l/139121/2017-10-24/26gc84
 
 # Algolia Public API Search Keys
-algolia_public_key_grants: cd47ecb3457441878399b20acc8c3fbc
+algolia_public_key_grants: 96a419d65f67ff3b4c54939f8e90c220
 algolia_public_key_profiles: ce4d584b0de36ca3f8b4727fdb83c658
 
 # Sitewide helpers
