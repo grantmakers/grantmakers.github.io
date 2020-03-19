@@ -526,6 +526,7 @@ ready(function() {
     // Initialize dynamic Materialize JS components created by Instantsearch widgets
     initTooltips();
     initModals();
+    initHitsDropdowns();
     // Google Analytics events
     document.querySelectorAll('#no-results-ctas a')
       .forEach(e => e.addEventListener('click', gaEventsNoResults));
@@ -557,6 +558,14 @@ ready(function() {
       'outDuration': 250, // Default is 250
     };
     M.Tooltip.init(elems, options);
+  }
+
+  function initHitsDropdowns() {
+    const elems = document.querySelectorAll('.dropdown-trigger-hits');
+    const options = {
+      'constrainWidth': false
+    }
+    M.Dropdown.init(elems, options);
   }
 
   function initModals() {
