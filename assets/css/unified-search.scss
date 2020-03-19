@@ -926,6 +926,14 @@ a.hit-name {
   }
   .row-grant-names {
     margin-bottom: 5px;
+    .actions-wrapper ul.dropdown-content li {
+      a:hover {
+        background-color: white;
+      }
+    }
+    .actions-wrapper ul.dropdown-content li i {
+      margin-right: 12px;
+    }
   }
   .grant-purpose {
     margin-top: 1rem;
