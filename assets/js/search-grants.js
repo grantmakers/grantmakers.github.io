@@ -68,11 +68,11 @@ ready(function() {
     },
     {
       'facet': 'grantee_city',
-      'label': 'City',
+      'label': 'Recipient City',
     },
     {
       'facet': 'grantee_state',
-      'label': 'State',
+      'label': 'Recipient State',
     },
     {
       'facet': 'grant_amount',
