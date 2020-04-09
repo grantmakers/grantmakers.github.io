@@ -94,6 +94,9 @@ $placeholder: $text-muted-max;
 .text-light, .text-thin {
 	font-weight: 300;
 }
+.text-uppercase {
+	text-transform: uppercase;
+}
 .accent-text {
   color: $accent-color;
 }
