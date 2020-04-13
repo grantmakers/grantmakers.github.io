@@ -132,6 +132,21 @@ ul.btn-group {
 .modal:focus {
 	outline: 0;
 }
+nav.clean {
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	height: 30px;
+	line-height: 30px;
+	li.active {
+		border-bottom: 3px solid #424242;
+		a {
+			&:hover {
+				background-color: transparent;
+				cursor: default;
+			}
+		}
+	}
+}
 span.badge-circle {
 	display: inline-block;
 	min-width: 0px;

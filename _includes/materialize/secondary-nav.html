@@ -1,0 +1,17 @@
+<nav class="clean grey darken-2 z-depth-1">
+  <div class="container-custom">
+    <div class="nav-wrapper">
+      <div class="col s12">
+        <ul class="list-inline left">
+          <li class="{% if page.permalink == '/about/' %}active disabled{% endif %}"><a href="{{ site.baseurl }}/about/" class="white-text">About</a></li>
+          <li class="{% if page.permalink == '/about/tips-and-tricks/' %}active disabled{% endif %}"><a href="{{ site.baseurl }}/about/tips-and-tricks/" class="white-text">Tips & Tricks</a></li>
+          <li class="{% if page.permalink == '/about/faq/' %}active disabled{% endif %}"><a href="{{ site.baseurl }}/about/faq/" class="white-text">FAQ</a></li>
+        </ul>
+        <ul class="list-inline right hide-on-small-only">
+          <li class="{% if page.permalink == '/donate/' %}active disabled{% endif %}"><a href="{{ site.baseurl }}/donate/" class="white-text">Support Open Data</a></li>
+          <!--<li class="{% if page.permalink == '/donate/buy-chad-a-coffee/' %}active disabled{% endif %}"><a href="{{ site.baseurl }}/donate/buy-chad-a-coffee/" class="white-text">Buy Me a Coffee</a></li>-->
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
