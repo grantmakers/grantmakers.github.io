@@ -2,7 +2,7 @@
 layout: simple-no-hero-materialize
 title: Frequently Asked Questions
 drift: true
-permalink: /faq/
+permalink: /about/faq/
 ---
 <main>
 	<div class="header header-filter" style="background-image: url('{{ site.baseurl }}/assets/img/files.jpg')">
@@ -17,6 +17,9 @@ permalink: /faq/
 	</div>
 
 	<div class="main main-raised">
+
+		{% include materialize/secondary-nav.html %}
+
 		<div class="container">
 			<div class="section section-simple-page section-faq">
 				<div class="row">
@@ -39,7 +42,7 @@ permalink: /faq/
 									<div class="collapsible-body">
 										<ul class="browser-default">
 											<li>City names are converted from UPPERCASE to Titlecase as needed.</li>
-							<li>An 'N/A' label is added to missing or omitted fields in foreign address listings (e.g. if the state field is omitted, Grantmakers.io shows the 'N/A' label).</li>
+											<li>An 'N/A' label is added to missing or omitted fields in foreign address listings (e.g. if the state field is omitted, Grantmakers.io shows the 'N/A' label).</li>
 										</ul>
 									</div>
 								</li>
