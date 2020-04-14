@@ -3,7 +3,7 @@ layout: simple-no-hero-materialize
 title: Tips & Tricks
 drift: true
 donorbox-popup: false
-permalink: /tips/
+permalink: /about/tips-and-tricks/
 ---
 <main>
   <div class="header header-filter" style="background-image: url('{{ site.baseurl }}/assets/img/files.jpg')">
@@ -18,10 +18,14 @@ permalink: /tips/
   </div>
 
   <div class="main main-raised">
+    
+    {% include materialize/secondary-nav.html %}
+    
     <div class="container-custom">
       <div class="section section-simple-page section-about">
         <div id="main-content" class="row">
           <div class="col s12 m9 offset-m1 l10 offset-l1 xl8 offset-xl1">
+            
             <div class="section">              
               <div class="card-panel blue-grey white-text">
                 <h6 class="white-text text-bold text-uppercase">Key takeaways:</h6>
@@ -39,7 +43,7 @@ permalink: /tips/
             <div id="toc-dataset" class="section section-about scrollspy">
               <h4>Public IRS dataset</h4>
               <p>The IRS started publishing foundation tax returns in "machine-readable format" for the first time in 2016. Grantmakers.io pulls data exclusively from this dataset. It's open...it's free...it's awesome.</p>
-              <p>It does have its limitations though. The dataset only contains <strong>electronically filed tax returns.</strong>. Currently, approximately 50-60% of private foundations file in this manner, which means Grantmakers.io covers approximately half of all private foundations.</p>
+              <p>It does have its limitations though. The dataset only contains <strong>electronically filed tax returns</strong>. Currently, approximately 50-60% of private foundations file in this manner, which means Grantmakers.io covers approximately half of all private foundations.</p>
               <p>The good news is recent legislation requires tax-exempt organizations to file electronically, starting in the near future. Specifically, filings for tax years ending July 31, 2020 and later must be filed electronically. Practically speaking, 2021 will be a great year for visitors to Grantmakers.io, as nearly 100% of private foundations will be represented in results by then.</p>
               <p>Also, keep in mind Grantmakers.io focuses exclusively on <strong>Form 990-PF</strong>, the tax filing used by private foundations. If a foundation files a different tax form, they will not be included in search results and will not have a profile on Grantmakers.io. Consider community foundations, for example. Most community foundations file Form 990 (not Form 990-PF), so they will not appear on Grantmakers.io.</p>
             </div>

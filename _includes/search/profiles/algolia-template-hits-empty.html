@@ -15,13 +15,8 @@
     <div class="card-content">
       <div class="card-title">Not looking for a specific funder?</div>
       {% raw %}
-      <p>Try your query using a <a href="/search/grants/?query={{ query }}" data-ga="Grants Search">Grants Search</a></p>
+      <p>Try your query using a <a href="{{ site.baseurl }}/search/grants/?query={{ query }}" data-ga="Grants Search">Grants Search</a></p>
       {% endraw %}
-      <!--<p class="hide-on-med-and-down">Understand the limits of Grantmakers.io by reading the sidebar on the right</p>-->
-      <!--
-      <p>Profiles Search is best when you're looking for a particular funder</p>
-      <p>Grants Search is best when you're looking for new funders</p>
-      -->
     </div>
   </div>
   <div class="card z-depth-0 grey lighten-4">
@@ -29,7 +24,7 @@
       <div class="card-title">
         Get to know Grantmakers.io
       </div>
-      <p>Learn more about the <a href="#modal-tips" class="modal-trigger" data-ga="Search Types Modal">two types of searches</a></p>
+      <p><a href="{{ site.baseurl }}/about/tips-and-tricks/" data-ga="Get to know link">Tips and tricks</a> to get the most out of your searches</p>
     </div>
   </div>
 </div>
