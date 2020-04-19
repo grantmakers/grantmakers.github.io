@@ -1,6 +1,6 @@
 {
   "name": "grantmakersio",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Grantmakers.io is an open source community project from Chad Kruse",
   "main": "index.js",
   "scripts": {
@@ -18,7 +18,7 @@
   },
   "homepage": "https://www.grantmakers.io",
   "devDependencies": {
-    "eslint": "^6.7.2",
+    "eslint": "^6.8.0",
     "eslint-plugin-frontmatter": "0.0.8"
   }
 }
