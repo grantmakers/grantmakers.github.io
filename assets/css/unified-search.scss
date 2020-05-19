@@ -308,6 +308,10 @@ Algolia theme overrides
 /****************************
 Mimic Algolia them - only the good parts
 *****************************/
+// But first, import Instantsearch.css reset
+// Could be pulled from jsDelivr, but not available on CDNJS
+@import 'reset';
+
 // Use these if NOT using algolia-theme
 .ais-CurrentRefinements-delete, .ais-CurrentRefinements-reset, .ais-GeoSearch-redo, .ais-GeoSearch-reset, .ais-HierarchicalMenu-showMore, .ais-InfiniteHits-loadMore, .ais-InfiniteResults-loadMore, .ais-Menu-showMore, .ais-RangeInput-submit, .ais-RefinementList-showMore, .ais-SearchBox-reset, .ais-SearchBox-submit {
   padding: 0;
