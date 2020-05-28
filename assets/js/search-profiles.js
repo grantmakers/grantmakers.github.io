@@ -53,7 +53,16 @@ ready(function() {
       'facet': 'state',
       'label': 'State',
     },
+    {
+      'facet': 'assets',
+      'label': 'Assets',
+    },
   ];
+
+  // Define RangeInput min/max - for placeholders only
+  // HACK
+  const rangeMin = 0;
+  const rangeMax = 47000000000;
 
   // Define toggle helpers
   const toggleParent = document.getElementById('search-toggle');
@@ -78,8 +87,7 @@ ready(function() {
     // 'routing': true,
     'routing': {
       'stateMapping': {
-        stateToRoute({query, refinementList, page}) {
-          // TODO Add all relevent refinements from array
+        stateToRoute({query, refinementList, range, page}) {
           return {
             // 'type': searchType,
             'query': query,
@@ -92,6 +100,10 @@ ready(function() {
               refinementList &&
               refinementList.state &&
               refinementList.state.join('~'),
+            'assets':
+              range &&
+              range.assets &&
+              range.assets.replace(':', '~'),
             'page': page,
           };
         },
@@ -102,6 +114,9 @@ ready(function() {
             'refinementList': {
               'city': routeState.city && routeState.city.split('~'),
               'state': routeState.state && routeState.state.split('~'),
+            },
+            'range': {
+              'assets': routeState.assets && routeState.assets.replace('~', ':'),
             },
             'page': routeState.page,
           };
@@ -218,8 +233,97 @@ ready(function() {
     }),
   );
 
+  // Create the render function
+  const renderRangeInput = (renderOptions, isFirstRender) => {
+    const { start, refine, widgetParams } = renderOptions; // Not using 'range' argument
+    const [min, max] = start;
+
+    if (isFirstRender) {
+      // Create panel
+      const wrapper = document.createElement('div');
+      wrapper.setAttribute('class', 'ais-RangeInput');
+      const form = document.createElement('form');
+      form.setAttribute('class', 'ais-RangeInput-form');
+
+      form.addEventListener('submit', event => {
+        event.preventDefault();
+
+        const rawMinInputValue = parseFloat(event.target.elements.min.value);
+        const rawMaxInputValue = parseFloat(event.target.elements.max.value);
+
+        refine([
+          Number.isFinite(rawMinInputValue) ? rawMinInputValue : undefined,
+          Number.isFinite(rawMaxInputValue) ? rawMaxInputValue : undefined,
+        ]);
+      });
+
+      widgetParams.container.appendChild(wrapper);
+      wrapper.appendChild(form);
+
+      return;
+    }
+
+    widgetParams.container.querySelector('form').innerHTML = `
+      <label class="ais-RangeInput-label">
+        <input
+          class="ais-RangeInput-input ais-RangeInput-input--min"
+          type="number"
+          name="min"
+          placeholder="${rangeMin}"
+          step="1000"
+          value="${Number.isFinite(min) ? min : ''}"
+        />
+      </label>
+      <span>to</span>
+      <label class="ais-RangeInput-label">
+        <input
+          class="ais-RangeInput-input ais-RangeInput-input--max"
+          type="number"
+          name="max"
+          placeholder="${rangeMax}"
+          step="1000"
+          value="${Number.isFinite(max) ? max : ''}"
+        />
+      </label>
+      <button class="ais-RangeInput-submit btn-flat blue-grey white-text" type="submit">Go</button>
+    `;
+  };
+
+  // Create the custom range input widget
+  const customRangeInput = instantsearch.connectors.connectRange(
+    renderRangeInput
+  );
+
+  // Create the panel widget wrapper
+  const rangeInputWithPanel = instantsearch.widgets.panel({
+    'templates': {
+      'header': 'Amount',
+    },
+    hidden(options) {
+      return options.results.nbHits === 0;
+    },
+    'cssClasses': {
+      'root': ['card', 'hidden'], // Default state for Advanced Search toggle
+      'header': [
+        'card-header',
+      ],
+      'body': 'card-content',
+    },
+  })(customRangeInput);
+
+  // Instantiate the custom widget
+  search.addWidget(
+    rangeInputWithPanel({
+      'container': document.querySelector('#ais-widget-range-input'),
+      'attribute': 'assets',
+    }),
+  );
+
   /* Create all other refinements */
   facets.forEach((refinement) => {
+    if (refinement.facet === 'assets') {
+      return;
+    }
     const refinementListWithPanel = instantsearch.widgets.panel({
       'templates': {
         'header': refinement.label,
@@ -361,6 +465,7 @@ ready(function() {
       renderForbidden();
       console.log('Origin forbidden');
     }
+    console.log(e);
   });
 
   // Initialize search
@@ -457,7 +562,7 @@ ready(function() {
   }
 
   function formatIfRangeLabel(refinement) {
-    if (refinement.attribute !== 'grant_amount') {
+    if (refinement.attribute !== 'assets') {
       return refinement.label;
     } else {
       return `${refinement.operator} $${numberHuman(refinement.value)}`;
