@@ -283,30 +283,7 @@ main {
 }
 
 /****************************
-Algolia theme overrides
-*****************************/
-// Use these if using algolia-theme
-/*
-.ais-Hits-item, .ais-Results-item {
-  margin-top: inherit;
-  margin-left: inherit;
-  padding: inherit;
-  width: inherit;
-  border: inherit;
-  box-shadow: inherit;
-}
-
-.ais-Breadcrumb, .ais-ClearRefinements, .ais-CurrentRefinements, .ais-GeoSearch, .ais-HierarchicalMenu, .ais-Hits, .ais-HitsPerPage, .ais-InfiniteHits, .ais-InfiniteResults, .ais-Menu, .ais-MenuSelect, .ais-NumericMenu, .ais-NumericSelector, .ais-Pagination, .ais-Panel, .ais-PoweredBy, .ais-RangeInput, .ais-RangeSlider, .ais-RatingMenu, .ais-RefinementList, .ais-Results, .ais-ResultsPerPage, .ais-SearchBox, .ais-SortBy, .ais-Stats, .ais-ToggleRefinement {
-  color: inherit;
-}
-
-.ais-Stats-text {
-  font-size: inherit;
-}
-*/
-
-/****************************
-Mimic Algolia them - only the good parts
+Mimic Algolia theme - only the good parts
 *****************************/
 // But first, import Instantsearch.css reset
 // Could be pulled from jsDelivr, but not available on CDNJS
@@ -326,6 +303,9 @@ Mimic Algolia them - only the good parts
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+.ais-ClearRefinements-button {
+  padding: 0 16px; // HACK due to @import reset. Used to match .btn class.
 }
 [class^=ais-] {
   font-size: 1rem;
