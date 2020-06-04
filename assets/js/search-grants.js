@@ -416,12 +416,12 @@ ready(function() {
           'checkbox': 'filled-in',
           'labelText': 'small',
           'count': ['right', 'small'],
-          'showMore': 'btn-flat grey-text small', // Default state for Advanced Search toggle
+          'showMore': 'btn-flat blue-grey-text small', // Default state for Advanced Search toggle
         },
         'templates': {
           'showMoreText': `{% include search/algolia-refinementList-showMore.html %}`,
         },
-      })
+      }),
     );
 
     /* Create mobile refinements */

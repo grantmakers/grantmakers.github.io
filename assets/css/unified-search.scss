@@ -1083,6 +1083,9 @@ a.hit-name {
   }
   &.grants-search {
   }
+  button.ais-RefinementList-showMore {
+    text-transform: none;
+  }
   button.ais-RefinementList-showMore:focus {
     background-color: transparent !important;
   }
