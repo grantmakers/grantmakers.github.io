@@ -77,6 +77,12 @@ ready(function() {
     window.location.href = '/search/grants/';
   };
 
+  // Toogle Advanced Search tools
+  // Advanced search features are hidden by default via css
+  // Could handle initial show/hide directly in Instantsearch via cssClasses, but too many side effects
+  // Even listener set in search.once InstantSearch event
+  const toggleAdvancedElem = document.querySelector('.search-toggle-advanced input[type="checkbox"]');
+
   const search = instantsearch({
     'indexName': 'grantmakers_io',
     searchClient,
@@ -445,6 +451,10 @@ ready(function() {
   search.once('render', function() {
     // Search toggle
     initSelect();
+    // Show range input if initial URL contains an amount refinement
+    setInitialAdvancedSearchToggleState();
+    // Create advanced search toggle listener
+    toggleAdvancedElem.addEventListener('change', toggleAdvancedListener, false);
   });
 
   search.on('render', function() {
@@ -497,10 +507,50 @@ ready(function() {
     M.FormSelect.init(elem, options);
   }
 
+  function setInitialAdvancedSearchToggleState() {
+    // If any numeric refinements, automatically show ALL advanced tools, not just range input
+    const obj = search.helper.state.numericRefinements;
+    const check = Object.keys(obj).length;
+    if (check > 0) {
+      document.getElementById('algolia-hits-wrapper').classList.remove('js-hide-advanced-tools');
+    }
+  }
+
+  function toggleAdvancedListener(e) {
+    if (e.target.checked) {
+      showAdvancedSearchTools();
+      gaEventsToggledAdvanced('on');
+    } else {
+      hideAdvancedSearchTools();
+      gaEventsToggledAdvanced('off');
+    }
+  }
+
+  function showAdvancedSearchTools() {
+    document.getElementById('algolia-hits-wrapper').classList.remove('js-hide-advanced-tools');
+  }
+
+  function hideAdvancedSearchTools() {
+    document.getElementById('algolia-hits-wrapper').classList.add('js-hide-advanced-tools');
+  }
+
   // GOOGLE ANALYTICS EVENTS
   // =======================
+  let gaCheck = window[window['GoogleAnalyticsObject'] || 'ga']; // eslint-disable-line dot-notation
+  function gaEventsToggledAdvanced(outcome) {
+    let gaCount = 0;
+
+    if (typeof gaCheck === 'function' && gaCount === 0) {
+      ga('send', 'event', {
+        'eventCategory': 'Profiles Search Events',
+        'eventAction': 'Clicked Toggle Advanced Tools',
+        'eventLabel': 'Advanced Tools Toggled ' + outcome,
+      });
+    }
+
+    gaCount++;
+  }
   function gaEventsNoResults() {
-    let gaCheck = window[window['GoogleAnalyticsObject'] || 'ga']; // eslint-disable-line dot-notation
     if (typeof gaCheck === 'function') {
       ga('send', 'event', {
         'eventCategory': 'Profiles Search Events',
