@@ -202,8 +202,6 @@ i.md-18 {
 
 /* Inline lists */
 .list-inline {
-  padding-left: 0;
-  // margin-left: -5px;
   list-style: none;
 }
 .list-inline > li {
@@ -852,8 +850,10 @@ a.hit-name {
 }
 .hit-summary-financials {
   margin-top: 20px; // Match row bottom margin spacing
+  padding-left: 10px !important;
+  padding-right: 10px;
   li {
-    padding-left: 15px;
+   // padding-left: 15px;
   }
   h6 small {
     font-weight: 300;

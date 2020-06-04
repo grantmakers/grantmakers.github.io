@@ -34,8 +34,19 @@
         <li>
           <h6 class="text-muted">{{ assets }}<br><small>Total Assets</small></h6>
         </li>
-        <li>
-          <h6 class="text-muted">{{ grant_median }}<br><small>Median Grant</small></h6>
+        <li class="right center">
+          <!-- TODO Add asterisk if grants_reference_attachment-->
+          {{#grants_reference_attachment}}
+          {{ grant_count_only_one }}
+          <h6 class="text-muted tooltipped" data-tooltip="Full grants list may be available elsewhere in Form 990PF">{{ grant_count }}*<br><small>Grant{{^grant_count_only_one}}s{{/grant_count_only_one}}</small></h6>
+          {{/grants_reference_attachment}}
+          {{^grants_reference_attachment}}
+          <h6 class="text-muted tooltipped" data-tooltip="No. of grants listed in<br>latest tax filing<br>FY {{filings.0.tax_year}}">{{ grant_count }}{{#grants_reference_attachment}}*{{/grants_reference_attachment}}<br><small>Grant{{^grant_count_only_one}}s{{/grant_count_only_one}}</small></h6>
+          {{/grants_reference_attachment}}
+
+        </li>
+        <li class="right center">
+          <h6 class="text-muted tooltipped" data-tooltip="Max {{grant_max}}<br>Min {{grant_min}}">{{ grant_median }}<br><small>Median Grant</small></h6>
         </li>
       </ul>
       
