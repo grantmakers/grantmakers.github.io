@@ -198,7 +198,7 @@ ready(function() {
   // Create the custom widget
   const customConfigure = instantsearch.connectors.connectConfigure(
     renderConfigure,
-    () => {}
+    () => {},
   );
 
   // Instantiate the custom widget
@@ -214,7 +214,7 @@ ready(function() {
           'organization_name',
         ],
       },
-    })
+    }),
   );
 
   search.addWidget(
@@ -230,13 +230,13 @@ ready(function() {
         searchInstance(queryCleaned);
         initTooltips();
       },
-    })
+    }),
   );
 
   search.addWidget(
     instantsearch.widgets.poweredBy({
       'container': '#powered-by',
-    })
+    }),
   );
 
   // Grants search
@@ -258,7 +258,7 @@ ready(function() {
           'grant_amount': `$${item.grant_amount.toLocaleString()}`,
         }));
       },
-    })
+    }),
   );
 
   search.addWidget(
@@ -270,7 +270,7 @@ ready(function() {
       'cssClasses': {
         'text': 'text-muted',
       },
-    })
+    }),
   );
 
   // Create the render function
@@ -329,9 +329,10 @@ ready(function() {
     `;
   };
 
+  // Range Input
   // Create the custom range input widget
   const customRangeInput = instantsearch.connectors.connectRange(
-    renderRangeInput
+    renderRangeInput,
   );
 
   // Create the panel widget wrapper
@@ -356,7 +357,7 @@ ready(function() {
     rangeInputWithPanel({
       'container': document.querySelector('#ais-widget-range-input'),
       'attribute': 'grant_amount',
-    })
+    }),
   );
 
   /* Create all other refinements */
@@ -469,7 +470,7 @@ ready(function() {
             ...acc,
             [key]: event.currentTarget.dataset[key],
           }),
-          {}
+          {},
         );
 
         refine(item);
@@ -478,13 +479,13 @@ ready(function() {
   };
 
   const customCurrentRefinements = instantsearch.connectors.connectCurrentRefinements(
-    renderCurrentRefinements
+    renderCurrentRefinements,
   );
 
   search.addWidget(
     customCurrentRefinements({
       'container': document.querySelector('#ais-widget-current-refined-values'),
-    })
+    }),
   );
 
   search.addWidget(
@@ -496,7 +497,7 @@ ready(function() {
       'templates': {
         'resetLabel': 'Clear filters',
       },
-    })
+    }),
   );
 
   search.addWidget(
@@ -510,7 +511,7 @@ ready(function() {
         'selectedItem': 'active',
         'disabledItem': 'disabled',
       },
-    })
+    }),
   );
 
   search.once('render', function() {
@@ -563,8 +564,8 @@ ready(function() {
   function initHitsDropdowns() {
     const elems = document.querySelectorAll('.dropdown-trigger-hits');
     const options = {
-      'constrainWidth': false
-    }
+      'constrainWidth': false,
+    };
     M.Dropdown.init(elems, options);
   }
 
@@ -591,8 +592,6 @@ ready(function() {
   }
 
   function toggleAdvancedListener(e) {
-    console.log('Listener triggered');
-    // TODO Create GA event
     if (e.target.checked) {
       showAdvancedSearchTools();
       gaEventsToggledAdvanced('on');
