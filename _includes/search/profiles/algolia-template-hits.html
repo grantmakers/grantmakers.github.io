@@ -37,7 +37,6 @@
         <li class="right center">
           <!-- TODO Add asterisk if grants_reference_attachment-->
           {{#grants_reference_attachment}}
-          {{ grant_count_only_one }}
           <h6 class="text-muted tooltipped" data-tooltip="Full grants list may be available elsewhere in Form 990PF">{{ grant_count }}*<br><small>Grant{{^grant_count_only_one}}s{{/grant_count_only_one}}</small></h6>
           {{/grants_reference_attachment}}
           {{^grants_reference_attachment}}
