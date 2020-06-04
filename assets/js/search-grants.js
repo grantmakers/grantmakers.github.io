@@ -96,10 +96,11 @@ ready(function() {
     window.location.href = '/search/profiles/';
   };
 
-  // Toogle advanced search tools
-  // Handled in search.once InstantSearch event
+  // Toogle Advanced Search tools
+  // Advanced search features are hidden by default via css
+  // Could handle initial show/hide directly in Instantsearch via cssClasses, but too many side effects
+  // Even listener set in search.once InstantSearch event
   const toggleAdvancedElem = document.querySelector('.search-toggle-advanced input[type="checkbox"]');
-  const rangeInputElement = document.getElementById('ais-widget-range-input');
 
   const search = instantsearch({
     'indexName': 'grantmakers_io',
@@ -342,7 +343,7 @@ ready(function() {
       return options.results.nbHits === 0;
     },
     'cssClasses': {
-      'root': ['card', 'hidden'], // Default state for Advanced Search toggle
+      'root': ['card'],
       'header': [
         'card-header',
       ],
@@ -516,7 +517,6 @@ ready(function() {
     // Initialize static Materialize JS components created by Instantsearch widgets
     initSelect();
     // Show range input if initial URL contains an amount refinement
-    // Note: Advanced search features are hidden by default via InstantSearch widget settings
     setInitialAdvancedSearchToggleState();
     // Create advanced search toggle listener
     toggleAdvancedElem.addEventListener('change', toggleAdvancedListener, false);
@@ -582,41 +582,32 @@ ready(function() {
   }
 
   function setInitialAdvancedSearchToggleState() {
+    // If any numeric refinements, automatically show ALL advanced tools, not just range input
     const obj = search.helper.state.numericRefinements;
     const check = Object.keys(obj).length;
     if (check > 0) {
-      rangeInputElement.querySelector('.ais-Panel').classList.remove('hidden');
+      document.getElementById('algolia-hits-wrapper').classList.remove('js-hide-advanced-tools');
     }
-    const showMoreButtons = document.querySelectorAll('.ais-RefinementList-showMore');
-    showMoreButtons.forEach((item) => {
-      item.classList.add('hidden');
-    });
   }
 
   function toggleAdvancedListener(e) {
-    const showMoreButtons = document.querySelectorAll('.ais-RefinementList-showMore');
+    console.log('Listener triggered');
     // TODO Create GA event
     if (e.target.checked) {
-      showAdvancedSearchTools(showMoreButtons);
+      showAdvancedSearchTools();
       gaEventsToggledAdvanced('on');
     } else {
-      hideAdvancedSearchTools(showMoreButtons);
+      hideAdvancedSearchTools();
       gaEventsToggledAdvanced('off');
     }
   }
 
-  function showAdvancedSearchTools(showMoreButtons) {
-    rangeInputElement.querySelector('.ais-Panel').classList.remove('hidden');
-    showMoreButtons.forEach((item) => {
-      item.classList.remove('hidden');
-    });
+  function showAdvancedSearchTools() {
+    document.getElementById('algolia-hits-wrapper').classList.remove('js-hide-advanced-tools');
   }
 
-  function hideAdvancedSearchTools(showMoreButtons) {
-    rangeInputElement.querySelector('.ais-Panel').classList.add('hidden');
-    showMoreButtons.forEach((item) => {
-      item.classList.add('hidden');
-    });
+  function hideAdvancedSearchTools() {
+    document.getElementById('algolia-hits-wrapper').classList.add('js-hide-advanced-tools');
   }
 
   // GOOGLE ANALYTICS EVENTS
