@@ -13,18 +13,16 @@
               {{/eobmf_recognized_exempt}}
             </li>
             <li class="left">
-              <i class="material-icons {{#is_likely_staffed}}material-icons-active{{/is_likely_staffed}} tooltipped" {{#is_likely_staffed}} data-tooltip="Is likely staffed"{{/is_likely_staffed}}{{^is_likely_staffed}} data-tooltip="No paid staff"{{/is_likely_staffed}}>account_circle</i>
-            </li>             
-            {{#website}}
-              <li class="left">
-                <a href="{{ website }}" target="_blank"><i class="material-icons material-icons-active website tooltipped" data-tooltip="Click to visit website">public</i></a>
-              </li>
-            {{/website}}
-            {{^website}}
-              <li class="left">
-                <i class="material-icons tooltipped" data-tooltip="No website listed">public</i>
-              </li>
-            {{/website}}
+              {{#grants_to_preselected_only}}
+              <i class="material-icons material-icons-active tooltipped" data-tooltip="Possibly accepts unsolicited applications.<br>Part XV Line 2 is unchecked.">lock_open</i>
+              {{/grants_to_preselected_only}}
+              {{^grants_to_preselected_only}}
+              <i class="material-icons tooltipped" data-tooltip="Grants to preselected organizations only<br>Part XV Line 2 is checked">lock</i>
+              {{/grants_to_preselected_only}}
+            </li>
+            <li class="left">
+              <i class="material-icons material-icons-active tooltipped" data-tooltip="Profile contains a searchable<br>grants database">policy</i>
+            </li>
           </ul>
         </div>
         <div class="col s6 right-align">
