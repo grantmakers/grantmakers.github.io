@@ -6,10 +6,15 @@
           <ul class="inline-list hit-summary-icons">
             <li class="left">
               {{#eobmf_recognized_exempt}}
-              <i class="material-icons material-icons-active tooltipped" data-tooltip="IRS recognizes as exempt in<br>current Business Master File">verified</i>
+              <i class="material-icons material-icons-active tooltipped" data-tooltip="EIN appears in latest<br>IRS Business Master File<br>of exempt organizations">verified</i>
               {{/eobmf_recognized_exempt}}
               {{^eobmf_recognized_exempt}}
-              <i class="material-icons tooltipped" data-tooltip="Does not appear in current IRS<br>Business Master File of exempt organizations">new_releases</i>
+                {{#has_recent_grants}}
+              <i class="material-icons material-icons-active tooltipped" data-tooltip="EIN does not appear in latest<br>IRS Business Master File<br>of exempt organizations,<br>but latest tax filing suggests recent grant activity">new_releases</i>
+                {{/has_recent_grants}}
+                {{^has_recent_grants}}
+              <i class="material-icons tooltipped" data-tooltip="EIN does not appear in latest<br>IRS Business Master File<br>of exempt organizations">new_releases</i>
+                {{/has_recent_grants}}
               {{/eobmf_recognized_exempt}}
             </li>
             <li class="left">
