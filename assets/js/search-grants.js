@@ -588,7 +588,10 @@ ready(function() {
     const obj = search.helper.state.numericRefinements;
     const check = Object.keys(obj).length;
     if (check > 0) {
+      // Show advanced search elements
       document.getElementById('algolia-hits-wrapper').classList.remove('js-hide-advanced-tools');
+      // Flip switch to on position
+      toggleAdvancedElem.checked = true;
     }
   }
 
