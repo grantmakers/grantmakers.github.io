@@ -537,11 +537,21 @@ $parallax-height: 75vh;
 #search-toggle {
   height: $searchBarHeight;
   select {
+    cursor: pointer;
+    padding-left: 10px;
     @extend .grantmakers;
     &.grants-search {
       @extend .blue-grey;
     }
     outline: none;
+    // Remove Safari gloss
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='%23ffffff'><polygon points='0,0 100,0 50,50'/></svg>") no-repeat;
+    background-size: 12px;
+    background-position: calc(100% - 20px) center;
+    background-repeat: no-repeat;
   }
   // Can remove select-wrapper if using browser-default class
   .select-wrapper {
