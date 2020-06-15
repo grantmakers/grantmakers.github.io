@@ -283,7 +283,7 @@ ready(function() {
       // Show helper text
       const helperEl = event.target.nextElementSibling;
       let amount = parseFloat(event.target.value);
-      let formattedAmount = `$${numberHuman(amount)}`;
+      let formattedAmount = `${amount ? '$' + numberHuman(amount) : ''}`;
       helperEl.textContent = formattedAmount;
 
       // UI reminder to click button
