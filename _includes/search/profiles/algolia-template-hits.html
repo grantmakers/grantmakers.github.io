@@ -5,17 +5,10 @@
         <div class="col s6">
           <ul class="inline-list hit-summary-icons">
             <li class="left">
-              {{#eobmf_recognized_exempt}}
-              <i class="material-icons material-icons-active tooltipped" data-tooltip="EIN appears in latest<br>IRS Business Master File<br>of exempt organizations">verified</i>
-              {{/eobmf_recognized_exempt}}
-              {{^eobmf_recognized_exempt}}
-                {{#has_recent_grants}}
-              <i class="material-icons material-icons-active tooltipped" data-tooltip="EIN does not appear in latest<br>IRS Business Master File<br>of exempt organizations,<br>but latest tax filing suggests recent grant activity">new_releases</i>
-                {{/has_recent_grants}}
-                {{^has_recent_grants}}
-              <i class="material-icons tooltipped" data-tooltip="EIN does not appear in latest<br>IRS Business Master File<br>of exempt organizations">new_releases</i>
-                {{/has_recent_grants}}
-              {{/eobmf_recognized_exempt}}
+              <i class="material-icons {{#has_recent_grants}}material-icons-active{{/has_recent_grants}} tooltipped" {{#has_recent_grants}} data-tooltip="Has recent grants"{{/has_recent_grants}}{{^has_recent_grants}} data-tooltip="No recent grants"{{/has_recent_grants}}>monetization_on</i>
+            </li>
+            <li class="left">
+              <i class="material-icons {{#is_likely_staffed}}material-icons-active{{/is_likely_staffed}} tooltipped" {{#is_likely_staffed}} data-tooltip="Is likely staffed"{{/is_likely_staffed}}{{^is_likely_staffed}} data-tooltip="No paid staff"{{/is_likely_staffed}}>account_circle</i>
             </li>
             <li class="left">
               {{#grants_to_preselected_only}}
@@ -24,14 +17,6 @@
               {{^grants_to_preselected_only}}
               <i class="material-icons material-icons-active tooltipped" data-tooltip="Possibly accepts unsolicited applications.<br>Part XV Line 2 is unchecked.">lock_open</i>
               {{/grants_to_preselected_only}}
-            </li>
-            <li class="left">
-              {{#enable_algolia_search}}
-              <i class="material-icons material-icons-active tooltipped" data-tooltip="Profile contains a searchable<br>grants database">policy</i>
-              {{/enable_algolia_search}}
-              {{^enable_algolia_search}}
-              <i class="material-icons tooltipped" data-tooltip="A searchable grants database<br>is not required">policy</i>
-              {{/enable_algolia_search}}
             </li>
           </ul>
         </div>
