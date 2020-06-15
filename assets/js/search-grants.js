@@ -166,7 +166,10 @@ ready(function() {
 
   // Construct widgets
 
-  // Search Box dropdown - limits attributes to search
+  /* ------------------- */
+  /* Search Box Dropdown */
+  /* ------------------- */
+  // Limits attributes to search
   // Create the render function
   const renderConfigure = (renderOptions, isFirstRender) => {
     const { refine, widgetParams } = renderOptions;
@@ -217,6 +220,9 @@ ready(function() {
     }),
   );
 
+  /* ---------- */
+  /* Search Box */
+  /* ---------- */
   search.addWidget(
     instantsearch.widgets.searchBox({
       'container': '#ais-widget-search-box',
@@ -239,7 +245,9 @@ ready(function() {
     }),
   );
 
-  // Grants search
+  /* ---- */
+  /* Hits */
+  /* ---- */
   search.addWidget(
     instantsearch.widgets.hits({
       'container': '#ais-widget-hits',
@@ -273,6 +281,10 @@ ready(function() {
     }),
   );
 
+  /* ----------- */
+  /* Range Input */
+  /* ----------- */
+
   // Create the render function
   const renderRangeInput = (renderOptions, isFirstRender) => {
     const { start, refine, widgetParams } = renderOptions; // Not using 'range' argument
@@ -303,6 +315,31 @@ ready(function() {
       return;
     }
 
+    widgetParams.container.querySelector('form').addEventListener('input', event => {
+      event.preventDefault();
+
+      // Show helper text
+      // TODO This feels unnecessarily complicated
+      const helperEl = document.querySelector('.ais-Panel-footer');
+      const helperElMin = helperEl.querySelector('#range-footer-min');
+      const helperElMax = helperEl.querySelector('#range-footer-max');
+      const helperElSymbol = helperEl.querySelector('#range-footer-symbol');
+      let amount = parseFloat(event.target.value);
+      let amountMin;
+      let amountMax;
+      if (event.target.classList.contains('ais-RangeInput-input--min')) {
+        amountMin = numberHuman(amount);
+        amountMax = helperElMax.textContent || null;
+        helperElMin.textContent = `${amountMin ? '$' + amountMin : ''}`;
+      }
+      if (event.target.classList.contains('ais-RangeInput-input--max')) {
+        amountMax = numberHuman(amount);
+        amountMin = helperElMin.textContent || null;
+        helperElMax.textContent = `${amountMax ? '$' + amountMax : ''}`;
+      }
+      helperElSymbol.textContent = getRangeFooterSymbol(amountMin, amountMax);
+    });
+
     widgetParams.container.querySelector('form').innerHTML = `
       <label class="ais-RangeInput-label">
         <input
@@ -329,16 +366,49 @@ ready(function() {
     `;
   };
 
-  // Range Input
   // Create the custom range input widget
   const customRangeInput = instantsearch.connectors.connectRange(
     renderRangeInput,
   );
 
+  function getRangeFooterSymbol(min, max) {
+    let symbol;
+    if (min && max) {
+      symbol = ' - ';
+    } else if (min && !max) {
+      symbol = '+';
+    } else if (!min && max) {
+      symbol = '<';
+    } else if (!min && !max) {
+      symbol = '';
+    }
+    return symbol;
+  }
+
   // Create the panel widget wrapper
   const rangeInputWithPanel = instantsearch.widgets.panel({
     'templates': {
-      'header': 'Amount',
+      'header': 'Grant Amount',
+      footer(options) {
+        // TODO DRY it up
+        if (options.state && options.state.numericRefinements && options.state.numericRefinements.grant_amount) {
+          const min = options.state.numericRefinements.grant_amount['>='];
+          const max = options.state.numericRefinements.grant_amount['<='];
+          let minFormatted;
+          let maxFormatted;
+          if (min) {
+            const minFloat = parseFloat(min.toString());
+            minFormatted = numberHuman(minFloat);
+          }
+          if (max) {
+            const maxFloat = parseFloat(max.toString());
+            maxFormatted = numberHuman(maxFloat);
+          }
+          return `<span id="range-footer-min">${minFormatted ? '$' + minFormatted : ''}</span><span id="range-footer-symbol">${getRangeFooterSymbol(minFormatted, maxFormatted)}</span><span id="range-footer-max">${maxFormatted ? '$' + maxFormatted : ''}</span>`;
+        } else {
+          return '<span id="range-footer-min"></span><span id="range-footer-symbol"></span><span id="range-footer-max"></span>';
+        }
+      },
     },
     hidden(options) {
       return options.results.nbHits === 0;
@@ -349,6 +419,7 @@ ready(function() {
         'card-header',
       ],
       'body': 'card-content',
+      'footer': 'small',
     },
   })(customRangeInput);
 
@@ -360,7 +431,9 @@ ready(function() {
     }),
   );
 
+  /* ---------------------------- */
   /* Create all other refinements */
+  /* ---------------------------- */
   facets.forEach((refinement) => {
     // Amount handled by range widget
     if (refinement.facet === 'grant_amount') {
@@ -445,7 +518,9 @@ ready(function() {
     */
   });
 
+  /* ------------------- */
   /* Current Refinements */
+  /* ------------------- */
   const createDataAttribtues = refinement =>
     Object.keys(refinement)
       .map(key => `data-${key}="${refinement[key]}"`)
@@ -489,6 +564,9 @@ ready(function() {
     }),
   );
 
+  /* ----------------- */
+  /* Clear Refinements */
+  /* ----------------- */
   search.addWidget(
     instantsearch.widgets.clearRefinements({
       'container': '#ais-widget-clear-all',
@@ -501,6 +579,9 @@ ready(function() {
     }),
   );
 
+  /* ---------- */
+  /* Pagination */
+  /* ---------- */
   search.addWidget(
     instantsearch.widgets.pagination({
       'container': '#ais-widget-pagination',

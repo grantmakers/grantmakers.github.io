@@ -200,6 +200,12 @@ i.md-18 {
   font-size: 18px;
 }
 
+/* Animations */
+@keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
 /* Inline lists */
 .list-inline {
   list-style: none;
@@ -1160,6 +1166,12 @@ a.hit-name {
         padding: 0 5px
       }
     }
+    .ais-Panel-footer {
+      padding-left: 10px;
+    }
+    #range-footer-min, #range-footer-max {
+      // animation: fadein 1s;
+    }
   }
   button.ais-RefinementList-showMore {
     text-transform: none;
@@ -1168,7 +1180,7 @@ a.hit-name {
     background-color: transparent !important;
   }
 }
-/* Mobile Refinememnts */
+/* Mobile Refinements */
 #refinements-slide-out {
   .ais-Panel.card {
     margin: 0;
