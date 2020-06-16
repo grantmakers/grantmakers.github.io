@@ -347,7 +347,6 @@ ready(function() {
           type="number"
           name="min"
           placeholder="${rangeMin}"
-          step="1000"
           value="${Number.isFinite(min) ? min : ''}"
         />
       </label>
@@ -358,7 +357,6 @@ ready(function() {
           type="number"
           name="max"
           placeholder="${rangeMax}"
-          step="1000"
           value="${Number.isFinite(max) ? max : ''}"
         />
       </label>

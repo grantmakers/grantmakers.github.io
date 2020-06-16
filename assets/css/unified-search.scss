@@ -1107,6 +1107,15 @@ a.hit-name {
         box-shadow: none !important;
       }
     }
+    // Hide stepper for UX reasons. No "typical" selection + values are large.
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    input[type="number"] {
+        -moz-appearance: textfield;
+    }
     button {
       height: 2rem;
       padding: 0 5px

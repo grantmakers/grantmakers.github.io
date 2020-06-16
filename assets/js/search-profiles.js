@@ -304,7 +304,6 @@ ready(function() {
             type="number"
             name="min"
             placeholder="${rangeMin}"
-            step="1000000"
             value="${Number.isFinite(min) ? min : ''}"
           />
           <span class="label-helper">${Number.isFinite(min) ? '$' + numberHuman(min) : 'Min'}</span>
@@ -317,7 +316,6 @@ ready(function() {
             type="number"
             name="max"
             placeholder="${rangeMax}"
-            step="1000000"
             value="${Number.isFinite(max) ? max : ''}"
           />
           <span class="label-helper">${Number.isFinite(max) ? '$' + numberHuman(max) : 'Max'}</span>
