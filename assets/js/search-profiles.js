@@ -59,11 +59,6 @@ ready(function() {
     },
   ];
 
-  // Define RangeInput min/max - for placeholders only
-  // HACK
-  const rangeMin = 0;
-  const rangeMax = 47000000000;
-
   // Define toggle helpers
   const toggleParent = document.getElementById('search-toggle');
   const toggle = toggleParent.querySelector('select');
@@ -303,7 +298,7 @@ ready(function() {
             class="ais-RangeInput-input ais-RangeInput-input--min"
             type="number"
             name="min"
-            placeholder="${rangeMin}"
+            placeholder="$0"
             value="${Number.isFinite(min) ? min : ''}"
           />
           <span class="label-helper">${Number.isFinite(min) ? '$' + numberHuman(min) : 'Min'}</span>
@@ -315,7 +310,7 @@ ready(function() {
             class="ais-RangeInput-input ais-RangeInput-input--max"
             type="number"
             name="max"
-            placeholder="${rangeMax}"
+            placeholder="$0"
             value="${Number.isFinite(max) ? max : ''}"
           />
           <span class="label-helper">${Number.isFinite(max) ? '$' + numberHuman(max) : 'Max'}</span>
