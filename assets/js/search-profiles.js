@@ -413,7 +413,7 @@ ready(function() {
           'checkbox': 'filled-in',
           'labelText': 'small',
           'count': ['right', 'small'],
-          'showMore': 'btn-flat grantmakers-text small',
+          'showMore': 'btn-flat small',
           'disabledShowMore': 'hidden',
           // 'selectedItem': ['grants-search-text'],
           // 'searchableRoot': 'ais-SearchBox-refinements',
