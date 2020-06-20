@@ -59,11 +59,6 @@ ready(function() {
     },
   ];
 
-  // Define RangeInput min/max - for placeholders only
-  // HACK
-  const rangeMin = 0;
-  const rangeMax = 47000000000;
-
   // Define toggle helpers
   const toggleParent = document.getElementById('search-toggle');
   const toggle = toggleParent.querySelector('select');
@@ -76,6 +71,12 @@ ready(function() {
     console.log('switch');
     window.location.href = '/search/grants/';
   };
+
+  // Toogle Advanced Search tools
+  // Advanced search features are hidden by default via css
+  // Could handle initial show/hide directly in Instantsearch via cssClasses, but too many side effects
+  // Even listener set in search.once InstantSearch event
+  const toggleAdvancedElem = document.querySelector('.search-toggle-advanced input[type="checkbox"]');
 
   const search = instantsearch({
     'indexName': 'grantmakers_io',
@@ -170,7 +171,14 @@ ready(function() {
         return items.map(item => ({
           ...item,
           'ein_formatted': item.ein.replace(/(\d{2})(\d{7})/, '$1-$2'),
-          'grant_median': `$${item.grant_median.toLocaleString()}`,
+          'grant_median': `$${item.grant_median.toLocaleString(undefined, {
+            'minimumFractionDigits': 0,
+            'maximumFractionDigits': 0,
+          })}`,
+          'grant_min': `$${item.grant_min.toLocaleString()}`,
+          'grant_max': `$${item.grant_max.toLocaleString()}`,
+          'grant_count': `${item.grant_count.toLocaleString()}`,
+          'grant_count_only_one': item.grant_count === 1 ? true : false,
           'assets': `$${numberHuman(item.assets, 0)}`,
         }));
       },
@@ -189,7 +197,9 @@ ready(function() {
     }),
   );
 
+  /* ------------------- */
   /* Current Refinements */
+  /* ------------------- */
   const createDataAttribtues = refinement =>
     Object.keys(refinement)
       .map(key => `data-${key}="${refinement[key]}"`)
@@ -233,6 +243,9 @@ ready(function() {
     }),
   );
 
+  /* ----------  */
+  /* Range Input */
+  /* ----------- */
   // Create the render function
   const renderRangeInput = (renderOptions, isFirstRender) => {
     const { start, refine, widgetParams } = renderOptions; // Not using 'range' argument
@@ -263,51 +276,75 @@ ready(function() {
       return;
     }
 
+    widgetParams.container.querySelector('form').addEventListener('input', event => {
+      event.preventDefault();
+
+      // Show helper text
+      const helperEl = event.target.nextElementSibling;
+      let amount = parseFloat(event.target.value);
+      let formattedAmount = `${amount ? '$' + numberHuman(amount) : ''}`;
+      helperEl.textContent = formattedAmount;
+
+      // UI reminder to click button
+      const button = document.querySelector('.ais-RangeInput-submit');
+      button.classList.remove('grey', 'lighten-3');
+      button.classList.add('blue-grey', 'white-text');
+
+      // Text reminder to click button
+      const reminderEl = document.querySelector('.ais-Panel-footer');
+      reminderEl.textContent = 'Don\'t forget to click Go';
+    });
+
     widgetParams.container.querySelector('form').innerHTML = `
-      <label class="ais-RangeInput-label">
-        <input
-          class="ais-RangeInput-input ais-RangeInput-input--min"
-          type="number"
-          name="min"
-          placeholder="${rangeMin}"
-          step="1000"
-          value="${Number.isFinite(min) ? min : ''}"
-        />
-      </label>
-      <span>to</span>
-      <label class="ais-RangeInput-label">
-        <input
-          class="ais-RangeInput-input ais-RangeInput-input--max"
-          type="number"
-          name="max"
-          placeholder="${rangeMax}"
-          step="1000"
-          value="${Number.isFinite(max) ? max : ''}"
-        />
-      </label>
-      <button class="ais-RangeInput-submit btn-flat blue-grey white-text" type="submit">Go</button>
+      <div id="range-input-min" class="label-wrapper">
+        <label class="ais-RangeInput-label valign-wrapper">
+          <input
+            class="ais-RangeInput-input ais-RangeInput-input--min"
+            type="number"
+            name="min"
+            placeholder="$0"
+            value="${Number.isFinite(min) ? min : ''}"
+          />
+          <span class="label-helper">${Number.isFinite(min) ? '$' + numberHuman(min) : 'Min'}</span>
+        </label>
+      </div>
+      <div id="range-input-max" class="label-wrapper">
+        <label class="ais-RangeInput-label valign-wrapper">
+          <input
+            class="ais-RangeInput-input ais-RangeInput-input--max"
+            type="number"
+            name="max"
+            placeholder="$0"
+            value="${Number.isFinite(max) ? max : ''}"
+          />
+          <span class="label-helper">${Number.isFinite(max) ? '$' + numberHuman(max) : 'Max'}</span>
+        </label>
+      </div>
+      <button class="ais-RangeInput-submit btn grey lighten-3" type="submit">Go</button>
     `;
   };
 
   // Create the custom range input widget
   const customRangeInput = instantsearch.connectors.connectRange(
-    renderRangeInput
+    renderRangeInput,
   );
 
   // Create the panel widget wrapper
   const rangeInputWithPanel = instantsearch.widgets.panel({
     'templates': {
-      'header': 'Amount',
+      'header': 'Assets',
+      'footer': '&nbsp;',
     },
     hidden(options) {
       return options.results.nbHits === 0;
     },
     'cssClasses': {
-      'root': ['card', 'hidden'], // Default state for Advanced Search toggle
+      'root': ['card'],
       'header': [
         'card-header',
       ],
       'body': 'card-content',
+      'footer': 'small',
     },
   })(customRangeInput);
 
@@ -319,7 +356,9 @@ ready(function() {
     }),
   );
 
+  /* ---------------------------- */
   /* Create all other refinements */
+  /* ---------------------------- */
   facets.forEach((refinement) => {
     if (refinement.facet === 'assets') {
       return;
@@ -374,7 +413,8 @@ ready(function() {
           'checkbox': 'filled-in',
           'labelText': 'small',
           'count': ['right', 'small'],
-          'showMore': 'btn-flat grey-text small',
+          'showMore': 'btn-flat small',
+          'disabledShowMore': 'hidden',
           // 'selectedItem': ['grants-search-text'],
           // 'searchableRoot': 'ais-SearchBox-refinements',
           // 'searchableSubmit': 'hidden',
@@ -400,13 +440,15 @@ ready(function() {
       }),
     );
   });
-  
 
+  /* ----------------- */
+  /* Clear Refinements */
+  /* ----------------- */
   search.addWidget(
     instantsearch.widgets.clearRefinements({
       'container': '#ais-widget-clear-all',
       'cssClasses': {
-        'button': ['btn waves-effect waves-light'],
+        'button': ['btn grantmakers white-text waves-effect waves-light'],
       },
       'templates': {
         'resetLabel': 'Clear filters',
@@ -427,6 +469,9 @@ ready(function() {
     }),
   );
 
+  /* ---------- */
+  /* Pagination */
+  /* ---------- */
   search.addWidget(
     instantsearch.widgets.pagination({
       'container': '#ais-widget-pagination',
@@ -445,6 +490,10 @@ ready(function() {
   search.once('render', function() {
     // Search toggle
     initSelect();
+    // Show range input if initial URL contains an amount refinement
+    setInitialAdvancedSearchToggleState();
+    // Create advanced search toggle listener
+    toggleAdvancedElem.addEventListener('change', toggleAdvancedListener, false);
   });
 
   search.on('render', function() {
@@ -497,10 +546,53 @@ ready(function() {
     M.FormSelect.init(elem, options);
   }
 
+  function setInitialAdvancedSearchToggleState() {
+    // If any numeric refinements, automatically show ALL advanced tools, not just range input
+    const obj = search.helper.state.numericRefinements;
+    const check = Object.keys(obj).length;
+    if (check > 0) {
+      // Show advanced search elements
+      document.getElementById('algolia-hits-wrapper').classList.remove('js-hide-advanced-tools');
+      // Flip switch to on position
+      toggleAdvancedElem.checked = true;
+    }
+  }
+
+  function toggleAdvancedListener(e) {
+    if (e.target.checked) {
+      showAdvancedSearchTools();
+      gaEventsToggledAdvanced('on');
+    } else {
+      hideAdvancedSearchTools();
+      gaEventsToggledAdvanced('off');
+    }
+  }
+
+  function showAdvancedSearchTools() {
+    document.getElementById('algolia-hits-wrapper').classList.remove('js-hide-advanced-tools');
+  }
+
+  function hideAdvancedSearchTools() {
+    document.getElementById('algolia-hits-wrapper').classList.add('js-hide-advanced-tools');
+  }
+
   // GOOGLE ANALYTICS EVENTS
   // =======================
+  let gaCheck = window[window['GoogleAnalyticsObject'] || 'ga']; // eslint-disable-line dot-notation
+  function gaEventsToggledAdvanced(outcome) {
+    let gaCount = 0;
+
+    if (typeof gaCheck === 'function' && gaCount === 0) {
+      ga('send', 'event', {
+        'eventCategory': 'Profiles Search Events',
+        'eventAction': 'Clicked Toggle Advanced Tools',
+        'eventLabel': 'Advanced Tools Toggled ' + outcome,
+      });
+    }
+
+    gaCount++;
+  }
   function gaEventsNoResults() {
-    let gaCheck = window[window['GoogleAnalyticsObject'] || 'ga']; // eslint-disable-line dot-notation
     if (typeof gaCheck === 'function') {
       ga('send', 'event', {
         'eventCategory': 'Profiles Search Events',

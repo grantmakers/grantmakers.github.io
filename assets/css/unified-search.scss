@@ -200,10 +200,14 @@ i.md-18 {
   font-size: 18px;
 }
 
+/* Animations */
+@keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
 /* Inline lists */
 .list-inline {
-  padding-left: 0;
-  // margin-left: -5px;
   list-style: none;
 }
 .list-inline > li {
@@ -258,7 +262,7 @@ main {
 }
 #ais-widget-hits {
   min-height: 300px;
-  // TODO Set min-height programatically
+  // TODO Set min-height programmatically
   @media screen and (min-height: 600px) {
     min-height: 400px;
   }
@@ -539,11 +543,21 @@ $parallax-height: 75vh;
 #search-toggle {
   height: $searchBarHeight;
   select {
+    cursor: pointer;
+    padding-left: 10px;
     @extend .grantmakers;
     &.grants-search {
       @extend .blue-grey;
     }
     outline: none;
+    // Remove Safari gloss
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='%23ffffff'><polygon points='0,0 100,0 50,50'/></svg>") no-repeat;
+    background-size: 12px;
+    background-position: calc(100% - 20px) center;
+    background-repeat: no-repeat;
   }
   // Can remove select-wrapper if using browser-default class
   .select-wrapper {
@@ -839,11 +853,6 @@ $parallax-height: 75vh;
 .hit-summary-icons i.material-icons-active {
   @extend .grantmakers-text;
 }
-.hit-summary-icons i.website {
-  &:hover {
-    cursor: pointer;
-  }
-}
 a.hit-name {
   color: $text-color;
   &:hover{ 
@@ -852,8 +861,10 @@ a.hit-name {
 }
 .hit-summary-financials {
   margin-top: 20px; // Match row bottom margin spacing
+  padding-left: 10px !important;
+  padding-right: 10px;
   li {
-    padding-left: 15px;
+   // padding-left: 15px;
   }
   h6 small {
     font-weight: 300;
@@ -1011,6 +1022,13 @@ a.hit-name {
   }
 }
 
+// Set initial Advanced Tools toggle state
+#algolia-hits-wrapper.js-hide-advanced-tools {
+  #ais-widget-range-input {
+    display: none;
+  }
+}
+
 .section-refinements {
   .card {
     background-color: transparent;
@@ -1071,31 +1089,10 @@ a.hit-name {
   .ais-RefinementList-labelText {
     width: 80%;
   }
-  &.profiles-search {
-    .ais-RefinementList-item--selected {
-      label span {
-        color: $grantmakers;
-      }
-    }
-    .ais-RefinementList-labelText mark {
-      background-color: #e3f4fb;
-    }
-  }
-  &.grants-search {
-  }
-  button.ais-RefinementList-showMore:focus {
-    background-color: transparent !important;
-  }
-  /* Range Input */
+  /* Range Input - Shared across profiles and grants search*/
   .ais-RangeInput {
-    label {
-      width: 40%; // Increase spacing
-    }
     input {
-      width: unset;
-      width: 75%; // Increase spacing
       height: 2rem;
-      margin: 0 10px;
       padding: 0 10px;
       border: none;
       border-radius: 2px;
@@ -1105,17 +1102,89 @@ a.hit-name {
         box-shadow: none !important;
       }
     }
-    label:first-child input {
-      margin-left: 0;
-      padding-right: 15px; // Increase spacing
+    // Hide stepper for UX reasons. No "typical" selection + values are large.
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    input[type="number"] {
+        -moz-appearance: textfield;
     }
     button {
       height: 2rem;
       padding: 0 5px
     }
   }
+  &.section-refinements-profiles-search {
+    .ais-RefinementList-item--selected {
+      label span {
+        color: $grantmakers;
+      }
+    }
+    .ais-RefinementList-labelText mark {
+      background-color: #e3f4fb;
+    }
+    .label-wrapper {
+      margin-bottom: 8px;
+    }
+    .ais-RangeInput form {
+      flex-wrap: wrap;
+      flex-direction: column;
+      align-items: normal;
+      label {
+        width: 100%;
+      }
+      input {
+        max-width: 60%;
+        margin: 0;
+        margin-right: 10px;
+      }
+    }
+  }
+  &.section-refinements-grants-search {
+    .ais-RangeInput {
+      label {
+        width: 40%; // Increase spacing
+      }
+      input {
+        width: unset;
+        width: 75%; // Increase spacing
+        height: 2rem;
+        margin: 0 10px;
+        padding: 0 10px;
+        border: none;
+        border-radius: 2px;
+        background-color: white;
+        &:focus {
+          border-bottom: none !important;
+          box-shadow: none !important;
+        }
+      }
+      label:first-child input {
+        margin-left: 0;
+        padding-right: 15px; // Increase spacing
+      }
+      button {
+        height: 2rem;
+        padding: 0 5px
+      }
+    }
+    .ais-Panel-footer {
+      padding-left: 10px;
+    }
+    #range-footer-min, #range-footer-max {
+      // animation: fadein 1s;
+    }
+  }
+  button.ais-RefinementList-showMore {
+    text-transform: none;
+  }
+  button.ais-RefinementList-showMore:focus {
+    background-color: transparent !important;
+  }
 }
-/* Mobile Refinememnts */
+/* Mobile Refinements */
 #refinements-slide-out {
   .ais-Panel.card {
     margin: 0;

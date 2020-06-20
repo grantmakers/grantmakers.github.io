@@ -96,10 +96,11 @@ ready(function() {
     window.location.href = '/search/profiles/';
   };
 
-  // Toogle advanced search tools
-  // Handled in search.once InstantSearch event
+  // Toogle Advanced Search tools
+  // Advanced search features are hidden by default via css
+  // Could handle initial show/hide directly in Instantsearch via cssClasses, but too many side effects
+  // Even listener set in search.once InstantSearch event
   const toggleAdvancedElem = document.querySelector('.search-toggle-advanced input[type="checkbox"]');
-  const rangeInputElement = document.getElementById('ais-widget-range-input');
 
   const search = instantsearch({
     'indexName': 'grantmakers_io',
@@ -165,7 +166,10 @@ ready(function() {
 
   // Construct widgets
 
-  // Search Box dropdown - limits attributes to search
+  /* ------------------- */
+  /* Search Box Dropdown */
+  /* ------------------- */
+  // Limits attributes to search
   // Create the render function
   const renderConfigure = (renderOptions, isFirstRender) => {
     const { refine, widgetParams } = renderOptions;
@@ -197,7 +201,7 @@ ready(function() {
   // Create the custom widget
   const customConfigure = instantsearch.connectors.connectConfigure(
     renderConfigure,
-    () => {}
+    () => {},
   );
 
   // Instantiate the custom widget
@@ -213,9 +217,12 @@ ready(function() {
           'organization_name',
         ],
       },
-    })
+    }),
   );
 
+  /* ---------- */
+  /* Search Box */
+  /* ---------- */
   search.addWidget(
     instantsearch.widgets.searchBox({
       'container': '#ais-widget-search-box',
@@ -229,16 +236,18 @@ ready(function() {
         searchInstance(queryCleaned);
         initTooltips();
       },
-    })
+    }),
   );
 
   search.addWidget(
     instantsearch.widgets.poweredBy({
       'container': '#powered-by',
-    })
+    }),
   );
 
-  // Grants search
+  /* ---- */
+  /* Hits */
+  /* ---- */
   search.addWidget(
     instantsearch.widgets.hits({
       'container': '#ais-widget-hits',
@@ -257,7 +266,7 @@ ready(function() {
           'grant_amount': `$${item.grant_amount.toLocaleString()}`,
         }));
       },
-    })
+    }),
   );
 
   search.addWidget(
@@ -269,8 +278,12 @@ ready(function() {
       'cssClasses': {
         'text': 'text-muted',
       },
-    })
+    }),
   );
+
+  /* ----------- */
+  /* Range Input */
+  /* ----------- */
 
   // Create the render function
   const renderRangeInput = (renderOptions, isFirstRender) => {
@@ -302,6 +315,31 @@ ready(function() {
       return;
     }
 
+    widgetParams.container.querySelector('form').addEventListener('input', event => {
+      event.preventDefault();
+
+      // Show helper text
+      // TODO This feels unnecessarily complicated
+      const helperEl = document.querySelector('.ais-Panel-footer');
+      const helperElMin = helperEl.querySelector('#range-footer-min');
+      const helperElMax = helperEl.querySelector('#range-footer-max');
+      const helperElSymbol = helperEl.querySelector('#range-footer-symbol');
+      let amount = parseFloat(event.target.value);
+      let amountMin;
+      let amountMax;
+      if (event.target.classList.contains('ais-RangeInput-input--min')) {
+        amountMin = numberHuman(amount);
+        amountMax = helperElMax.textContent || null;
+        helperElMin.textContent = `${amountMin ? '$' + amountMin : ''}`;
+      }
+      if (event.target.classList.contains('ais-RangeInput-input--max')) {
+        amountMax = numberHuman(amount);
+        amountMin = helperElMin.textContent || null;
+        helperElMax.textContent = `${amountMax ? '$' + amountMax : ''}`;
+      }
+      helperElSymbol.textContent = getRangeFooterSymbol(amountMin, amountMax);
+    });
+
     widgetParams.container.querySelector('form').innerHTML = `
       <label class="ais-RangeInput-label">
         <input
@@ -309,7 +347,6 @@ ready(function() {
           type="number"
           name="min"
           placeholder="${rangeMin}"
-          step="1000"
           value="${Number.isFinite(min) ? min : ''}"
         />
       </label>
@@ -320,7 +357,6 @@ ready(function() {
           type="number"
           name="max"
           placeholder="${rangeMax}"
-          step="1000"
           value="${Number.isFinite(max) ? max : ''}"
         />
       </label>
@@ -330,23 +366,58 @@ ready(function() {
 
   // Create the custom range input widget
   const customRangeInput = instantsearch.connectors.connectRange(
-    renderRangeInput
+    renderRangeInput,
   );
+
+  function getRangeFooterSymbol(min, max) {
+    let symbol;
+    if (min && max) {
+      symbol = ' - ';
+    } else if (min && !max) {
+      symbol = '+';
+    } else if (!min && max) {
+      symbol = '<';
+    } else if (!min && !max) {
+      symbol = '';
+    }
+    return symbol;
+  }
 
   // Create the panel widget wrapper
   const rangeInputWithPanel = instantsearch.widgets.panel({
     'templates': {
-      'header': 'Amount',
+      'header': 'Grant Amount',
+      footer(options) {
+        // TODO DRY it up
+        if (options.state && options.state.numericRefinements && options.state.numericRefinements.grant_amount) {
+          const min = options.state.numericRefinements.grant_amount['>='];
+          const max = options.state.numericRefinements.grant_amount['<='];
+          let minFormatted;
+          let maxFormatted;
+          if (min) {
+            const minFloat = parseFloat(min.toString());
+            minFormatted = numberHuman(minFloat);
+          }
+          if (max) {
+            const maxFloat = parseFloat(max.toString());
+            maxFormatted = numberHuman(maxFloat);
+          }
+          return `<span id="range-footer-min">${minFormatted ? '$' + minFormatted : ''}</span><span id="range-footer-symbol">${getRangeFooterSymbol(minFormatted, maxFormatted)}</span><span id="range-footer-max">${maxFormatted ? '$' + maxFormatted : ''}</span>`;
+        } else {
+          return '<span id="range-footer-min"></span><span id="range-footer-symbol"></span><span id="range-footer-max"></span>';
+        }
+      },
     },
     hidden(options) {
       return options.results.nbHits === 0;
     },
     'cssClasses': {
-      'root': ['card', 'hidden'], // Default state for Advanced Search toggle
+      'root': ['card'],
       'header': [
         'card-header',
       ],
       'body': 'card-content',
+      'footer': 'small',
     },
   })(customRangeInput);
 
@@ -355,10 +426,12 @@ ready(function() {
     rangeInputWithPanel({
       'container': document.querySelector('#ais-widget-range-input'),
       'attribute': 'grant_amount',
-    })
+    }),
   );
 
+  /* ---------------------------- */
   /* Create all other refinements */
+  /* ---------------------------- */
   facets.forEach((refinement) => {
     // Amount handled by range widget
     if (refinement.facet === 'grant_amount') {
@@ -416,12 +489,13 @@ ready(function() {
           'checkbox': 'filled-in',
           'labelText': 'small',
           'count': ['right', 'small'],
-          'showMore': 'btn-flat grey-text small', // Default state for Advanced Search toggle
+          'showMore': 'btn-flat blue-grey-text small',
+          'disabledShowMore': 'hidden',
         },
         'templates': {
           'showMoreText': `{% include search/algolia-refinementList-showMore.html %}`,
         },
-      })
+      }),
     );
 
     /* Create mobile refinements */
@@ -442,7 +516,9 @@ ready(function() {
     */
   });
 
+  /* ------------------- */
   /* Current Refinements */
+  /* ------------------- */
   const createDataAttribtues = refinement =>
     Object.keys(refinement)
       .map(key => `data-${key}="${refinement[key]}"`)
@@ -468,7 +544,7 @@ ready(function() {
             ...acc,
             [key]: event.currentTarget.dataset[key],
           }),
-          {}
+          {},
         );
 
         refine(item);
@@ -477,15 +553,18 @@ ready(function() {
   };
 
   const customCurrentRefinements = instantsearch.connectors.connectCurrentRefinements(
-    renderCurrentRefinements
+    renderCurrentRefinements,
   );
 
   search.addWidget(
     customCurrentRefinements({
       'container': document.querySelector('#ais-widget-current-refined-values'),
-    })
+    }),
   );
 
+  /* ----------------- */
+  /* Clear Refinements */
+  /* ----------------- */
   search.addWidget(
     instantsearch.widgets.clearRefinements({
       'container': '#ais-widget-clear-all',
@@ -495,9 +574,12 @@ ready(function() {
       'templates': {
         'resetLabel': 'Clear filters',
       },
-    })
+    }),
   );
 
+  /* ---------- */
+  /* Pagination */
+  /* ---------- */
   search.addWidget(
     instantsearch.widgets.pagination({
       'container': '#ais-widget-pagination',
@@ -509,14 +591,13 @@ ready(function() {
         'selectedItem': 'active',
         'disabledItem': 'disabled',
       },
-    })
+    }),
   );
 
   search.once('render', function() {
     // Initialize static Materialize JS components created by Instantsearch widgets
     initSelect();
     // Show range input if initial URL contains an amount refinement
-    // Note: Advanced search features are hidden by default via InstantSearch widget settings
     setInitialAdvancedSearchToggleState();
     // Create advanced search toggle listener
     toggleAdvancedElem.addEventListener('change', toggleAdvancedListener, false);
@@ -563,8 +644,8 @@ ready(function() {
   function initHitsDropdowns() {
     const elems = document.querySelectorAll('.dropdown-trigger-hits');
     const options = {
-      'constrainWidth': false
-    }
+      'constrainWidth': false,
+    };
     M.Dropdown.init(elems, options);
   }
 
@@ -582,41 +663,33 @@ ready(function() {
   }
 
   function setInitialAdvancedSearchToggleState() {
+    // If any numeric refinements, automatically show ALL advanced tools, not just range input
     const obj = search.helper.state.numericRefinements;
     const check = Object.keys(obj).length;
     if (check > 0) {
-      rangeInputElement.querySelector('.ais-Panel').classList.remove('hidden');
+      // Show advanced search elements
+      document.getElementById('algolia-hits-wrapper').classList.remove('js-hide-advanced-tools');
+      // Flip switch to on position
+      toggleAdvancedElem.checked = true;
     }
-    const showMoreButtons = document.querySelectorAll('.ais-RefinementList-showMore');
-    showMoreButtons.forEach((item) => {
-      item.classList.add('hidden');
-    });
   }
 
   function toggleAdvancedListener(e) {
-    const showMoreButtons = document.querySelectorAll('.ais-RefinementList-showMore');
-    // TODO Create GA event
     if (e.target.checked) {
-      showAdvancedSearchTools(showMoreButtons);
+      showAdvancedSearchTools();
       gaEventsToggledAdvanced('on');
     } else {
-      hideAdvancedSearchTools(showMoreButtons);
+      hideAdvancedSearchTools();
       gaEventsToggledAdvanced('off');
     }
   }
 
-  function showAdvancedSearchTools(showMoreButtons) {
-    rangeInputElement.querySelector('.ais-Panel').classList.remove('hidden');
-    showMoreButtons.forEach((item) => {
-      item.classList.remove('hidden');
-    });
+  function showAdvancedSearchTools() {
+    document.getElementById('algolia-hits-wrapper').classList.remove('js-hide-advanced-tools');
   }
 
-  function hideAdvancedSearchTools(showMoreButtons) {
-    rangeInputElement.querySelector('.ais-Panel').classList.add('hidden');
-    showMoreButtons.forEach((item) => {
-      item.classList.add('hidden');
-    });
+  function hideAdvancedSearchTools() {
+    document.getElementById('algolia-hits-wrapper').classList.add('js-hide-advanced-tools');
   }
 
   // GOOGLE ANALYTICS EVENTS

@@ -104,11 +104,19 @@ redirect_from:
       <div class="section section-raised z-depth-4 grey lighten-3">
         {% include search/algolia-template-rate-limit.html %}
         {% include search/algolia-template-forbidden.html %}
-        <div id="algolia-hits-wrapper" class="row">
+        <div id="algolia-hits-wrapper" class="row js-hide-advanced-tools">
           <div class="col s12 l3">
             <!-- Filters / Refinements header -->
             <div class="text-muted hide-on-med-and-down">
               Filters
+              <!-- TODO remove hidden class when ready to integrate prospecting facets -->
+              <div class="switch switch-refinements right hidden">
+                <label class="search-toggle-advanced">
+                  Show advanced tools
+                  <input type="checkbox">
+                  <span class="lever"></span>
+                </label>
+              </div>
             </div>
             <div class="hide-on-large-only center-align">
               <ul class="actions list-inline">
@@ -121,7 +129,7 @@ redirect_from:
               </ul>
             </div>
             <div class="divider hide-on-med-and-down"></div>
-            <div class="section-refinements hide-on-med-and-down">
+            <div class="section-refinements section-refinements-profiles-search hide-on-med-and-down">
               <div> <!-- Add row class to remove added white space / padding -->
                 <div class="col s12">
                   <div id="ais-widget-refinement-list--city"></div>
@@ -186,7 +194,7 @@ redirect_from:
                 </div>
                 <div class="center-align">
                   <div class="waves-effect waves-light btn-flat">
-                    <a href="{{ site.baseurl }}/about/">Learn more</a>
+                    <a href="{{ site.baseurl }}/about/tips-and-tricks/">Learn more</a>
                   </div>
                 </div>
                 <!--

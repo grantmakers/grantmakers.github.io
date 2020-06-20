@@ -138,7 +138,7 @@ redirect_from:
       <div class="section section-raised z-depth-4 grey lighten-3">
         {% include search/algolia-template-rate-limit.html %}
         {% include search/algolia-template-forbidden.html %}
-        <div id="algolia-hits-wrapper" class="row">
+        <div id="algolia-hits-wrapper" class="row js-hide-advanced-tools">
           <div class="col s12 l4"> 
             <!-- Filters / Refinements header -->
             <div class="text-muted hide-on-med-and-down">
@@ -163,7 +163,7 @@ redirect_from:
               </ul>
             </div>
             <div class="divider hide-on-med-and-down"></div>
-            <div class="section-refinements hide-on-med-and-down grants-search">
+            <div class="section-refinements section-refinements-grants-search hide-on-med-and-down grants-search">
               <div> <!-- Add row class to remove added white space / padding -->
                 <div class="col s12">
                   <div id="ais-widget-range-input"></div>
