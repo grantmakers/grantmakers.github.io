@@ -853,11 +853,6 @@ $parallax-height: 75vh;
 .hit-summary-icons i.material-icons-active {
   @extend .grantmakers-text;
 }
-.hit-summary-icons i.website {
-  &:hover {
-    cursor: pointer;
-  }
-}
 a.hit-name {
   color: $text-color;
   &:hover{ 

@@ -5,18 +5,26 @@
         <div class="col s6">
           <ul class="inline-list hit-summary-icons">
             <li class="left">
-              <i class="material-icons {{#has_recent_grants}}material-icons-active{{/has_recent_grants}} tooltipped" {{#has_recent_grants}} data-tooltip="Has recent grants"{{/has_recent_grants}}{{^has_recent_grants}} data-tooltip="No recent grants"{{/has_recent_grants}}>monetization_on</i>
-            </li>
-            <li class="left">
-              <i class="material-icons {{#is_likely_staffed}}material-icons-active{{/is_likely_staffed}} tooltipped" {{#is_likely_staffed}} data-tooltip="Is likely staffed"{{/is_likely_staffed}}{{^is_likely_staffed}} data-tooltip="No paid, full-time staff"{{/is_likely_staffed}}>account_circle</i>
-            </li>
-            <li class="left">
               {{#grants_to_preselected_only}}
               <i class="material-icons tooltipped" data-tooltip="Grants to preselected organizations only.<br>Part XV Line 2 is checked.">lock</i>
               {{/grants_to_preselected_only}}
               {{^grants_to_preselected_only}}
               <i class="material-icons material-icons-active tooltipped" data-tooltip="Possibly accepts unsolicited applications.<br>Part XV Line 2 is unchecked.">lock_open</i>
               {{/grants_to_preselected_only}}
+            </li>
+            <li class="left">
+              <i class="material-icons {{#has_recent_grants}}material-icons-active{{/has_recent_grants}} tooltipped" {{#has_recent_grants}} data-tooltip="Has recent grants"{{/has_recent_grants}}{{^has_recent_grants}} data-tooltip="No recent grants"{{/has_recent_grants}}>monetization_on</i>
+            </li>
+            <li class="left">
+              <i class="material-icons {{#is_likely_staffed}}material-icons-active{{/is_likely_staffed}} tooltipped" {{#is_likely_staffed}} data-tooltip="Is likely staffed"{{/is_likely_staffed}}{{^is_likely_staffed}} data-tooltip="No paid, full-time staff<br>listed in tax return"{{/is_likely_staffed}}>account_circle</i>
+            </li>
+            <li class="left">
+              {{#website}}
+              <i class="material-icons material-icons-active website tooltipped" data-tooltip="Website available">public</i>
+              {{/website}}
+              {{^website}}
+              <i class="material-icons tooltipped" data-tooltip="No website listed">public</i>
+              {{/website}}
             </li>
           </ul>
         </div>
