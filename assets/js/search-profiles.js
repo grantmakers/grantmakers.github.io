@@ -57,6 +57,22 @@ ready(function() {
       'facet': 'assets',
       'label': 'Assets',
     },
+    {
+      'facet': 'has_recent_grants',
+      'label': 'Recent tax filing activity',
+    },
+    {
+      'facet': 'grants_to_preselected_only',
+      'label': 'Part XV Line 2',
+    },
+    {
+      'facet': 'is_likely_staffed',
+      'label': 'Staffing',
+    },
+    {
+      'facet': 'eobmf_recognized_exempt',
+      'label': 'Current Exempt Status (EOBMF)',
+    },
   ];
 
   // Define toggle helpers
@@ -422,6 +438,31 @@ ready(function() {
         'templates': {
           'showMoreText': `{% include search/algolia-refinementList-showMore.html %}`,
         },
+        transformItems(items) {
+          if (refinement.facet === 'grants_to_preselected_only') {
+            return items.map(item => ({
+              ...item,
+              'highlighted': item.highlighted === 'true' ? 'Checked' : 'Not checked',
+            }));
+          } else if (refinement.facet === 'is_likely_staffed') {
+            return items.map(item => ({
+              ...item,
+              'highlighted': item.highlighted === 'true' ? 'Full-time paid staff' : 'No full-time paid staff listed',
+            }));
+          } else if (refinement.facet === 'eobmf_recognized_exempt') {
+            return items.map(item => ({
+              ...item,
+              'highlighted': item.highlighted === 'true' ? 'EIN appears' : 'EIN does not appear',
+            }));
+          } else if (refinement.facet === 'has_recent_grants') {
+            return items.map(item => ({
+              ...item,
+              'highlighted': item.highlighted === 'true' ? 'Current or previous year' : 'Two years ago or older',
+            }));
+          } else {
+            return items;
+          }
+        },
       }),
     );
 
@@ -441,6 +482,23 @@ ready(function() {
     );
   });
 
+  /* -------------------- */
+  /* Exclusionary Toggles */
+  /* -------------------- */
+
+  /*
+  search.addWidget(
+    instantsearch.widgets.toggleRefinement({
+      'container': '#ais-widget-refinement-list--grants_to_preselected_only',
+      'attribute': 'grants_to_preselected_only',
+      'on': false,
+      'off': true,
+      'templates': {
+        'labelText': 'Possibly accepts unsolicited applications <i class="material-icons tooltipped" data-tooltip="Part XV Line 2 is unchecked">info</i>',
+      },
+    }),
+  );
+  */
   /* ----------------- */
   /* Clear Refinements */
   /* ----------------- */
