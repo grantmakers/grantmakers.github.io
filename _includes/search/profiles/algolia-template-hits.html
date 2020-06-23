@@ -36,6 +36,14 @@
         <a class="hit-name" href="https://grantmakers.io/profiles/{{ ein }}" title="View Profile">{{#helpers.highlight}}{ "attribute": "organization_name" }{{/helpers.highlight}}</a>
       </span>
       <p class="grantmakers-text">{{#helpers.highlight}}{ "attribute": "city" }{{/helpers.highlight}}, {{#helpers.highlight}}{ "attribute": "state" }{{/helpers.highlight}}</p>
+      {{#hits_people.length}}
+      <div class="hits-people text-light">
+        <div class="small">People matches</div>
+        {{#hits_people}}
+        <div>{{{name}}} - {{{title}}}</div>
+        {{/hits_people}}
+      </div>
+      {{/hits_people.length}}
       <ul class="list-inline hit-summary-financials grey lighten-4">
         <li>
           <h6 class="text-muted">{{ assets }}<br><small>Total Assets</small></h6>
@@ -52,7 +60,6 @@
           <h6 class="text-muted tooltipped" data-tooltip="Max {{grant_max}}<br>Min {{grant_min}}">{{ grant_median }}<br><small>Median Grant</small></h6>
         </li>
       </ul>
-      
     </div>
   </div>
 {% endraw %}

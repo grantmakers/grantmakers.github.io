@@ -870,6 +870,14 @@ a.hit-name {
     font-weight: 300;
   }
 }
+.hits-people {
+  padding-top: 20px;
+  mark {
+    background-color: lighten($accent-color, 50%); // Target color: #feebde
+    font-size: inherit !important;
+    color: inherit !important;
+  }
+} 
 /* Grants Search */
 /* Refinements */
 .grants-search {
