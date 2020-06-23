@@ -183,6 +183,14 @@ ready(function() {
           'ein',
           // 'people.name',
         ],
+        'attributesToHighlight': [
+          'organization_name',
+          'city',
+          'state',
+          'ein',
+          // 'people.name',
+          // 'people.title',
+        ],
       },
     }),
   );
