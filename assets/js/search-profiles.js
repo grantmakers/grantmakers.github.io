@@ -44,6 +44,7 @@ ready(function() {
   }
 
   const searchClient = algoliasearch('KDWVSZVS1I', '{{ site.algolia_public_key_profiles }}');
+  const algoliaIndex = 'grantmakers_io';
   const facets = [
     {
       'facet': 'city',
@@ -79,7 +80,7 @@ ready(function() {
   const toggleAdvancedElem = document.querySelector('.search-toggle-advanced input[type="checkbox"]');
 
   const search = instantsearch({
-    'indexName': 'grantmakers_io',
+    'indexName': algoliaIndex,
     searchClient,
     'numberLocale': 'en-US',
     'searchParameters': {
@@ -132,6 +133,63 @@ ready(function() {
   const templateStats = `{% include search/profiles/algolia-template-stats.html %}`;
 
   // Construct widgets
+  /* --------- */
+  /* Configure */
+  /* --------- */
+  const renderConfigure = (renderOptions, isFirstRender) => {
+    const { refine, widgetParams } = renderOptions;
+    const arr = widgetParams.searchParameters.restrictSearchableAttributes;
+
+    if (isFirstRender) {
+      const searchDropdownItems = document.getElementById('dropdown-body');
+
+      if (searchDropdownItems) { // <= Remove if statement when dropdown feature launches
+        searchDropdownItems.addEventListener('change', (e) => {
+          const attribute = e.target.id;
+          const isChecked = e.target.checked; // Note: this is the status AFTER the change
+          // Note: state will always remain in searchable attributes
+          // thus array.length should at least be 2, not 1
+          if (widgetParams.searchParameters.restrictSearchableAttributes.length === 2 && isChecked === false) {
+            e.target.checked = !isChecked;
+            M.Toast.dismissAll();
+            M.toast({'html': 'At least one item needs to be searchable'});
+            return;
+          }
+          // TODO Add logic to handle city + state
+          // Currently assumes state will always remain in searchable attributes
+          refine({
+            'restrictSearchableAttributes': addOrRemoveSearchableAttributes(arr, attribute),
+          });
+        });
+      }
+    }
+  };
+
+  // Create the custom widget
+  const customConfigure = instantsearch.connectors.connectConfigure(
+    renderConfigure,
+    () => {},
+  );
+
+  // Instantiate the custom widget
+  search.addWidget(
+    customConfigure({
+      'container': document.querySelector('#search-box-dropdown'),
+      'searchParameters': {
+        'restrictSearchableAttributes': [
+          'organization_name',
+          'city',
+          'state',
+          'ein',
+          // 'people.name',
+        ],
+      },
+    }),
+  );
+
+  /* --------- */
+  /* SearchBox */
+  /* --------- */
   search.addWidget(
     instantsearch.widgets.searchBox({
       'container': '#ais-widget-search-box',
@@ -155,7 +213,9 @@ ready(function() {
     }),
   );
 
-  // Profiles search
+  /* ----- */
+  /* Hits */
+  /* ----- */
   search.addWidget(
     instantsearch.widgets.hits({
       'container': '#ais-widget-hits',
@@ -180,11 +240,15 @@ ready(function() {
           'grant_count': `${item.grant_count.toLocaleString()}`,
           'grant_count_only_one': item.grant_count === 1 ? true : false,
           'assets': `$${numberHuman(item.assets, 0)}`,
+          'hits_people': hitsPeople(item._highlightResult.people),
         }));
       },
     }),
   );
 
+  /* ----- */
+  /* Stats */
+  /* ----- */
   search.addWidget(
     instantsearch.widgets.stats({
       'container': '#ais-widget-stats',
@@ -648,6 +712,40 @@ ready(function() {
 
   // MISC HELPER FUNCTIONS
   // ==============
+  function addOrRemoveSearchableAttributes(array, value) {
+    const tmpArr = array;
+    let index = array.indexOf(value);
+
+    if (index === -1) {
+      array.push(value);
+    } else {
+      array.splice(index, 1);
+    }
+    // Ensure at least one item is checked
+    if (array.length < 2) { // state will always be there
+      return tmpArr;
+    } else {
+      return array;
+    }
+  }
+
+  function hitsPeople(people) {
+    if (!people) {
+      return [];
+    }
+    
+    const arr = [];
+    people.map(person => {
+      const obj = {};
+      if (person.name && person.name.matchLevel === 'partial' || person.name.matchLevel === 'full') {
+        obj.name = person.name.value;
+        obj.title = person.title.value;
+        arr.push(obj);
+      }
+    });
+    return arr;
+  }
+
   function getLabel(item) {
     const obj = facets.filter(each => each.facet === item);
     return obj[0].label;
