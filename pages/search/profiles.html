@@ -91,8 +91,43 @@ redirect_from:
                   </select>
                 </div>
               </div>
-              <div class="col s12 l6 offset-l1">
+              <div class="col s12 l6 offset-l1 search-box-wrapper">
                 <div id="ais-widget-search-box"></div>
+                <div id="search-box-dropdown-trigger" class="hide-on-small-only">
+                  <a class="dropdown-trigger" href="#" data-target="search-box-dropdown"><i class="material-icons">arrow_drop_down</i></a>
+                </div>
+                <div class="search-box-dropdown-wrapper"></div>
+                <div id="search-box-dropdown" class="dropdown-content white text-default">
+                  <div class="dropdown-wrapper">
+                    <span class="dropdown-header"><small>FIELDS TO SEARCH</small></span>
+                    <ul id="dropdown-body">
+                      <li>
+                        <label>
+                        <input id="organization_name" type="checkbox" class="filled-in" checked="checked" />
+                        <span>Foundation name</span>
+                        </label>
+                      </li>
+                      <li>
+                        <label>
+                        <input id="city" type="checkbox" class="filled-in" checked="checked" />
+                        <span>Foundation city</span>
+                        </label>
+                      </li>
+                      <li>
+                        <label>
+                        <input id="people.name" type="checkbox" class="filled-in" checked="checked" />
+                        <span>Board members</span>
+                        </label>
+                      </li>
+                      <li>
+                        <label>
+                        <input id="ein" type="checkbox" class="filled-in" checked="checked" />
+                        <span>EIN</span>
+                        </label>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
               </div>
               <div class="col l3 hide-on-med-and-down">
                 <div id="powered-by" class="right"></div>

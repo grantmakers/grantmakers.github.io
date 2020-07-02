@@ -35,6 +35,18 @@ ready(function() {
   const elemsMO = document.querySelectorAll('.modal');
   M.Modal.init(elemsMO);
 
+  const elSearchBoxDropdown = document.querySelectorAll('.dropdown-trigger')[1]; // HACK Hard coding using bracket notation is precarious
+  const optionsSearchBoxDropdown = {
+    'alignment': 'right',
+    'constrainWidth': false,
+    'coverTrigger': false,
+    'closeOnClick': false,
+    'onOpenEnd': function() {
+      gaEventsSearchBoxNarrow();
+    },
+  };
+  M.Dropdown.init(elSearchBoxDropdown, optionsSearchBoxDropdown);
+
   if (!isMobile.matches) { // Use pushpin on desktop only
     const elemPP = document.querySelector('.nav-search nav');
     const optionsPP = {
@@ -143,25 +155,23 @@ ready(function() {
     if (isFirstRender) {
       const searchDropdownItems = document.getElementById('dropdown-body');
 
-      if (searchDropdownItems) { // <= Remove if statement when dropdown feature launches
-        searchDropdownItems.addEventListener('change', (e) => {
-          const attribute = e.target.id;
-          const isChecked = e.target.checked; // Note: this is the status AFTER the change
-          // Note: state will always remain in searchable attributes
-          // thus array.length should at least be 2, not 1
-          if (widgetParams.searchParameters.restrictSearchableAttributes.length === 2 && isChecked === false) {
-            e.target.checked = !isChecked;
-            M.Toast.dismissAll();
-            M.toast({'html': 'At least one item needs to be searchable'});
-            return;
-          }
-          // TODO Add logic to handle city + state
-          // Currently assumes state will always remain in searchable attributes
-          refine({
-            'restrictSearchableAttributes': addOrRemoveSearchableAttributes(arr, attribute),
-          });
+      searchDropdownItems.addEventListener('change', (e) => {
+        const attribute = e.target.id;
+        const isChecked = e.target.checked; // Note: this is the status AFTER the change
+        // Note: state will always remain in searchable attributes
+        // thus array.length should at least be 2, not 1
+        if (widgetParams.searchParameters.restrictSearchableAttributes.length === 2 && isChecked === false) {
+          e.target.checked = !isChecked;
+          M.Toast.dismissAll();
+          M.toast({'html': 'At least one item needs to be searchable'});
+          return;
+        }
+        // TODO Add logic to handle city + state
+        // Currently assumes state will always remain in searchable attributes
+        refine({
+          'restrictSearchableAttributes': addOrRemoveSearchableAttributes(arr, attribute),
         });
-      }
+      });
     }
   };
 
@@ -664,6 +674,21 @@ ready(function() {
 
     gaCount++;
   }
+
+  function gaEventsSearchBoxNarrow() {
+    let gaCount = 0;
+
+    if (typeof gaCheck === 'function' && gaCount === 0) {
+      ga('send', 'event', {
+        'eventCategory': 'Grants Search Events',
+        'eventAction': 'Clicked SearchBox Dropdown Trigger',
+        'eventLabel': 'SearchBox Dropdown Opened',
+      });
+    }
+
+    gaCount++;
+  }
+
   function gaEventsNoResults() {
     if (typeof gaCheck === 'function') {
       ga('send', 'event', {
