@@ -151,6 +151,7 @@ ready(function() {
   const renderConfigure = (renderOptions, isFirstRender) => {
     const { refine, widgetParams } = renderOptions;
     const arr = widgetParams.searchParameters.restrictSearchableAttributes;
+    const arrHighlighted = widgetParams.searchParameters.attributesToHighlight;
 
     if (isFirstRender) {
       const searchDropdownItems = document.getElementById('dropdown-body');
@@ -169,7 +170,11 @@ ready(function() {
         // TODO Add logic to handle city + state
         // Currently assumes state will always remain in searchable attributes
         refine({
-          'restrictSearchableAttributes': addOrRemoveSearchableAttributes(arr, attribute),
+          'restrictSearchableAttributes': addOrRemoveAttributes(arr, attribute),
+          // If toggled box is for People, adjust highlighted attributes
+          // This has the effect of hiding people from hits display
+          // TODO Probably a better way of going about this. Feels unnecessarily verbose.
+          'attributesToHighlight': attribute === 'people.name' ? addOrRemoveAttributes(arrHighlighted, attribute) : arrHighlight,
         });
       });
     }
@@ -745,7 +750,7 @@ ready(function() {
 
   // MISC HELPER FUNCTIONS
   // ==============
-  function addOrRemoveSearchableAttributes(array, value) {
+  function addOrRemoveAttributes(array, value) {
     const tmpArr = array;
     let index = array.indexOf(value);
 
@@ -770,9 +775,9 @@ ready(function() {
     const arr = [];
     people.map(person => {
       const obj = {};
-      if (person.name && person.name.matchLevel === 'partial' || person.name.matchLevel === 'full') {
+      if (person.name && person.name.matchLevel === 'partial' || person.name && person.name.matchLevel === 'full') {
         obj.name = person.name.value;
-        obj.title = person.title.value;
+        obj.title = person.title ? person.title.value : '';
         arr.push(obj);
       }
     });
