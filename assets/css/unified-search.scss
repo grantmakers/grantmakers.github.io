@@ -855,8 +855,13 @@ $parallax-height: 75vh;
 }
 a.hit-name {
   color: $text-color;
-  &:hover{ 
+  &:hover { 
     @extend .grantmakers-text;
+  }
+}
+a.hit-name.hit-name-not-efiler {
+  &:hover {
+    @extend .text-default;
   }
 }
 .hit-summary-financials {

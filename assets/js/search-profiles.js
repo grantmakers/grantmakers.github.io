@@ -56,7 +56,7 @@ ready(function() {
   }
 
   const searchClient = algoliasearch('KDWVSZVS1I', '{{ site.algolia_public_key_profiles }}');
-  const algoliaIndex = 'grantmakers_io';
+  const algoliaIndex = 'dev_grantmakers_io';
   const facets = [
     {
       'facet': 'city',
@@ -254,13 +254,13 @@ ready(function() {
         return items.map(item => ({
           ...item,
           'ein_formatted': item.ein.replace(/(\d{2})(\d{7})/, '$1-$2'),
-          'grant_median': `$${item.grant_median.toLocaleString(undefined, {
+          'grant_median': item.grant_median ? `$${item.grant_median.toLocaleString(undefined, {
             'minimumFractionDigits': 0,
             'maximumFractionDigits': 0,
-          })}`,
-          'grant_min': `$${item.grant_min.toLocaleString()}`,
-          'grant_max': `$${item.grant_max.toLocaleString()}`,
-          'grant_count': `${item.grant_count.toLocaleString()}`,
+          })}` : null,
+          'grant_min': item.grant_min ? `$${item.grant_min.toLocaleString()}` : null,
+          'grant_max': item.grant_max ? `$${item.grant_max.toLocaleString()}` : null,
+          'grant_count': item.grant_count ? `${item.grant_count.toLocaleString()}` : null,
           'grant_count_only_one': item.grant_count === 1 ? true : false,
           'assets': `$${numberHuman(item.assets, 0)}`,
           'hits_people': hitsPeople(item._highlightResult.people),

@@ -3,6 +3,14 @@
     <div class="card-content">
       <div class="row">
         <div class="col s6">
+          {{#not_efiler}}
+          <ul class="inline-list">
+            <li class="left text-light">
+              Data not available: Not a current e-filer
+            </li>
+          </ul>
+          {{/not_efiler}}
+          {{^not_efiler}}
           <ul class="inline-list hit-summary-icons">
             <li class="left">
               <i class="material-icons {{#has_recent_grants}}material-icons-active{{/has_recent_grants}} tooltipped" {{#has_recent_grants}} data-tooltip="Has recent grants"{{/has_recent_grants}}{{^has_recent_grants}} data-tooltip="No recent grants"{{/has_recent_grants}}>monetization_on</i>
@@ -27,13 +35,14 @@
               {{/grants_to_preselected_only}}
             </li>
           </ul>
+          {{/not_efiler}}
         </div>
         <div class="col s6 right-align">
           <span class="text-light tooltipped" data-tooltip="EIN">{{ ein_formatted }}</span>
         </div>
       </div>
       <span class="card-title">
-        <a class="hit-name" href="https://grantmakers.io/profiles/{{ ein }}" title="View Profile">{{#helpers.highlight}}{ "attribute": "organization_name" }{{/helpers.highlight}}</a>
+        <a class="hit-name{{#not_efiler}} hit-name-not-efiler{{/not_efiler}}"{{^not_efiler}} href="https://grantmakers.io/profiles/{{ ein }}" title="View Profile"{{/not_efiler}}>{{#helpers.highlight}}{ "attribute": "organization_name" }{{/helpers.highlight}}</a>
       </span>
       <p class="grantmakers-text">{{#helpers.highlight}}{ "attribute": "city" }{{/helpers.highlight}}, {{#helpers.highlight}}{ "attribute": "state" }{{/helpers.highlight}}</p>
       {{#hits_people.length}}
@@ -48,6 +57,12 @@
         <li>
           <h6 class="text-muted">{{ assets }}<br><small>Total Assets</small></h6>
         </li>
+        {{#not_efiler}}
+        <li class="right center hide-on-med-and-down">
+          <h6><small>Read the "Get to know the data"<br>sidebar for more information</small></h6>
+        </li>
+        {{/not_efiler}}
+        {{^not_efiler}}
         <li class="right center">
           {{#grants_reference_attachment}}
           <h6 class="text-muted tooltipped" data-tooltip="Additional grant details may be available<br>in tax filing attachments">{{ grant_count }}*<br><small>Grant{{^grant_count_only_one}}s{{/grant_count_only_one}}</small></h6>
@@ -59,6 +74,7 @@
         <li class="right center">
           <h6 class="text-muted tooltipped" data-tooltip="Max {{grant_max}}<br>Min {{grant_min}}">{{ grant_median }}<br><small>Median Grant</small></h6>
         </li>
+        {{/not_efiler}}
       </ul>
     </div>
   </div>
