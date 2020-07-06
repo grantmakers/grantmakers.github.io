@@ -174,7 +174,7 @@ ready(function() {
           // If toggled box is for People, adjust highlighted attributes
           // This has the effect of hiding people from hits display
           // TODO Probably a better way of going about this. Feels unnecessarily verbose.
-          'attributesToHighlight': attribute === 'people.name' ? addOrRemoveAttributes(arrHighlighted, attribute) : arrHighlight,
+          'attributesToHighlight': attribute === 'people.name' ? addOrRemoveAttributes(arrHighlighted, attribute) : arrHighlighted,
         });
       });
     }
