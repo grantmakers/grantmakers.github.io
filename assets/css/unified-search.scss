@@ -164,7 +164,14 @@ $text-color: rgba(0,0,0,0.87);
 		width: 1170px;
 	}
 }
-/* Tooltip styling - Uses material-kit for inspiration */
+/* Tooltip styling */
+/* justify content */
+.material-tooltip {
+  span.left {
+    margin-right: 5px;
+  }
+}
+/* Alt styling - Uses material-kit for inspiration */
 /*
 .material-tooltip {
   color: #555555;
