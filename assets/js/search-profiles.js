@@ -44,6 +44,9 @@ ready(function() {
     'onOpenEnd': function() {
       gaEventsSearchBoxNarrow();
     },
+    'onCloseEnd': function() {
+      forceInputFocus();
+    }
   };
   M.Dropdown.init(elSearchBoxDropdown, optionsSearchBoxDropdown);
 
@@ -158,23 +161,14 @@ ready(function() {
 
       searchDropdownItems.addEventListener('change', (e) => {
         const attribute = e.target.id;
-        const isChecked = e.target.checked; // Note: this is the status AFTER the change
-        // Note: state will always remain in searchable attributes
-        // thus array.length should at least be 2, not 1
-        if (widgetParams.searchParameters.restrictSearchableAttributes.length === 2 && isChecked === false) {
-          e.target.checked = !isChecked;
-          M.Toast.dismissAll();
-          M.toast({'html': 'At least one item needs to be searchable'});
-          return;
-        }
-        // TODO Add logic to handle city + state
-        // Currently assumes state will always remain in searchable attributes
+
+        // Currently assumes EIN will always remain in searchable attributes
+        // This is primarily a UI design decision
         refine({
-          'restrictSearchableAttributes': addOrRemoveAttributes(arr, attribute),
-          // If toggled box is for People, adjust highlighted attributes
-          // This has the effect of hiding people from hits display
-          // TODO Probably a better way of going about this. Feels unnecessarily verbose.
-          'attributesToHighlight': attribute === 'people.name' ? addOrRemoveAttributes(arrHighlighted, attribute) : arrHighlighted,
+          'restrictSearchableAttributes': addOrRemoveAttributes('restrictSearchable Attributes', arr, attribute),
+          // Add/remove people from highlighted attributes
+          // Effectively hides people matches section from Mustache template
+          'attributesToHighlight': addOrRemoveAttributes('attributesToHighlight', arrHighlighted, attribute),
         });
       });
     }
@@ -196,15 +190,15 @@ ready(function() {
           'city',
           'state',
           'ein',
-          'people.name',
+          // 'people.name',
         ],
         'attributesToHighlight': [
           'organization_name',
           'city',
           'state',
           'ein',
-          'people.name',
-          'people.title',
+          // 'people.name',
+          // 'people.title',
         ],
       },
     }),
@@ -216,7 +210,7 @@ ready(function() {
   search.addWidget(
     instantsearch.widgets.searchBox({
       'container': '#ais-widget-search-box',
-      'placeholder': 'Search by foundation name, location, or EIN',
+      'placeholder': 'Search by foundation name, location, trustees, or EIN',
       'autofocus': true,
       'showSubmit': true,
       'showReset': true,
@@ -750,21 +744,37 @@ ready(function() {
 
   // MISC HELPER FUNCTIONS
   // ==============
-  function addOrRemoveAttributes(array, value) {
-    const tmpArr = array;
+  function addOrRemoveAttributes(type, array, value) {
+    // If attribute is 'city', need to also add/remove 'state'
+    // If attribute is 'people.name', need to add/remove 'people.title from attributes to highlight
     let index = array.indexOf(value);
 
     if (index === -1) {
       array.push(value);
+      // Handle related attributes
+      if (value === 'city') {
+        array.push('state');
+      }
+      if (type === 'attributesToHighlight' && value === 'people.name') {
+        array.push('people.title');
+      }
     } else {
       array.splice(index, 1);
+      // Handle related attributes
+      if (value === 'city') {
+        let indexState = array.indexOf('state');
+        array.splice(indexState, 1);
+      }
+      if (type === 'attributesToHighlight' && value === 'people.name') {
+        let indexPeople = array.indexOf('people.title');
+        array.splice(indexPeople, 1);
+      }
     }
-    // Ensure at least one item is checked
-    if (array.length < 2) { // state will always be there
-      return tmpArr;
-    } else {
-      return array;
-    }
+    return array;
+  }
+
+  function forceInputFocus() {
+    document.querySelector('.ais-SearchBox-input').focus();
   }
 
   function hitsPeople(people) {

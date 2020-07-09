@@ -679,9 +679,8 @@ $parallax-height: 75vh;
   top: -$searchBarHeight;
   margin-right: 10px;
   #search-box-dropdown {
-    width: 200px;
+    width: 250px;
     border-radius: 3px;
-    left: calc(-180px + 34px) !important; // HACK
   }
   .dropdown-wrapper {
     padding: 0 20px;
@@ -706,8 +705,26 @@ $parallax-height: 75vh;
   .dropdown-header {
     // height: 55px; // Reduces whitespace
   }
+  .checkbox-only {
+    @extend .blue-grey-text;
+    padding: 0 5px;
+    visibility: hidden;
+  }
+  // If adding "only" button, unhide cursor values below
+  #dropdown-body li {
+    // cursor: default;
+  }
+  #dropdown-body li label span {
+    // cursor: default;
+  }
+  #dropdown-body li label span.checkbox-only {
+    cursor: pointer;
+  }
   #dropdown-body li:hover {
     background-color: inherit;
+    .checkbox-only {
+      visibility: visible;
+    }
   }
 }
 

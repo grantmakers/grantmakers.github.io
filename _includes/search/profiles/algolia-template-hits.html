@@ -33,9 +33,19 @@
         </div>
       </div>
       <span class="card-title">
+        {{#_highlightResult.organization_name}}
         <a class="hit-name" href="https://grantmakers.io/profiles/{{ ein }}" title="View Profile">{{#helpers.highlight}}{ "attribute": "organization_name" }{{/helpers.highlight}}</a>
+        {{/_highlightResult.organization_name}}
+        {{^_highlightResult.organization_name}}
+        <a class="hit-name" href="https://grantmakers.io/profiles/{{ ein }}" title="View Profile">{{{organization_name}}}</a>
+        {{/_highlightResult.organization_name}}
       </span>
+      {{#_highlightResult.city}}
       <p class="grantmakers-text">{{#helpers.highlight}}{ "attribute": "city" }{{/helpers.highlight}}, {{#helpers.highlight}}{ "attribute": "state" }{{/helpers.highlight}}</p>
+      {{/_highlightResult.city}}
+      {{^_highlightResult.city}}
+      <p class="grantmakers-text">{{{city}}}, {{{state}}}</p>
+      {{/_highlightResult.city}}
       {{#hits_people.length}}
       <div class="hits-people text-light">
         <div class="small">People matches</div>
