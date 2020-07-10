@@ -165,6 +165,7 @@ ready(function() {
           const attribute = e.target.dataset.attribute;
 
           searchDropdownItems.querySelectorAll('input').forEach((el) => {
+            // Mimic default Materialize Dropdown
             if (el.id === attribute) {
               el.checked = true;
             } else {
@@ -172,6 +173,7 @@ ready(function() {
             }
           });
           
+          // Refine Algolia parameters
           refine({
             'restrictSearchableAttributes': addOrRemoveAttributes(true, 'restrictSearchableAttributes', widgetParams.searchParameters.restrictSearchableAttributes, attribute),
             'attributesToHighlight': addOrRemoveAttributes(true, 'attributesToHighlight', widgetParams.searchParameters.attributesToHighlight, attribute),
@@ -184,6 +186,7 @@ ready(function() {
         const attribute = e.target.id;
         const isChecked = e.target.checked; // Note: this is the status AFTER the change
         
+        // Show message if user checkbox selections result in invalid state
         // Note: EIN will always remain in searchable attributes
         // Thus array.length should at least be 2, not 1
         if (widgetParams.searchParameters.restrictSearchableAttributes.length === 2 && isChecked === false) {
@@ -193,8 +196,9 @@ ready(function() {
           return;
         }
 
-        // Currently assumes EIN will always remain in searchable attributes
-        // This is primarily a UI design decision
+        // Refine Algolia parameters
+        // Note: EIN will always remain in searchable attributes
+        // EIN "always searchable" is primarily a UI design decision
         refine({
           'restrictSearchableAttributes': addOrRemoveAttributes(false, 'restrictSearchableAttributes', widgetParams.searchParameters.restrictSearchableAttributes, attribute),
           // Add/remove people from highlighted attributes
