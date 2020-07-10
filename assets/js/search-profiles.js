@@ -211,6 +211,7 @@ ready(function() {
           // Effectively hides people matches section from Mustache template
           'attributesToHighlight': addOrRemoveAttributes(false, 'attributesToHighlight', widgetParams.searchParameters.attributesToHighlight, attribute),
         });
+        readyToSearchScrollPosition();
       });
     }
   };
