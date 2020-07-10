@@ -46,7 +46,7 @@ ready(function() {
     },
     'onCloseEnd': function() {
       forceInputFocus();
-    }
+    },
   };
   M.Dropdown.init(elSearchBoxDropdown, optionsSearchBoxDropdown);
 
@@ -91,7 +91,7 @@ ready(function() {
   // Toogle Advanced Search tools
   // Advanced search features are hidden by default via css
   // Could handle initial show/hide directly in Instantsearch via cssClasses, but too many side effects
-  // Even listener set in search.once InstantSearch event
+  // Event listener set in search.once InstantSearch event
   const toggleAdvancedElem = document.querySelector('.search-toggle-advanced input[type="checkbox"]');
 
   const search = instantsearch({
