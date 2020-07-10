@@ -144,7 +144,6 @@ ready(function() {
 
   // Define templates
   const templateHits = `{% include search/profiles/algolia-template-hits.html %}`;
-  const templateHitsEmpty = `{% include search/profiles/algolia-template-hits-empty.html %}`;
   const templateStats = `{% include search/profiles/algolia-template-stats.html %}`;
 
   // Define default search parameters
@@ -304,7 +303,16 @@ ready(function() {
       'container': '#ais-widget-hits',
       'templates': {
         'item': templateHits,
-        'empty': templateHitsEmpty,
+        empty(results) {
+          let params = results._state.restrictSearchableAttributes;
+          if (params.length === defaultSearchableAttributes.length) {
+            paramsText = `across foundation names, locations, trustees, and EINs`;
+          } else {
+            paramsText = `and narrowed Fields to Search`;
+          }
+          const templateHitsEmpty = `{% include search/profiles/algolia-template-hits-empty.html %}`;
+          return templateHitsEmpty;
+        },
       },
       'cssClasses': {
         'list': 'row',

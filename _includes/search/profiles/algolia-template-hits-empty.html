@@ -2,13 +2,15 @@
   <div class="card">
     <div class="card-content">
       {% raw %}
-      <p>No results found for your query <strong>"<span>{{ query }}</span>"</strong></p>
+      <p>No results found for your query <strong>"<span>${results.query}</span>"</strong></p>
       {% endraw %}
     </div>
   </div>
   <div class="card">
     <div class="card-content">
-      <p>You conducted a Profiles Search across foundation names, locations, trustees, and EINs</p>
+      {% raw %}
+      <p>You conducted a Profiles Search ${paramsText}</p>
+      {% endraw %}
     </div>
   </div>
   <div class="card z-depth-0 grey lighten-4">
