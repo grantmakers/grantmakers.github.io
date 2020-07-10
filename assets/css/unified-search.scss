@@ -679,7 +679,7 @@ $parallax-height: 75vh;
   top: -$searchBarHeight;
   margin-right: 10px;
   #search-box-dropdown {
-    width: 250px;
+    width: 275px;
     border-radius: 3px;
   }
   .dropdown-wrapper {
@@ -708,7 +708,8 @@ $parallax-height: 75vh;
   .checkbox-only {
     @extend .blue-grey-text;
     font-size: 0.8rem; // Match label font-size
-    padding: 0 5px;
+    padding: 0;
+    margin-left: 7px;
     visibility: hidden;
   }
   // If adding "only" button, unhide cursor values below
