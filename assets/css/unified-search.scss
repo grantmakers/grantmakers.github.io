@@ -705,12 +705,17 @@ $parallax-height: 75vh;
   .dropdown-header {
     // height: 55px; // Reduces whitespace
   }
-  .checkbox-only {
+  .checkbox-only, #select-all {
     @extend .blue-grey-text;
     font-size: 0.8rem; // Match label font-size
     padding: 0;
     margin-left: 7px;
     visibility: hidden;
+  }
+  #select-all {
+    visibility: visible;
+    margin: auto;
+    font-weight: 400;
   }
   // If adding "only" button, unhide cursor values below
   #dropdown-body li {
@@ -719,14 +724,13 @@ $parallax-height: 75vh;
   #dropdown-body li label span {
     cursor: default;
   }
-  #dropdown-body li span.checkbox-only {
+  #dropdown-body li span.checkbox-only, span#select-all {
     cursor: pointer;
   }
   #dropdown-body li:hover {
     @extend .grey, .lighten-5;
     .checkbox-only {
       visibility: visible;
-      
     }
   }
 }

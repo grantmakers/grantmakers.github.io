@@ -147,6 +147,23 @@ ready(function() {
   const templateHitsEmpty = `{% include search/profiles/algolia-template-hits-empty.html %}`;
   const templateStats = `{% include search/profiles/algolia-template-stats.html %}`;
 
+  // Define default search parameters
+  const defaultSearchableAttributes = [
+    'organization_name',
+    'city',
+    'state',
+    'ein',
+    'people.name',
+  ];
+  const defaultAttributesToHighlight = [
+    'organization_name',
+    'city',
+    'state',
+    'ein',
+    'people.name',
+    'people.title',
+  ];
+
   // Construct widgets
   /* --------- */
   /* Configure */
@@ -159,6 +176,7 @@ ready(function() {
       const searchDropDownOnlyButtons = document.querySelectorAll('.checkbox-only');
 
       
+      // Dropdown "only" link
       searchDropDownOnlyButtons.forEach(element => {
         element.addEventListener('click', e => {
           e.preventDefault(); // Prevent Materialize Dropdown from taking over
@@ -186,8 +204,27 @@ ready(function() {
           });
         });
       });
+
+      // Dropdown "Select All" link
+      document.getElementById('select-all').addEventListener('click', e => {
+        e.preventDefault(); // Prevent Materialize Dropdown from taking over
+        searchDropdownItems.querySelectorAll('input').forEach((el) => {
+          el.checked = true;
+
+          // Hide Materialize after selection
+          // Materialize default for dropdowns requires clicking off dropdown wrapper
+          const instance = M.Dropdown.getInstance(elSearchBoxDropdown);
+          instance.close();
+          readyToSearchScrollPosition();
+        });
+        refine({
+          'restrictSearchableAttributes': defaultSearchableAttributes,
+          'attributesToHighlight': defaultAttributesToHighlight,
+        });
+      });
       
 
+      // Dropdown individual checkbox selections
       searchDropdownItems.addEventListener('change', (e) => {
         const attribute = e.target.id;
         const isChecked = e.target.checked; // Note: this is the status AFTER the change
@@ -227,21 +264,8 @@ ready(function() {
     customConfigure({
       'container': document.querySelector('#search-box-dropdown'),
       'searchParameters': {
-        'restrictSearchableAttributes': [
-          'organization_name',
-          'city',
-          'state',
-          'ein',
-          'people.name',
-        ],
-        'attributesToHighlight': [
-          'organization_name',
-          'city',
-          'state',
-          'ein',
-          'people.name',
-          'people.title',
-        ],
+        'restrictSearchableAttributes': defaultSearchableAttributes,
+        'attributesToHighlight': defaultAttributesToHighlight,
       },
     }),
   );
