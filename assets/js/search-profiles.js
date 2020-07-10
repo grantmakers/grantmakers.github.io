@@ -171,6 +171,12 @@ ready(function() {
             } else {
               el.checked = false;
             }
+
+            // Hide Materialize after selection
+            // Materialize default for dropdowns requires clicking off dropdown wrapper
+            const instance = M.Dropdown.getInstance(elSearchBoxDropdown);
+            instance.close();
+            readyToSearchScrollPosition();
           });
           
           // Refine Algolia parameters
