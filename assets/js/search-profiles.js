@@ -153,22 +153,53 @@ ready(function() {
   /* --------- */
   const renderConfigure = (renderOptions, isFirstRender) => {
     const { refine, widgetParams } = renderOptions;
-    const arr = widgetParams.searchParameters.restrictSearchableAttributes;
-    const arrHighlighted = widgetParams.searchParameters.attributesToHighlight;
 
     if (isFirstRender) {
       const searchDropdownItems = document.getElementById('dropdown-body');
+      const searchDropDownOnlyButtons = document.querySelectorAll('.checkbox-only');
+
+      
+      searchDropDownOnlyButtons.forEach(element => {
+        element.addEventListener('click', e => {
+          e.preventDefault(); // Prevent Materialize Dropdown from taking over
+          const attribute = e.target.dataset.attribute;
+
+          searchDropdownItems.querySelectorAll('input').forEach((el) => {
+            if (el.id === attribute) {
+              el.checked = true;
+            } else {
+              el.checked = false;
+            }
+          });
+          
+          refine({
+            'restrictSearchableAttributes': addOrRemoveAttributes(true, 'restrictSearchableAttributes', widgetParams.searchParameters.restrictSearchableAttributes, attribute),
+            'attributesToHighlight': addOrRemoveAttributes(true, 'attributesToHighlight', widgetParams.searchParameters.attributesToHighlight, attribute),
+          });
+        });
+      });
+      
 
       searchDropdownItems.addEventListener('change', (e) => {
         const attribute = e.target.id;
+        const isChecked = e.target.checked; // Note: this is the status AFTER the change
+        
+        // Note: EIN will always remain in searchable attributes
+        // Thus array.length should at least be 2, not 1
+        if (widgetParams.searchParameters.restrictSearchableAttributes.length === 2 && isChecked === false) {
+          e.target.checked = !isChecked;
+          M.Toast.dismissAll();
+          M.toast({'html': 'At least one item must be selected'});
+          return;
+        }
 
         // Currently assumes EIN will always remain in searchable attributes
         // This is primarily a UI design decision
         refine({
-          'restrictSearchableAttributes': addOrRemoveAttributes('restrictSearchable Attributes', arr, attribute),
+          'restrictSearchableAttributes': addOrRemoveAttributes(false, 'restrictSearchableAttributes', widgetParams.searchParameters.restrictSearchableAttributes, attribute),
           // Add/remove people from highlighted attributes
           // Effectively hides people matches section from Mustache template
-          'attributesToHighlight': addOrRemoveAttributes('attributesToHighlight', arrHighlighted, attribute),
+          'attributesToHighlight': addOrRemoveAttributes(false, 'attributesToHighlight', widgetParams.searchParameters.attributesToHighlight, attribute),
         });
       });
     }
@@ -744,33 +775,65 @@ ready(function() {
 
   // MISC HELPER FUNCTIONS
   // ==============
-  function addOrRemoveAttributes(type, array, value) {
+  function addOrRemoveAttributes(isOnly, type, array, attribute) {
+    // TODO lots of opportunities to DRY this up
     // If attribute is 'city', need to also add/remove 'state'
     // If attribute is 'people.name', need to add/remove 'people.title from attributes to highlight
-    let index = array.indexOf(value);
+    const unchangedArray = array;
+    let index = array.indexOf(attribute);
 
+    // Handle "only" link clicks
+    // EIN will always be included
+    if (isOnly) {
+      // City attribute is combined with State
+      if (attribute === 'city') {
+        return ['ein', 'city', 'state'];
+      // People attribute requires special handling
+      // Need to add title to highlight attributes, but not search restrictions
+      } else if (attribute === 'people.name') {
+        if (type === 'attributesToHighlight') {
+          return ['ein', 'people.name', 'people.title'];
+        } else {
+          return ['ein', 'people.name'];
+        }
+      // Anything else, just return it
+      } else if (attribute === 'organization_name') {
+        return ['ein', 'organization_name'];
+      }
+    }
+
+    // If the attribute is not already in the array, add it
     if (index === -1) {
-      array.push(value);
-      // Handle related attributes
-      if (value === 'city') {
+      array.push(attribute);
+      // City attribute requires adding State
+      if (attribute === 'city') {
         array.push('state');
       }
-      if (type === 'attributesToHighlight' && value === 'people.name') {
+      // People attribute requires adding Title, but only to highlight attributes
+      if (type === 'attributesToHighlight' && attribute === 'people.name') {
         array.push('people.title');
       }
+    // If the attribute already exists in the array, remove it
     } else {
       array.splice(index, 1);
-      // Handle related attributes
-      if (value === 'city') {
+      // City requires removing State as well
+      if (attribute === 'city') {
         let indexState = array.indexOf('state');
         array.splice(indexState, 1);
       }
-      if (type === 'attributesToHighlight' && value === 'people.name') {
+      // People attribute requires removing Title, but only from highlight attributes
+      if (type === 'attributesToHighlight' && attribute === 'people.name') {
         let indexPeople = array.indexOf('people.title');
         array.splice(indexPeople, 1);
       }
     }
-    return array;
+
+    // Ensure at least one item is checked
+    if (array.length < 2) { // ein will always be there
+      return unchangedArray;
+    } else {
+      return array;
+    }
   }
 
   function forceInputFocus() {

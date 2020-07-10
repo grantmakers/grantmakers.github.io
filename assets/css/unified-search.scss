@@ -707,23 +707,25 @@ $parallax-height: 75vh;
   }
   .checkbox-only {
     @extend .blue-grey-text;
+    font-size: 0.8rem; // Match label font-size
     padding: 0 5px;
     visibility: hidden;
   }
   // If adding "only" button, unhide cursor values below
   #dropdown-body li {
-    // cursor: default;
+    cursor: default;
   }
   #dropdown-body li label span {
-    // cursor: default;
+    cursor: default;
   }
-  #dropdown-body li label span.checkbox-only {
+  #dropdown-body li span.checkbox-only {
     cursor: pointer;
   }
   #dropdown-body li:hover {
-    background-color: inherit;
+    @extend .grey, .lighten-5;
     .checkbox-only {
       visibility: visible;
+      
     }
   }
 }
