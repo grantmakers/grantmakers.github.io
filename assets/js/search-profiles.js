@@ -79,8 +79,9 @@ ready(function() {
   // Toogle Advanced Search tools
   // Advanced search features are hidden by default via css
   // Could handle initial show/hide directly in Instantsearch via cssClasses, but too many side effects
-  // Even listener set in search.once InstantSearch event
+  // Event listener set in search.once InstantSearch event
   const toggleAdvancedElem = document.querySelector('.search-toggle-advanced input[type="checkbox"]');
+  setInitialAdvancedSearchToggleState();
 
   const search = instantsearch({
     'indexName': 'grantmakers_io',
@@ -538,7 +539,7 @@ ready(function() {
     // Search toggle
     initSelect();
     // Show range input if initial URL contains an amount refinement
-    setInitialAdvancedSearchToggleState();
+    setAdvancedSearchToggleStateAfterRender();
     // Create advanced search toggle listener
     toggleAdvancedElem.addEventListener('change', toggleAdvancedListener, false);
   });
@@ -594,6 +595,16 @@ ready(function() {
   }
 
   function setInitialAdvancedSearchToggleState() {
+    const check = window.localStorage.getItem('persist_advanced_search_tools');
+    if (check === 'true') {
+      // Show tools
+      showAdvancedSearchTools();
+      // Toggle switch to on
+      toggleAdvancedElem.checked = true;
+    }
+  }
+
+  function setAdvancedSearchToggleStateAfterRender() {
     // If any numeric refinements, automatically show ALL advanced tools, not just range input
     const obj = search.helper.state.numericRefinements;
     const check = Object.keys(obj).length;
@@ -623,10 +634,14 @@ ready(function() {
 
   function showAdvancedSearchTools() {
     document.getElementById('algolia-hits-wrapper').classList.remove('js-hide-advanced-tools');
+    if (storageTest) {
+      window.localStorage.setItem('persist_advanced_search_tools', 'true');
+    }
   }
 
   function hideAdvancedSearchTools() {
     document.getElementById('algolia-hits-wrapper').classList.add('js-hide-advanced-tools');
+    window.localStorage.removeItem('persist_advanced_search_tools');
   }
 
   // GOOGLE ANALYTICS EVENTS
@@ -701,6 +716,14 @@ ready(function() {
 
   // MISC HELPER FUNCTIONS
   // ==============
+  function storageTest() {
+    if (typeof Storage !== 'undefined') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   function getLabel(item) {
     const obj = facets.filter(each => each.facet === item);
     return obj[0].label;
