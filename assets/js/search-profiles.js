@@ -966,6 +966,8 @@ ready(function() {
       }
     });
     return arr;
+  }
+  
   function storageTest() {
     if (typeof Storage !== 'undefined') {
       return true;
