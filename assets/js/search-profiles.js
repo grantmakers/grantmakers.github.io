@@ -58,32 +58,20 @@ ready(function() {
       'label': 'Assets',
     },
     {
-      'facet': 'has_recent_grants',
-      'label': 'Recent tax filing activity',
-    },
-    {
       'facet': 'grants_to_preselected_only',
-      'label': 'Part XV Line 2',
-    },
-    {
-      'facet': 'is_likely_staffed',
-      'label': 'Staffing',
-    },
-    {
-      'facet': 'eobmf_recognized_exempt',
-      'label': 'Current Exempt Status (EOBMF)',
+      'label': 'Part XV Line 2 is Not Checked',
     },
   ];
 
   // Define toggle helpers
   const toggleParent = document.getElementById('search-toggle');
-  const toggle = toggleParent.querySelector('select');
+  const toggleSelect = toggleParent.querySelector('select');
 
   // Ensure initial toggle state set to grants search
-  toggle.value = 'profiles';
+  toggleSelect.value = 'profiles';
 
   // Toggle search type
-  toggle.onchange = function() {
+  toggleSelect.onchange = function() {
     console.log('switch');
     window.location.href = '/search/grants/';
   };
@@ -101,12 +89,10 @@ ready(function() {
     'searchParameters': {
       'hitsPerPage': 8,
     },
-    // 'routing': true,
     'routing': {
       'stateMapping': {
-        stateToRoute({query, refinementList, range, page}) {
+        stateToRoute({query, refinementList, toggle, range, page}) {
           return {
-            // 'type': searchType,
             'query': query,
             // we use the character ~ as it is one that is rarely present in data and renders well in URLs
             'city':
@@ -117,6 +103,9 @@ ready(function() {
               refinementList &&
               refinementList.state &&
               refinementList.state.join('~'),
+            'exclude_grants_to_preselected_only':
+              toggle &&
+              toggle.grants_to_preselected_only,
             'assets':
               range &&
               range.assets &&
@@ -126,11 +115,13 @@ ready(function() {
         },
         routeToState(routeState) {
           return {
-            // 'type': type,
             'query': routeState.query,
             'refinementList': {
               'city': routeState.city && routeState.city.split('~'),
               'state': routeState.state && routeState.state.split('~'),
+            },
+            'toggle': {
+              'grants_to_preselected_only': routeState.exclude_grants_to_preselected_only,
             },
             'range': {
               'assets': routeState.assets && routeState.assets.replace('~', ':'),
@@ -224,7 +215,7 @@ ready(function() {
   const renderListItem = item => `
     ${item.refinements.map(refinement => `
       <li>
-        <button class="waves-effect btn blue-grey lighten-3 grey-text text-darken-3 truncate" ${createDataAttribtues(refinement)}><i class="material-icons right">remove_circle</i><small>${getLabel(item.label)}</small> ${formatIfRangeLabel(refinement)} </button>
+        <button class="waves-effect btn blue-grey lighten-3 grey-text text-darken-3 truncate" ${createDataAttribtues(refinement)}><i class="material-icons right">remove_circle</i><small>${getLabel(item.label)}</small> ${formatIfRangeOrToggleLabel(refinement)} </button>
       </li>
     `).join('')}
   `;
@@ -376,9 +367,15 @@ ready(function() {
   /* Create all other refinements */
   /* ---------------------------- */
   facets.forEach((refinement) => {
+    // Assets handled via its own widget
     if (refinement.facet === 'assets') {
       return;
     }
+    // Exclusionary handled via their own widget
+    if (refinement.facet === 'grants_to_preselected_only') {
+      return;
+    }
+
     const refinementListWithPanel = instantsearch.widgets.panel({
       'templates': {
         'header': refinement.label,
@@ -429,7 +426,7 @@ ready(function() {
           'checkbox': 'filled-in',
           'labelText': 'small',
           'count': ['right', 'small'],
-          'showMore': 'btn-flat grantmakers-text small',
+          'showMore': 'btn-flat small',
           'disabledShowMore': 'hidden',
           // 'selectedItem': ['grants-search-text'],
           // 'searchableRoot': 'ais-SearchBox-refinements',
@@ -437,31 +434,6 @@ ready(function() {
         },
         'templates': {
           'showMoreText': `{% include search/algolia-refinementList-showMore.html %}`,
-        },
-        transformItems(items) {
-          if (refinement.facet === 'grants_to_preselected_only') {
-            return items.map(item => ({
-              ...item,
-              'highlighted': item.highlighted === 'true' ? 'Checked' : 'Not checked',
-            }));
-          } else if (refinement.facet === 'is_likely_staffed') {
-            return items.map(item => ({
-              ...item,
-              'highlighted': item.highlighted === 'true' ? 'Full-time paid staff' : 'No full-time paid staff listed',
-            }));
-          } else if (refinement.facet === 'eobmf_recognized_exempt') {
-            return items.map(item => ({
-              ...item,
-              'highlighted': item.highlighted === 'true' ? 'EIN appears' : 'EIN does not appear',
-            }));
-          } else if (refinement.facet === 'has_recent_grants') {
-            return items.map(item => ({
-              ...item,
-              'highlighted': item.highlighted === 'true' ? 'Current or previous year' : 'Two years ago or older',
-            }));
-          } else {
-            return items;
-          }
         },
       }),
     );
@@ -485,20 +457,37 @@ ready(function() {
   /* -------------------- */
   /* Exclusionary Toggles */
   /* -------------------- */
+  const toggleRefinementWithPanel = instantsearch.widgets.panel({
+    'templates': {
+      'header': 'Grant Guidelines <i class="material-icons right text-muted-max modal-trigger" href="#modal-grants-to-preselected">info</i>',
+    },
+    hidden(options) {
+      return options.results.nbHits === 0;
+    },
+    'cssClasses': {
+      'root': 'card',
+      'header': [
+        'card-header',
+      ],
+      'body': 'card-content',
+    },
+  })(instantsearch.widgets.toggleRefinement);
 
-  /*
   search.addWidget(
-    instantsearch.widgets.toggleRefinement({
+    toggleRefinementWithPanel({
       'container': '#ais-widget-refinement-list--grants_to_preselected_only',
       'attribute': 'grants_to_preselected_only',
       'on': false,
-      'off': true,
       'templates': {
-        'labelText': 'Possibly accepts unsolicited applications <i class="material-icons tooltipped" data-tooltip="Part XV Line 2 is unchecked">info</i>',
+        'labelText': 'Exclude funders that do not accept unsolicited requests for funds',
+      },
+      'cssClasses': {
+        'checkbox': 'filled-in',
+        'labelText': 'small',
       },
     }),
   );
-  */
+  
   /* ----------------- */
   /* Clear Refinements */
   /* ----------------- */
@@ -608,7 +597,13 @@ ready(function() {
     // If any numeric refinements, automatically show ALL advanced tools, not just range input
     const obj = search.helper.state.numericRefinements;
     const check = Object.keys(obj).length;
-    if (check > 0) {
+
+    // If any exclusionary facet refinements made, automatically show ALL advanced tools
+    const objExclusionary = search.helper.state.disjunctiveFacetsRefinements;
+    const checkExclusionary = objExclusionary.hasOwnProperty('grants_to_preselected_only');
+
+    // Do checks
+    if (check > 0 || checkExclusionary) {
       // Show advanced search elements
       document.getElementById('algolia-hits-wrapper').classList.remove('js-hide-advanced-tools');
       // Flip switch to on position
@@ -711,11 +706,13 @@ ready(function() {
     return obj[0].label;
   }
 
-  function formatIfRangeLabel(refinement) {
-    if (refinement.attribute !== 'assets') {
-      return refinement.label;
-    } else {
+  function formatIfRangeOrToggleLabel(refinement) {
+    if (refinement.attribute === 'assets') {
       return `${refinement.operator} $${numberHuman(refinement.value)}`;
+    } else if (refinement.attribute === 'grants_to_preselected_only') {
+      return '';
+    } else {
+      return refinement.label;
     }
   }
 
