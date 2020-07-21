@@ -608,7 +608,7 @@ $parallax-height: 75vh;
 .search-box-wrapper {
   height: $searchBarHeight;
 }
-#ais-widget-search-box, *[id^='ais-widget-refinement-list'] {
+#ais-widget-search-box, *[id^='ais-widget-refinement-list'], .ais-ToggleRefinement {
   .ais-SearchBox-submit {
     height: 3rem; // HACK icon is still too low by a few pixels
     &:hover {
@@ -1063,18 +1063,28 @@ a.hit-name {
 
 // Set initial Advanced Tools toggle state
 #algolia-hits-wrapper.js-hide-advanced-tools {
-  #ais-widget-range-input {
+  #ais-widget-range-input,
+  #ais-widget-refinement-list--grants_to_preselected_only
+  {
     display: none;
   }
 }
 
 .section-refinements {
+  .ais-Panel-header {
+    i.material-icons {
+      font-size: 18px;
+      &.modal-trigger:hover {
+        cursor: pointer;
+      }
+    }
+  }
   .card {
     background-color: transparent;
     box-shadow: none;
   }
   .card-header {
-    padding: 24px 10px 0 0;
+    padding: 24px 0 0 0;
     border-radius: 2px 2px 0px 0px;
     text-transform: uppercase;
     border-bottom: 1px solid $divider-color;

@@ -73,17 +73,21 @@ ready(function() {
       'facet': 'assets',
       'label': 'Assets',
     },
+    {
+      'facet': 'grants_to_preselected_only',
+      'label': 'Part XV Line 2 is Not Checked',
+    },
   ];
 
   // Define toggle helpers
   const toggleParent = document.getElementById('search-toggle');
-  const toggle = toggleParent.querySelector('select');
+  const toggleSelect = toggleParent.querySelector('select');
 
   // Ensure initial toggle state set to grants search
-  toggle.value = 'profiles';
+  toggleSelect.value = 'profiles';
 
   // Toggle search type
-  toggle.onchange = function() {
+  toggleSelect.onchange = function() {
     console.log('switch');
     window.location.href = '/search/grants/';
   };
@@ -93,6 +97,7 @@ ready(function() {
   // Could handle initial show/hide directly in Instantsearch via cssClasses, but too many side effects
   // Event listener set in search.once InstantSearch event
   const toggleAdvancedElem = document.querySelector('.search-toggle-advanced input[type="checkbox"]');
+  setInitialAdvancedSearchToggleState();
 
   const search = instantsearch({
     'indexName': algoliaIndex,
@@ -101,12 +106,10 @@ ready(function() {
     'searchParameters': {
       'hitsPerPage': 8,
     },
-    // 'routing': true,
     'routing': {
       'stateMapping': {
-        stateToRoute({query, refinementList, range, page}) {
+        stateToRoute({query, refinementList, toggle, range, page}) {
           return {
-            // 'type': searchType,
             'query': query,
             // we use the character ~ as it is one that is rarely present in data and renders well in URLs
             'city':
@@ -117,6 +120,9 @@ ready(function() {
               refinementList &&
               refinementList.state &&
               refinementList.state.join('~'),
+            'exclude_grants_to_preselected_only':
+              toggle &&
+              toggle.grants_to_preselected_only,
             'assets':
               range &&
               range.assets &&
@@ -126,11 +132,13 @@ ready(function() {
         },
         routeToState(routeState) {
           return {
-            // 'type': type,
             'query': routeState.query,
             'refinementList': {
               'city': routeState.city && routeState.city.split('~'),
               'state': routeState.state && routeState.state.split('~'),
+            },
+            'toggle': {
+              'grants_to_preselected_only': routeState.exclude_grants_to_preselected_only,
             },
             'range': {
               'assets': routeState.assets && routeState.assets.replace('~', ':'),
@@ -363,7 +371,7 @@ ready(function() {
   const renderListItem = item => `
     ${item.refinements.map(refinement => `
       <li>
-        <button class="waves-effect btn blue-grey lighten-3 grey-text text-darken-3 truncate" ${createDataAttribtues(refinement)}><i class="material-icons right">remove_circle</i><small>${getLabel(item.label)}</small> ${formatIfRangeLabel(refinement)} </button>
+        <button class="waves-effect btn blue-grey lighten-3 grey-text text-darken-3 truncate" ${createDataAttribtues(refinement)}><i class="material-icons right">remove_circle</i><small>${getLabel(item.label)}</small> ${formatIfRangeOrToggleLabel(refinement)} </button>
       </li>
     `).join('')}
   `;
@@ -515,9 +523,15 @@ ready(function() {
   /* Create all other refinements */
   /* ---------------------------- */
   facets.forEach((refinement) => {
+    // Assets handled via its own widget
     if (refinement.facet === 'assets') {
       return;
     }
+    // Exclusionary handled via their own widget
+    if (refinement.facet === 'grants_to_preselected_only') {
+      return;
+    }
+
     const refinementListWithPanel = instantsearch.widgets.panel({
       'templates': {
         'header': refinement.label,
@@ -596,6 +610,40 @@ ready(function() {
     );
   });
 
+  /* -------------------- */
+  /* Exclusionary Toggles */
+  /* -------------------- */
+  const toggleRefinementWithPanel = instantsearch.widgets.panel({
+    'templates': {
+      'header': 'Grant Guidelines <i class="material-icons right text-muted-max modal-trigger" href="#modal-grants-to-preselected">info</i>',
+    },
+    hidden(options) {
+      return options.results.nbHits === 0;
+    },
+    'cssClasses': {
+      'root': 'card',
+      'header': [
+        'card-header',
+      ],
+      'body': 'card-content',
+    },
+  })(instantsearch.widgets.toggleRefinement);
+
+  search.addWidget(
+    toggleRefinementWithPanel({
+      'container': '#ais-widget-refinement-list--grants_to_preselected_only',
+      'attribute': 'grants_to_preselected_only',
+      'on': false,
+      'templates': {
+        'labelText': 'Exclude funders that do not accept unsolicited requests for funds',
+      },
+      'cssClasses': {
+        'checkbox': 'filled-in',
+        'labelText': 'small',
+      },
+    }),
+  );
+  
   /* ----------------- */
   /* Clear Refinements */
   /* ----------------- */
@@ -646,7 +694,7 @@ ready(function() {
     // Search toggle
     initSelect();
     // Show range input if initial URL contains an amount refinement
-    setInitialAdvancedSearchToggleState();
+    setAdvancedSearchToggleStateAfterRender();
     // Create advanced search toggle listener
     toggleAdvancedElem.addEventListener('change', toggleAdvancedListener, false);
   });
@@ -702,10 +750,26 @@ ready(function() {
   }
 
   function setInitialAdvancedSearchToggleState() {
+    const check = window.localStorage.getItem('persist_advanced_search_tools');
+    if (check === 'true') {
+      // Show tools
+      showAdvancedSearchTools();
+      // Toggle switch to on
+      toggleAdvancedElem.checked = true;
+    }
+  }
+
+  function setAdvancedSearchToggleStateAfterRender() {
     // If any numeric refinements, automatically show ALL advanced tools, not just range input
     const obj = search.helper.state.numericRefinements;
     const check = Object.keys(obj).length;
-    if (check > 0) {
+
+    // If any exclusionary facet refinements made, automatically show ALL advanced tools
+    const objExclusionary = search.helper.state.disjunctiveFacetsRefinements;
+    const checkExclusionary = objExclusionary.hasOwnProperty('grants_to_preselected_only');
+
+    // Do checks
+    if (check > 0 || checkExclusionary) {
       // Show advanced search elements
       document.getElementById('algolia-hits-wrapper').classList.remove('js-hide-advanced-tools');
       // Flip switch to on position
@@ -725,10 +789,14 @@ ready(function() {
 
   function showAdvancedSearchTools() {
     document.getElementById('algolia-hits-wrapper').classList.remove('js-hide-advanced-tools');
+    if (storageTest) {
+      window.localStorage.setItem('persist_advanced_search_tools', 'true');
+    }
   }
 
   function hideAdvancedSearchTools() {
     document.getElementById('algolia-hits-wrapper').classList.add('js-hide-advanced-tools');
+    window.localStorage.removeItem('persist_advanced_search_tools');
   }
 
   // GOOGLE ANALYTICS EVENTS
@@ -898,6 +966,12 @@ ready(function() {
       }
     });
     return arr;
+  function storageTest() {
+    if (typeof Storage !== 'undefined') {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   function getLabel(item) {
@@ -905,11 +979,13 @@ ready(function() {
     return obj[0].label;
   }
 
-  function formatIfRangeLabel(refinement) {
-    if (refinement.attribute !== 'assets') {
-      return refinement.label;
-    } else {
+  function formatIfRangeOrToggleLabel(refinement) {
+    if (refinement.attribute === 'assets') {
       return `${refinement.operator} $${numberHuman(refinement.value)}`;
+    } else if (refinement.attribute === 'grants_to_preselected_only') {
+      return '';
+    } else {
+      return refinement.label;
     }
   }
 
