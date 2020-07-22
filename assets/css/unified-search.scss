@@ -664,14 +664,30 @@ $parallax-height: 75vh;
 // TODO Improve search-box CSS naming conventions
 #ais-widget-search-box {
   .ais-SearchBox-reset {
-    right: 2.5rem; // HACK Allows for more whitespace with dropdown menu
+    right: 3.5rem; // HACK Allows for more whitespace with dropdown menu
     @media #{$small-and-down} {
       right: 1rem;
     }
   }
 }
 #search-box-dropdown-trigger {
+  .search-box-dropdown-trigger-wrapper {
+    height: 34px;
+    width: 34px;
+    margin: auto;
+    margin-top: 14px;
+    border-radius: 50%;
+    text-align: center;
+    &:hover {
+      @extend .grey, .lighten-3;
+    }
+    &.adjusted {
+      @extend .z-depth-1;
+      @extend .grey, .lighten-3;
+    }
+  }
   a {
+    width: 100%;
     color: $text-color;
   }
   position: relative;
@@ -680,6 +696,7 @@ $parallax-height: 75vh;
   margin-right: 10px;
   #search-box-dropdown {
     width: 275px;
+    text-align: left;
     border-radius: 3px;
   }
   .dropdown-wrapper {

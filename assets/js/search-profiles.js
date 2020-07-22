@@ -177,11 +177,9 @@ ready(function() {
   /* --------- */
   const renderConfigure = (renderOptions, isFirstRender) => {
     const { refine, widgetParams } = renderOptions;
-
     if (isFirstRender) {
       const searchDropdownItems = document.getElementById('dropdown-body');
       const searchDropDownOnlyButtons = document.querySelectorAll('.checkbox-only');
-
       
       // Dropdown "only" link
       searchDropDownOnlyButtons.forEach(element => {
@@ -189,8 +187,8 @@ ready(function() {
           e.preventDefault(); // Prevent Materialize Dropdown from taking over
           const attribute = e.target.dataset.attribute;
 
+          // Mimic default Materialize Dropdown functionality
           searchDropdownItems.querySelectorAll('input').forEach((el) => {
-            // Mimic default Materialize Dropdown
             if (el.id === attribute) {
               el.checked = true;
             } else {
@@ -215,6 +213,8 @@ ready(function() {
       // Dropdown "Select All" link
       document.getElementById('select-all').addEventListener('click', e => {
         e.preventDefault(); // Prevent Materialize Dropdown from taking over
+
+        // Mimic default Materialize Dropdown functionality
         searchDropdownItems.querySelectorAll('input').forEach((el) => {
           el.checked = true;
 
@@ -235,7 +235,7 @@ ready(function() {
       searchDropdownItems.addEventListener('change', (e) => {
         const attribute = e.target.id;
         const isChecked = e.target.checked; // Note: this is the status AFTER the change
-        
+  
         // Show message if user checkbox selections result in invalid state
         // Note: EIN will always remain in searchable attributes
         // Thus array.length should at least be 2, not 1
@@ -257,6 +257,13 @@ ready(function() {
         });
         readyToSearchScrollPosition();
       });
+    }
+
+    // Add or remove visual cue implying a customization was made
+    if (widgetParams.searchParameters.restrictSearchableAttributes.length === 5) {
+      document.getElementById('search-box-dropdown-trigger').querySelector('.search-box-dropdown-trigger-wrapper').classList.remove('adjusted');
+    } else {
+      document.getElementById('search-box-dropdown-trigger').querySelector('.search-box-dropdown-trigger-wrapper').classList.add('adjusted');
     }
   };
 
@@ -967,7 +974,7 @@ ready(function() {
     });
     return arr;
   }
-  
+
   function storageTest() {
     if (typeof Storage !== 'undefined') {
       return true;
