@@ -259,11 +259,18 @@ ready(function() {
       });
     }
 
+    // Adjust UI based on selections
     // Add or remove visual cue implying a customization was made
+    // Change input placeholder text => default is somewhat redundant as also declared in searchBox widget
+    const inputEl = document.querySelector('input[class="ais-SearchBox-input"]');
+    const triggerEl = document.getElementById('search-box-dropdown-trigger').querySelector('.search-box-dropdown-trigger-wrapper');
+
     if (widgetParams.searchParameters.restrictSearchableAttributes.length === 5) {
-      document.getElementById('search-box-dropdown-trigger').querySelector('.search-box-dropdown-trigger-wrapper').classList.remove('adjusted');
+      triggerEl.classList.remove('adjusted');
+      inputEl.placeholder = 'Search by foundation name, location, trustees, or EIN';
     } else {
-      document.getElementById('search-box-dropdown-trigger').querySelector('.search-box-dropdown-trigger-wrapper').classList.add('adjusted');
+      triggerEl.classList.add('adjusted');
+      inputEl.placeholder = 'Search by custom fields selected';
     }
   };
 
