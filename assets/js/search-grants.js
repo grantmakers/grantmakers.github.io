@@ -186,6 +186,37 @@ ready(function() {
 
     if (isFirstRender) {
       const searchDropdownItems = document.getElementById('dropdown-body');
+      const searchDropDownOnlyButtons = document.querySelectorAll('.checkbox-only');
+
+      // Dropdown "only" link
+      searchDropDownOnlyButtons.forEach(element => {
+        element.addEventListener('click', e => {
+          e.preventDefault(); // Prevent Materialize Dropdown from taking over
+          const attribute = e.target.dataset.attribute;
+
+          // Mimic default Materialize Dropdown functionality
+          searchDropdownItems.querySelectorAll('input').forEach((el) => {
+            if (el.id === attribute) {
+              el.checked = true;
+            } else {
+              el.checked = false;
+            }
+
+            // Hide Materialize after selection
+            // Materialize default for dropdowns requires clicking off dropdown wrapper
+            const instance = M.Dropdown.getInstance(elSearchBoxDropdown);
+            instance.close();
+            readyToSearchScrollPosition();
+          });
+          
+          // Refine Algolia parameters
+          // TODO Add logic to handle city + state
+          // Currently assumes state will always remain in searchable attributes
+          refine({
+            'restrictSearchableAttributes': [attribute, 'grantee_state'],
+          });
+        });
+      });
 
       // Dropdown "Select All" link
       document.getElementById('select-all').addEventListener('click', e => {
