@@ -263,7 +263,7 @@ ready(function() {
     const triggerEl = document.getElementById('search-box-dropdown-trigger').querySelector('.search-box-dropdown-trigger-wrapper');
     if (widgetParams.searchParameters.restrictSearchableAttributes.length === 5) {
       triggerEl.classList.remove('adjusted');
-      inputEl.placeholder = 'Search by foundation name, location, trustees, or EIN';
+      inputEl.placeholder = 'Search by keywords, location, or grantee name';
     } else {
       triggerEl.classList.add('adjusted');
       inputEl.placeholder = 'Search by custom fields selected';
