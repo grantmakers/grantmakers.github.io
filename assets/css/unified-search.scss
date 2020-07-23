@@ -731,7 +731,7 @@ $parallax-height: 75vh;
   }
   #select-all {
     visibility: visible;
-    margin: auto;
+    margin: auto; // Assumes li wrapper contains text
     font-weight: 400;
   }
   // If adding "only" button, unhide cursor values below

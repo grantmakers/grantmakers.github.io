@@ -161,8 +161,17 @@ ready(function() {
   const templateHitsEmpty = `{% include search/grants/algolia-template-hits-empty.html %}`;
   const templateStats = `{% include search/algolia-template-stats.html %}`;
 
-  // Grants
+  // Define Grants hit template
   const templateHits = `{% include search/grants/algolia-template-hits.html %}`;
+
+  // Define default search parameters
+  const defaultSearchableAttributes = [
+    'organization_name',
+    'grantee_name',
+    'grantee_city',
+    'grantee_state',
+    'grant_purpose',
+  ];
 
   // Construct widgets
 
@@ -177,6 +186,25 @@ ready(function() {
 
     if (isFirstRender) {
       const searchDropdownItems = document.getElementById('dropdown-body');
+
+      // Dropdown "Select All" link
+      document.getElementById('select-all').addEventListener('click', e => {
+        e.preventDefault(); // Prevent Materialize Dropdown from taking over
+
+        // Mimic default Materialize Dropdown functionality
+        searchDropdownItems.querySelectorAll('input').forEach((el) => {
+          el.checked = true;
+
+          // Hide Materialize after selection
+          // Materialize default for dropdowns requires clicking off dropdown wrapper
+          const instance = M.Dropdown.getInstance(elSearchBoxDropdown);
+          instance.close();
+          readyToSearchScrollPosition();
+        });
+        refine({
+          'restrictSearchableAttributes': defaultSearchableAttributes,
+        });
+      });
 
       searchDropdownItems.addEventListener('change', (e) => {
         const attribute = e.target.id;
