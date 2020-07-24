@@ -164,7 +164,14 @@ $text-color: rgba(0,0,0,0.87);
 		width: 1170px;
 	}
 }
-/* Tooltip styling - Uses material-kit for inspiration */
+/* Tooltip styling */
+/* justify content */
+.material-tooltip {
+  span.left {
+    margin-right: 5px;
+  }
+}
+/* Alt styling - Uses material-kit for inspiration */
 /*
 .material-tooltip {
   color: #555555;
@@ -601,7 +608,7 @@ $parallax-height: 75vh;
 .search-box-wrapper {
   height: $searchBarHeight;
 }
-#ais-widget-search-box, *[id^='ais-widget-refinement-list'] {
+#ais-widget-search-box, *[id^='ais-widget-refinement-list'], .ais-ToggleRefinement {
   .ais-SearchBox-submit {
     height: 3rem; // HACK icon is still too low by a few pixels
     &:hover {
@@ -657,14 +664,30 @@ $parallax-height: 75vh;
 // TODO Improve search-box CSS naming conventions
 #ais-widget-search-box {
   .ais-SearchBox-reset {
-    right: 2.5rem; // HACK Allows for more whitespace with dropdown menu
+    right: 3.5rem; // HACK Allows for more whitespace with dropdown menu
     @media #{$small-and-down} {
       right: 1rem;
     }
   }
 }
 #search-box-dropdown-trigger {
+  .search-box-dropdown-trigger-wrapper {
+    height: 34px;
+    width: 34px;
+    margin: auto;
+    margin-top: 14px;
+    border-radius: 50%;
+    text-align: center;
+    &:hover {
+      @extend .grey, .lighten-3;
+    }
+    &.adjusted {
+      @extend .z-depth-1;
+      @extend .grey, .lighten-3;
+    }
+  }
   a {
+    width: 100%;
     color: $text-color;
   }
   position: relative;
@@ -672,9 +695,9 @@ $parallax-height: 75vh;
   top: -$searchBarHeight;
   margin-right: 10px;
   #search-box-dropdown {
-    width: 180px;
+    width: 275px;
+    text-align: left;
     border-radius: 3px;
-    left: calc(-180px + 34px) !important; // HACK
   }
   .dropdown-wrapper {
     padding: 0 20px;
@@ -699,8 +722,33 @@ $parallax-height: 75vh;
   .dropdown-header {
     // height: 55px; // Reduces whitespace
   }
+  .checkbox-only, #select-all {
+    @extend .blue-grey-text;
+    font-size: 0.8rem; // Match label font-size
+    padding: 0;
+    margin-left: 7px;
+    visibility: hidden;
+  }
+  #select-all {
+    visibility: visible;
+    margin: auto; // Assumes li wrapper contains text
+    font-weight: 400;
+  }
+  // If adding "only" button, unhide cursor values below
+  #dropdown-body li {
+    cursor: default;
+  }
+  #dropdown-body li label span {
+    cursor: default;
+  }
+  #dropdown-body li span.checkbox-only, span#select-all {
+    cursor: pointer;
+  }
   #dropdown-body li:hover {
-    background-color: inherit;
+    @extend .grey, .lighten-5;
+    .checkbox-only {
+      visibility: visible;
+    }
   }
 }
 
@@ -1032,18 +1080,28 @@ a.hit-name {
 
 // Set initial Advanced Tools toggle state
 #algolia-hits-wrapper.js-hide-advanced-tools {
-  #ais-widget-range-input {
+  #ais-widget-range-input,
+  #ais-widget-refinement-list--grants_to_preselected_only
+  {
     display: none;
   }
 }
 
 .section-refinements {
+  .ais-Panel-header {
+    i.material-icons {
+      font-size: 18px;
+      &.modal-trigger:hover {
+        cursor: pointer;
+      }
+    }
+  }
   .card {
     background-color: transparent;
     box-shadow: none;
   }
   .card-header {
-    padding: 24px 10px 0 0;
+    padding: 24px 0 0 0;
     border-radius: 2px 2px 0px 0px;
     text-transform: uppercase;
     border-bottom: 1px solid $divider-color;

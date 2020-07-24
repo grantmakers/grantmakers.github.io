@@ -161,8 +161,17 @@ ready(function() {
   const templateHitsEmpty = `{% include search/grants/algolia-template-hits-empty.html %}`;
   const templateStats = `{% include search/algolia-template-stats.html %}`;
 
-  // Grants
+  // Define Grants hit template
   const templateHits = `{% include search/grants/algolia-template-hits.html %}`;
+
+  // Define default search parameters
+  const defaultSearchableAttributes = [
+    'organization_name',
+    'grantee_name',
+    'grantee_city',
+    'grantee_state',
+    'grant_purpose',
+  ];
 
   // Construct widgets
 
@@ -177,6 +186,56 @@ ready(function() {
 
     if (isFirstRender) {
       const searchDropdownItems = document.getElementById('dropdown-body');
+      const searchDropDownOnlyButtons = document.querySelectorAll('.checkbox-only');
+
+      // Dropdown "only" link
+      searchDropDownOnlyButtons.forEach(element => {
+        element.addEventListener('click', e => {
+          e.preventDefault(); // Prevent Materialize Dropdown from taking over
+          const attribute = e.target.dataset.attribute;
+
+          // Mimic default Materialize Dropdown functionality
+          searchDropdownItems.querySelectorAll('input').forEach((el) => {
+            if (el.id === attribute) {
+              el.checked = true;
+            } else {
+              el.checked = false;
+            }
+
+            // Hide Materialize after selection
+            // Materialize default for dropdowns requires clicking off dropdown wrapper
+            const instance = M.Dropdown.getInstance(elSearchBoxDropdown);
+            instance.close();
+            readyToSearchScrollPosition();
+          });
+          
+          // Refine Algolia parameters
+          // TODO Add logic to handle city + state
+          // Currently assumes state will always remain in searchable attributes
+          refine({
+            'restrictSearchableAttributes': [attribute, 'grantee_state'],
+          });
+        });
+      });
+
+      // Dropdown "Select All" link
+      document.getElementById('select-all').addEventListener('click', e => {
+        e.preventDefault(); // Prevent Materialize Dropdown from taking over
+
+        // Mimic default Materialize Dropdown functionality
+        searchDropdownItems.querySelectorAll('input').forEach((el) => {
+          el.checked = true;
+
+          // Hide Materialize after selection
+          // Materialize default for dropdowns requires clicking off dropdown wrapper
+          const instance = M.Dropdown.getInstance(elSearchBoxDropdown);
+          instance.close();
+          readyToSearchScrollPosition();
+        });
+        refine({
+          'restrictSearchableAttributes': defaultSearchableAttributes,
+        });
+      });
 
       searchDropdownItems.addEventListener('change', (e) => {
         const attribute = e.target.id;
@@ -195,6 +254,19 @@ ready(function() {
           'restrictSearchableAttributes': addOrRemoveSearchableAttributes(arr, attribute),
         });
       });
+    }
+
+    // Adjust UI based on selections
+    // Add or remove visual cue implying a customization was made
+    // Change input placeholder text => default is somewhat redundant as also declared in searchBox widget
+    const inputEl = document.querySelector('input[class="ais-SearchBox-input"]');
+    const triggerEl = document.getElementById('search-box-dropdown-trigger').querySelector('.search-box-dropdown-trigger-wrapper');
+    if (widgetParams.searchParameters.restrictSearchableAttributes.length === 5) {
+      triggerEl.classList.remove('adjusted');
+      inputEl.placeholder = 'Search by keywords, location, or grantee name';
+    } else {
+      triggerEl.classList.add('adjusted');
+      inputEl.placeholder = 'Search by custom fields selected';
     }
   };
 

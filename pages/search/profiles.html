@@ -91,8 +91,46 @@ redirect_from:
                   </select>
                 </div>
               </div>
-              <div class="col s12 l6 offset-l1">
+              <div class="col s12 l6 offset-l1 search-box-wrapper">
                 <div id="ais-widget-search-box"></div>
+                <div id="search-box-dropdown-trigger" class="hide-on-small-only">
+                  <div class="search-box-dropdown-trigger-wrapper valign-wrapper">
+                    <a class="dropdown-trigger" href="#" data-target="search-box-dropdown"><i class="material-icons">arrow_drop_down</i></a>
+                  </div>
+                </div>
+                <div class="search-box-dropdown-wrapper"></div>
+                <div id="search-box-dropdown" class="dropdown-content white text-default">
+                  <div class="dropdown-wrapper">
+                    <span class="dropdown-header"><small>FIELDS TO SEARCH</small></span>
+                    <ul id="dropdown-body">
+                      <li class="valign-wrapper">
+                        <label>
+                        <input id="organization_name" type="checkbox" class="filled-in" checked="checked" />
+                        <span>Foundation name</span>
+                        </label>
+                        <span class="checkbox-only" data-attribute="organization_name">only</span>
+                      </li>
+                      <li class="valign-wrapper">
+                        <label>
+                        <input id="city" type="checkbox" class="filled-in" checked="checked" />
+                        <span>Foundation location</span>
+                        </label>
+                        <span class="checkbox-only" data-attribute="city">only</span>
+                      </li>
+                      <li class="valign-wrapper">
+                        <label>
+                        <input id="people.name" type="checkbox" class="filled-in" checked="checked" />
+                        <span>Trustees</span>
+                        </label>
+                        <span class="checkbox-only" data-attribute="people.name">only</span>
+                      </li>
+                      <li class="valign-wrapper small text-light">
+                        EIN is always searchable
+                        <span id="select-all" class="right">SELECT ALL</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
               </div>
               <div class="col l3 hide-on-med-and-down">
                 <div id="powered-by" class="right"></div>
@@ -109,9 +147,8 @@ redirect_from:
             <!-- Filters / Refinements header -->
             <div class="text-muted hide-on-med-and-down">
               Filters
-              <!-- TODO remove hidden class when ready to integrate prospecting facets -->
-              <div class="switch switch-refinements right hidden">
-                <label class="search-toggle-advanced">
+              <div class="switch switch-refinements right">
+                <label class="search-toggle-advanced hidden">
                   Show advanced tools
                   <input type="checkbox">
                   <span class="lever"></span>
@@ -135,7 +172,24 @@ redirect_from:
                   <div id="ais-widget-refinement-list--city"></div>
                   <div id="ais-widget-refinement-list--state"></div>
                   <div id="ais-widget-range-input"></div>
+                  <div id="ais-widget-refinement-list--eobmf_recognized_exempt"></div>
+                  <div id="ais-widget-refinement-list--has_recent_grants"></div>
+                  <div id="ais-widget-refinement-list--grants_to_preselected_only"></div>
+                  <div id="ais-widget-refinement-list--is_likely_staffed"></div>
                 </div>
+                <!-- Exclusion Definition Modals-->
+                <div id="modal-grants-to-preselected" class="modal">
+                  <div class="modal-content">
+                    <h5>Excludes funders who checked Part XV Line 2</h5>
+                    <p>IRS Form 990PF text:</p>
+                    <blockquote>Check here [ ] if the foundation only makes contributions to preselected charitable organizations and does not accept unsolicited requests for funds.</blockquote>
+                    <p>Reference: <a class="blue-grey-text" href="https://www.irs.gov/instructions/i990pf#idm140500461586480" target="_blank">IRS Form 990PF Instructions</a></p>
+                  </div>
+                  <div class="modal-footer">
+                    <a class="modal-close waves-effect waves-green btn-flat">Close</a>
+                  </div>
+                </div>
+                
                 <div class="col s12">
                   <div class="section">
                     <div id="ais-widget-clear-all" class="center-align"></div>
@@ -178,7 +232,7 @@ redirect_from:
                     <ul class="collapsible z-depth-0">
                       <li>
                         <div class="collapsible-header"><i class="material-icons">arrow_right</i>Electronically filed returns</div>
-                        <div class="collapsible-body"><span>Recent legislation will soon require all private foundations to file their returns electronically. Until then, the dataset covers approx. 50-60% of private foundations.</span></div>
+                        <div class="collapsible-body"><span>Recent legislation will soon require all private foundations to file their returns electronically. Until then, the dataset covers approx. 60-65% of private foundations.</span></div>
                       </li>
                     </ul>
                     <!--<p>Built exclusively for nonprofit fundraising professionals, Grantmakers.io focuses on:</p>-->
@@ -225,6 +279,10 @@ redirect_from:
         <ul id="refinements-slide-out" class="sidenav section-refinements left-align grey lighten-5">
           <li><div id="ais-widget-mobile-refinement-list--city"></div></li>
           <li><div id="ais-widget-mobile-refinement-list--state"></div></li>
+          <div id="ais-widget-mobile-refinement-list--has_recent_grants"></div>
+          <div id="ais-widget-mobile-refinement-list--is_likely_staffed"></div>
+          <div id="ais-widget-mobile-refinement-list--grants_to_preselected_only"></div>
+          <div id="ais-widget-mobile-refinement-list--eobmf_recognized_exempt"></div>
           <div id="ais-widget-mobile-refinement-list--grantee_name"></div>
           <div id="ais-widget-mobile-refinement-list--organization_name"></div>
           <div id="ais-widget-mobile-refinement-list--grantee_city"></div>

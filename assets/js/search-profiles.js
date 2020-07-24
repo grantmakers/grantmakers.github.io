@@ -35,6 +35,21 @@ ready(function() {
   const elemsMO = document.querySelectorAll('.modal');
   M.Modal.init(elemsMO);
 
+  const elSearchBoxDropdown = document.querySelectorAll('.dropdown-trigger')[1]; // HACK Hard coding using bracket notation is precarious
+  const optionsSearchBoxDropdown = {
+    'alignment': 'right',
+    'constrainWidth': false,
+    'coverTrigger': false,
+    'closeOnClick': false,
+    'onOpenEnd': function() {
+      gaEventsSearchBoxNarrow();
+    },
+    'onCloseEnd': function() {
+      forceInputFocus();
+    },
+  };
+  M.Dropdown.init(elSearchBoxDropdown, optionsSearchBoxDropdown);
+
   if (!isMobile.matches) { // Use pushpin on desktop only
     const elemPP = document.querySelector('.nav-search nav');
     const optionsPP = {
@@ -58,17 +73,21 @@ ready(function() {
       'facet': 'assets',
       'label': 'Assets',
     },
+    {
+      'facet': 'grants_to_preselected_only',
+      'label': 'Part XV Line 2 is Not Checked',
+    },
   ];
 
   // Define toggle helpers
   const toggleParent = document.getElementById('search-toggle');
-  const toggle = toggleParent.querySelector('select');
+  const toggleSelect = toggleParent.querySelector('select');
 
   // Ensure initial toggle state set to grants search
-  toggle.value = 'profiles';
+  toggleSelect.value = 'profiles';
 
   // Toggle search type
-  toggle.onchange = function() {
+  toggleSelect.onchange = function() {
     console.log('switch');
     window.location.href = '/search/grants/';
   };
@@ -76,8 +95,9 @@ ready(function() {
   // Toogle Advanced Search tools
   // Advanced search features are hidden by default via css
   // Could handle initial show/hide directly in Instantsearch via cssClasses, but too many side effects
-  // Even listener set in search.once InstantSearch event
+  // Event listener set in search.once InstantSearch event
   const toggleAdvancedElem = document.querySelector('.search-toggle-advanced input[type="checkbox"]');
+  setInitialAdvancedSearchToggleState();
 
   const search = instantsearch({
     'indexName': algoliaIndex,
@@ -86,12 +106,10 @@ ready(function() {
     'searchParameters': {
       'hitsPerPage': 8,
     },
-    // 'routing': true,
     'routing': {
       'stateMapping': {
-        stateToRoute({query, refinementList, range, page}) {
+        stateToRoute({query, refinementList, toggle, range, page}) {
           return {
-            // 'type': searchType,
             'query': query,
             // we use the character ~ as it is one that is rarely present in data and renders well in URLs
             'city':
@@ -102,6 +120,9 @@ ready(function() {
               refinementList &&
               refinementList.state &&
               refinementList.state.join('~'),
+            'exclude_grants_to_preselected_only':
+              toggle &&
+              toggle.grants_to_preselected_only,
             'assets':
               range &&
               range.assets &&
@@ -111,11 +132,13 @@ ready(function() {
         },
         routeToState(routeState) {
           return {
-            // 'type': type,
             'query': routeState.query,
             'refinementList': {
               'city': routeState.city && routeState.city.split('~'),
               'state': routeState.state && routeState.state.split('~'),
+            },
+            'toggle': {
+              'grants_to_preselected_only': routeState.exclude_grants_to_preselected_only,
             },
             'range': {
               'assets': routeState.assets && routeState.assets.replace('~', ':'),
@@ -129,8 +152,24 @@ ready(function() {
 
   // Define templates
   const templateHits = `{% include search/profiles/algolia-template-hits.html %}`;
-  const templateHitsEmpty = `{% include search/profiles/algolia-template-hits-empty.html %}`;
   const templateStats = `{% include search/profiles/algolia-template-stats.html %}`;
+
+  // Define default search parameters
+  const defaultSearchableAttributes = [
+    'organization_name',
+    'city',
+    'state',
+    'ein',
+    'people.name',
+  ];
+  const defaultAttributesToHighlight = [
+    'organization_name',
+    'city',
+    'state',
+    'ein',
+    'people.name',
+    'people.title',
+  ];
 
   // Construct widgets
   /* --------- */
@@ -138,30 +177,100 @@ ready(function() {
   /* --------- */
   const renderConfigure = (renderOptions, isFirstRender) => {
     const { refine, widgetParams } = renderOptions;
-    const arr = widgetParams.searchParameters.restrictSearchableAttributes;
-
     if (isFirstRender) {
       const searchDropdownItems = document.getElementById('dropdown-body');
+      const searchDropDownOnlyButtons = document.querySelectorAll('.checkbox-only');
+      
+      // Dropdown "only" link
+      searchDropDownOnlyButtons.forEach(element => {
+        element.addEventListener('click', e => {
+          e.preventDefault(); // Prevent Materialize Dropdown from taking over
+          const attribute = e.target.dataset.attribute;
 
-      if (searchDropdownItems) { // <= Remove if statement when dropdown feature launches
-        searchDropdownItems.addEventListener('change', (e) => {
-          const attribute = e.target.id;
-          const isChecked = e.target.checked; // Note: this is the status AFTER the change
-          // Note: state will always remain in searchable attributes
-          // thus array.length should at least be 2, not 1
-          if (widgetParams.searchParameters.restrictSearchableAttributes.length === 2 && isChecked === false) {
-            e.target.checked = !isChecked;
-            M.Toast.dismissAll();
-            M.toast({'html': 'At least one item needs to be searchable'});
-            return;
-          }
-          // TODO Add logic to handle city + state
-          // Currently assumes state will always remain in searchable attributes
+          // Mimic default Materialize Dropdown functionality
+          searchDropdownItems.querySelectorAll('input').forEach((el) => {
+            if (el.id === attribute) {
+              el.checked = true;
+            } else {
+              el.checked = false;
+            }
+
+            // Hide Materialize after selection
+            // Materialize default for dropdowns requires clicking off dropdown wrapper
+            const instance = M.Dropdown.getInstance(elSearchBoxDropdown);
+            instance.close();
+            readyToSearchScrollPosition();
+          });
+          
+          // Refine Algolia parameters
           refine({
-            'restrictSearchableAttributes': addOrRemoveSearchableAttributes(arr, attribute),
+            'restrictSearchableAttributes': addOrRemoveAttributes(true, 'restrictSearchableAttributes', widgetParams.searchParameters.restrictSearchableAttributes, attribute),
+            'attributesToHighlight': addOrRemoveAttributes(true, 'attributesToHighlight', widgetParams.searchParameters.attributesToHighlight, attribute),
           });
         });
-      }
+      });
+
+      // Dropdown "Select All" link
+      document.getElementById('select-all').addEventListener('click', e => {
+        e.preventDefault(); // Prevent Materialize Dropdown from taking over
+
+        // Mimic default Materialize Dropdown functionality
+        searchDropdownItems.querySelectorAll('input').forEach((el) => {
+          el.checked = true;
+
+          // Hide Materialize after selection
+          // Materialize default for dropdowns requires clicking off dropdown wrapper
+          const instance = M.Dropdown.getInstance(elSearchBoxDropdown);
+          instance.close();
+          readyToSearchScrollPosition();
+        });
+        refine({
+          'restrictSearchableAttributes': defaultSearchableAttributes,
+          'attributesToHighlight': defaultAttributesToHighlight,
+        });
+      });
+      
+
+      // Dropdown individual checkbox selections
+      searchDropdownItems.addEventListener('change', (e) => {
+        const attribute = e.target.id;
+        const isChecked = e.target.checked; // Note: this is the status AFTER the change
+  
+        // Show message if user checkbox selections result in invalid state
+        // Note: EIN will always remain in searchable attributes
+        // Thus array.length should at least be 2, not 1
+        if (widgetParams.searchParameters.restrictSearchableAttributes.length === 2 && isChecked === false) {
+          e.target.checked = !isChecked;
+          M.Toast.dismissAll();
+          M.toast({'html': 'At least one item must be selected'});
+          return;
+        }
+
+        // Refine Algolia parameters
+        // Note: EIN will always remain in searchable attributes
+        // EIN "always searchable" is primarily a UI design decision
+        refine({
+          'restrictSearchableAttributes': addOrRemoveAttributes(false, 'restrictSearchableAttributes', widgetParams.searchParameters.restrictSearchableAttributes, attribute),
+          // Add/remove people from highlighted attributes
+          // Effectively hides people matches section from Mustache template
+          'attributesToHighlight': addOrRemoveAttributes(false, 'attributesToHighlight', widgetParams.searchParameters.attributesToHighlight, attribute),
+        });
+        readyToSearchScrollPosition();
+      });
+    }
+
+    // Adjust UI based on selections
+    // Add or remove visual cue implying a customization was made
+    // Change input placeholder text => default is somewhat redundant as also declared in searchBox widget
+    const inputEl = document.querySelector('input[class="ais-SearchBox-input"]');
+    const triggerEl = document.getElementById('search-box-dropdown-trigger').querySelector('.search-box-dropdown-trigger-wrapper');
+
+    if (widgetParams.searchParameters.restrictSearchableAttributes.length === 5) {
+      triggerEl.classList.remove('adjusted');
+      inputEl.placeholder = 'Search by foundation name, location, trustees, or EIN';
+    } else {
+      triggerEl.classList.add('adjusted');
+      inputEl.placeholder = 'Search by custom fields selected';
     }
   };
 
@@ -176,21 +285,8 @@ ready(function() {
     customConfigure({
       'container': document.querySelector('#search-box-dropdown'),
       'searchParameters': {
-        'restrictSearchableAttributes': [
-          'organization_name',
-          'city',
-          'state',
-          'ein',
-          // 'people.name',
-        ],
-        'attributesToHighlight': [
-          'organization_name',
-          'city',
-          'state',
-          'ein',
-          // 'people.name',
-          // 'people.title',
-        ],
+        'restrictSearchableAttributes': defaultSearchableAttributes,
+        'attributesToHighlight': defaultAttributesToHighlight,
       },
     }),
   );
@@ -201,7 +297,7 @@ ready(function() {
   search.addWidget(
     instantsearch.widgets.searchBox({
       'container': '#ais-widget-search-box',
-      'placeholder': 'Search by foundation name, location, or EIN',
+      'placeholder': 'Search by foundation name, location, trustees, or EIN',
       'autofocus': true,
       'showSubmit': true,
       'showReset': true,
@@ -229,7 +325,16 @@ ready(function() {
       'container': '#ais-widget-hits',
       'templates': {
         'item': templateHits,
-        'empty': templateHitsEmpty,
+        empty(results) {
+          let params = results._state.restrictSearchableAttributes;
+          if (params.length === defaultSearchableAttributes.length) {
+            paramsText = `across foundation names, locations, trustees, and EINs`;
+          } else {
+            paramsText = `and narrowed Fields to Search`;
+          }
+          const templateHitsEmpty = `{% include search/profiles/algolia-template-hits-empty.html %}`;
+          return templateHitsEmpty;
+        },
       },
       'cssClasses': {
         'list': 'row',
@@ -280,7 +385,7 @@ ready(function() {
   const renderListItem = item => `
     ${item.refinements.map(refinement => `
       <li>
-        <button class="waves-effect btn blue-grey lighten-3 grey-text text-darken-3 truncate" ${createDataAttribtues(refinement)}><i class="material-icons right">remove_circle</i><small>${getLabel(item.label)}</small> ${formatIfRangeLabel(refinement)} </button>
+        <button class="waves-effect btn blue-grey lighten-3 grey-text text-darken-3 truncate" ${createDataAttribtues(refinement)}><i class="material-icons right">remove_circle</i><small>${getLabel(item.label)}</small> ${formatIfRangeOrToggleLabel(refinement)} </button>
       </li>
     `).join('')}
   `;
@@ -432,9 +537,15 @@ ready(function() {
   /* Create all other refinements */
   /* ---------------------------- */
   facets.forEach((refinement) => {
+    // Assets handled via its own widget
     if (refinement.facet === 'assets') {
       return;
     }
+    // Exclusionary handled via their own widget
+    if (refinement.facet === 'grants_to_preselected_only') {
+      return;
+    }
+
     const refinementListWithPanel = instantsearch.widgets.panel({
       'templates': {
         'header': refinement.label,
@@ -513,6 +624,40 @@ ready(function() {
     );
   });
 
+  /* -------------------- */
+  /* Exclusionary Toggles */
+  /* -------------------- */
+  const toggleRefinementWithPanel = instantsearch.widgets.panel({
+    'templates': {
+      'header': 'Grant Guidelines <i class="material-icons right text-muted-max modal-trigger" href="#modal-grants-to-preselected">info</i>',
+    },
+    hidden(options) {
+      return options.results.nbHits === 0;
+    },
+    'cssClasses': {
+      'root': 'card',
+      'header': [
+        'card-header',
+      ],
+      'body': 'card-content',
+    },
+  })(instantsearch.widgets.toggleRefinement);
+
+  search.addWidget(
+    toggleRefinementWithPanel({
+      'container': '#ais-widget-refinement-list--grants_to_preselected_only',
+      'attribute': 'grants_to_preselected_only',
+      'on': false,
+      'templates': {
+        'labelText': 'Exclude funders that do not accept unsolicited requests for funds',
+      },
+      'cssClasses': {
+        'checkbox': 'filled-in',
+        'labelText': 'small',
+      },
+    }),
+  );
+  
   /* ----------------- */
   /* Clear Refinements */
   /* ----------------- */
@@ -563,7 +708,7 @@ ready(function() {
     // Search toggle
     initSelect();
     // Show range input if initial URL contains an amount refinement
-    setInitialAdvancedSearchToggleState();
+    setAdvancedSearchToggleStateAfterRender();
     // Create advanced search toggle listener
     toggleAdvancedElem.addEventListener('change', toggleAdvancedListener, false);
   });
@@ -619,10 +764,26 @@ ready(function() {
   }
 
   function setInitialAdvancedSearchToggleState() {
+    const check = window.localStorage.getItem('persist_advanced_search_tools');
+    if (check === 'true') {
+      // Show tools
+      showAdvancedSearchTools();
+      // Toggle switch to on
+      toggleAdvancedElem.checked = true;
+    }
+  }
+
+  function setAdvancedSearchToggleStateAfterRender() {
     // If any numeric refinements, automatically show ALL advanced tools, not just range input
     const obj = search.helper.state.numericRefinements;
     const check = Object.keys(obj).length;
-    if (check > 0) {
+
+    // If any exclusionary facet refinements made, automatically show ALL advanced tools
+    const objExclusionary = search.helper.state.disjunctiveFacetsRefinements;
+    const checkExclusionary = objExclusionary.hasOwnProperty('grants_to_preselected_only');
+
+    // Do checks
+    if (check > 0 || checkExclusionary) {
       // Show advanced search elements
       document.getElementById('algolia-hits-wrapper').classList.remove('js-hide-advanced-tools');
       // Flip switch to on position
@@ -642,10 +803,14 @@ ready(function() {
 
   function showAdvancedSearchTools() {
     document.getElementById('algolia-hits-wrapper').classList.remove('js-hide-advanced-tools');
+    if (storageTest) {
+      window.localStorage.setItem('persist_advanced_search_tools', 'true');
+    }
   }
 
   function hideAdvancedSearchTools() {
     document.getElementById('algolia-hits-wrapper').classList.add('js-hide-advanced-tools');
+    window.localStorage.removeItem('persist_advanced_search_tools');
   }
 
   // GOOGLE ANALYTICS EVENTS
@@ -664,6 +829,21 @@ ready(function() {
 
     gaCount++;
   }
+
+  function gaEventsSearchBoxNarrow() {
+    let gaCount = 0;
+
+    if (typeof gaCheck === 'function' && gaCount === 0) {
+      ga('send', 'event', {
+        'eventCategory': 'Grants Search Events',
+        'eventAction': 'Clicked SearchBox Dropdown Trigger',
+        'eventLabel': 'SearchBox Dropdown Opened',
+      });
+    }
+
+    gaCount++;
+  }
+
   function gaEventsNoResults() {
     if (typeof gaCheck === 'function') {
       ga('send', 'event', {
@@ -720,21 +900,69 @@ ready(function() {
 
   // MISC HELPER FUNCTIONS
   // ==============
-  function addOrRemoveSearchableAttributes(array, value) {
-    const tmpArr = array;
-    let index = array.indexOf(value);
+  function addOrRemoveAttributes(isOnly, type, array, attribute) {
+    // TODO lots of opportunities to DRY this up
+    // If attribute is 'city', need to also add/remove 'state'
+    // If attribute is 'people.name', need to add/remove 'people.title from attributes to highlight
+    const unchangedArray = array;
+    let index = array.indexOf(attribute);
 
+    // Handle "only" link clicks
+    // EIN will always be included
+    if (isOnly) {
+      // City attribute is combined with State
+      if (attribute === 'city') {
+        return ['ein', 'city', 'state'];
+      // People attribute requires special handling
+      // Need to add title to highlight attributes, but not search restrictions
+      } else if (attribute === 'people.name') {
+        if (type === 'attributesToHighlight') {
+          return ['ein', 'people.name', 'people.title'];
+        } else {
+          return ['ein', 'people.name'];
+        }
+      // Anything else, just return it
+      } else if (attribute === 'organization_name') {
+        return ['ein', 'organization_name'];
+      }
+    }
+
+    // If the attribute is not already in the array, add it
     if (index === -1) {
-      array.push(value);
+      array.push(attribute);
+      // City attribute requires adding State
+      if (attribute === 'city') {
+        array.push('state');
+      }
+      // People attribute requires adding Title, but only to highlight attributes
+      if (type === 'attributesToHighlight' && attribute === 'people.name') {
+        array.push('people.title');
+      }
+    // If the attribute already exists in the array, remove it
     } else {
       array.splice(index, 1);
+      // City requires removing State as well
+      if (attribute === 'city') {
+        let indexState = array.indexOf('state');
+        array.splice(indexState, 1);
+      }
+      // People attribute requires removing Title, but only from highlight attributes
+      if (type === 'attributesToHighlight' && attribute === 'people.name') {
+        let indexPeople = array.indexOf('people.title');
+        array.splice(indexPeople, 1);
+      }
     }
+
     // Ensure at least one item is checked
-    if (array.length < 2) { // state will always be there
-      return tmpArr;
+    if (array.length < 2) { // ein will always be there
+      return unchangedArray;
     } else {
       return array;
     }
+  }
+
+  function forceInputFocus() {
+    document.querySelector('.ais-SearchBox-input').focus();
   }
 
   function hitsPeople(people) {
@@ -745,13 +973,21 @@ ready(function() {
     const arr = [];
     people.map(person => {
       const obj = {};
-      if (person.name && person.name.matchLevel === 'partial' || person.name.matchLevel === 'full') {
+      if (person.name && person.name.matchLevel === 'partial' || person.name && person.name.matchLevel === 'full') {
         obj.name = person.name.value;
-        obj.title = person.title.value;
+        obj.title = person.title ? person.title.value : '';
         arr.push(obj);
       }
     });
     return arr;
+  }
+
+  function storageTest() {
+    if (typeof Storage !== 'undefined') {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   function getLabel(item) {
@@ -759,11 +995,13 @@ ready(function() {
     return obj[0].label;
   }
 
-  function formatIfRangeLabel(refinement) {
-    if (refinement.attribute !== 'assets') {
-      return refinement.label;
-    } else {
+  function formatIfRangeOrToggleLabel(refinement) {
+    if (refinement.attribute === 'assets') {
       return `${refinement.operator} $${numberHuman(refinement.value)}`;
+    } else if (refinement.attribute === 'grants_to_preselected_only') {
+      return '';
+    } else {
+      return refinement.label;
     }
   }
 

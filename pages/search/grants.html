@@ -93,36 +93,45 @@ redirect_from:
               <div class="col s12 l6 offset-l1 search-box-wrapper">
                 <div id="ais-widget-search-box"></div>
                 <div id="search-box-dropdown-trigger" class="hide-on-small-only">
-                  <a class="dropdown-trigger" href="#" data-target="search-box-dropdown"><i class="material-icons">arrow_drop_down</i></a>
+                  <div class="search-box-dropdown-trigger-wrapper valign-wrapper">
+                    <a class="dropdown-trigger" href="#" data-target="search-box-dropdown"><i class="material-icons">arrow_drop_down</i></a>
+                  </div>
                 </div>
                 <div class="search-box-dropdown-wrapper"></div>
                 <div id="search-box-dropdown" class="dropdown-content white text-default">
                   <div class="dropdown-wrapper">
                     <span class="dropdown-header"><small>FIELDS TO SEARCH</small></span>
                     <ul id="dropdown-body">
-                      <li>
+                      <li class="valign-wrapper">
                         <label>
                         <input id="organization_name" type="checkbox" class="filled-in" checked="checked" />
                         <span>Funder</span>
                         </label>
+                        <span class="checkbox-only" data-attribute="organization_name">only</span>
                       </li>
-                      <li>
+                      <li class="valign-wrapper">
                         <label>
                         <input id="grantee_name" type="checkbox" class="filled-in" checked="checked" />
                         <span>Recipient</span>
                         </label>
+                        <span class="checkbox-only" data-attribute="grantee_name">only</span>
                       </li>
-                      <li>
+                      <li class="valign-wrapper">
                         <label>
                         <input id="grantee_city" type="checkbox" class="filled-in" checked="checked" />
                         <span>Recipient city</span>
                         </label>
+                        <span class="checkbox-only" data-attribute="grantee_city">only</span>
                       </li>
-                      <li>
+                      <li class="valign-wrapper">
                         <label>
                         <input id="grant_purpose" type="checkbox" class="filled-in" checked="checked" />
                         <span>Grant purpose</span>
                         </label>
+                        <span class="checkbox-only" data-attribute="grant_purpose">only</span>
+                      </li>
+                      <li class="valign-wrapper small text-light left-align">
+                        <span id="select-all" style="margin:inherit">SELECT ALL</span>
                       </li>
                     </ul>
                   </div>
