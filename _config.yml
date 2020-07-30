@@ -25,12 +25,12 @@ algolia_public_key_grants: 96a419d65f67ff3b4c54939f8e90c220
 algolia_public_key_profiles: ce4d584b0de36ca3f8b4727fdb83c658
 
 # Sitewide helpers
-last_updated: '2020-04-17T21:14:54.518Z'
+last_updated: '2020-07-30T20:35:04.546Z'
 
-number_of_filings: 449331
-number_of_foundations: 92265
-number_of_grants: 5665810
-number_of_searchable_grants: 4752713
+number_of_filings: 453482
+number_of_foundations: 92777
+number_of_grants: 5735646
+number_of_searchable_grants: 4822549
 
 # Donation links
 github_sponsors_link: https://github.com/sponsors/chadokruse
