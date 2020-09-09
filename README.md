@@ -15,13 +15,20 @@ The search functionality is fully hosted by [Algolia](https://www.algolia.com/).
 ## Data  
 All data is pulled directly from machine-readable IRS Form 990PF. These files are [hosted publicly by Amazon Web Services](https://registry.opendata.aws/irs990/) and controlled by the IRS.
 
-Download link for the normalized data we sync with Algolia:  
-[JSON | 166MB](https://drive.google.com/open?id=0B_ODHXi37sCcTEFhWmdvX3V3MzA)
+To build your own database of tax filings direct from the AWS source dataset, I've open sourced the [Node + MongoDB scripts](https://github.com/smartergiving/irs-990-fetch) used to build Grantmakers.io. If you prefer other platforms (e.g. Python), check out the [Nonprofit Open Data Collective](https://github.com/Nonprofit-Open-Data-Collective/irs-990-efiler-database) or a [quick search on Github](https://github.com/search?q=irs990&type=Repositories) should yield a few results.
 
-Download link for the entire MongoDB 990PF database (includes index data, filing data, and normalized data:  
-[BSON | 5GB - please email us for a link](mailto:opensource@grantmakers.io)
+## Researchers
 
-To develop your own database, we've published our [Node + MongoDB scripts](https://github.com/smartergiving/irs-990-fetch). Check out the [Nonprofit Open Data Collective](https://github.com/Nonprofit-Open-Data-Collective/irs-990-efiler-database) or do a search on Github if you prefer other platforms.
+If you're struggling with the AWS filings, [get in touch](mailto:opensource@grantmakers.io). I have MongoDB-friendly BSON files I'm happy to share with the academic, research, and journalism communities. Unzipped, these files are ~10GB in size and contain the AWS index data, filing data, and normalized data. Of course, you'll need to be a little familiar with MongoDB to use the files (see below).
+
+## Setting up MongoDB using BSON files
+First, set up your MongoDB instance. You have two options:
+1. Install MongoDB on your local machine. MacOS instructions [here](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-os-x/).
+2. Use a hosted cloud service. Check out [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) (students and faculty might be eligible for [free credits](https://www.mongodb.com/students)).
+
+Next, import the BSON file using the `mongorestore` command:  
+`mongorestore --gzip --db=yourdbname path/to/BSON/files/`
+
 
 ## Feature Requests
 If you have a question, feature request, find a bug, or just want to say hi, please open an [issue on GitHub](https://github.com/grantmakers/grantmakers.github.io/issues).
@@ -34,8 +41,7 @@ Cross-browser compatibility provided by [BrowserStack](https://browserstack.com)
 ![browserstack](https://assets-github.s3.amazonaws.com/repo/progcode/img/browserstack-logo-footer.png)
 
 ## Credits
-- Material Kit: [Creative Tim](https://github.com/timcreative/material-kit)
-- Bootstrap Material Design: [Federico Zivolo](https://github.com/FezVrasta/bootstrap-material-design)
+- Materialize: [Alvin Wang et al](http://materializecss.com/)
 - Electronic Tax Filings: [Amazon Web Services](https://aws.amazon.com/public-datasets/irs-990/)
 - PDF Links: [Foundation Center PDF Archives](http://990finder.foundationcenter.org/)
 - Images: [Unsplash](https://unsplash.com/)
