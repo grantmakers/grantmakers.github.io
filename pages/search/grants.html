@@ -261,6 +261,7 @@ redirect_from:
     <!-- End Modals-->
     {% unless jekyll.environment == 'staging' %}
       {% include ga.html %}
+      {% include cloudflare-analytics.js %}
     {% endunless %}
     <!-- Drift -->
     {% include drift.html %}
