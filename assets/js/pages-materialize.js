@@ -50,6 +50,40 @@ ready(function() {
   if (document.getElementById('gsheets')) {
     initGoogleSheets();
   }
+
+  // Lazy Load Iubenda script
+  // =======================================================
+  function createIubendaObserver() {
+    let observer;
+    let anchor = document.querySelector('footer');
+    let config = {
+      rootMargin: '0px 0px',
+      threshold: 0.01,
+    };
+    // Initiate observer using Footer as anchor
+    observer = new IntersectionObserver(enableIubenda, config);
+    observer.observe(anchor);
+  }
+
+  function enableIubenda(entries, observer) {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        iubenda();
+        observer.unobserve(entry.target);
+      }
+    });
+  }
+
+  function iubenda() {
+    const script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = 'https://cdn.iubenda.com/iubenda.js';
+    document.body.appendChild(script);
+  }
+
+  if ('IntersectionObserver' in window) {
+    createIubendaObserver();
+  }
 });
 
 function getElementOffset(element) {
