@@ -1115,6 +1115,9 @@ main {
 	h5 {
 		font-weight: 400;
 	}
+	h5.text-weight-reset {
+		font-weight: inherit;
+	}
 }
 
 // About Page
@@ -1122,8 +1125,10 @@ main {
 	.pin-bottom {
 		visibility: hidden;
 	}
-	.info-title {
-		font-weight: 400;
+	.summary {
+		// font-weight: 400;
+		font-size: 1.5rem;
+
 	}
 	iframe {
 		width: 100%;
@@ -1134,6 +1139,9 @@ main {
 			color: #757575;
 		}
 	}
+}
+span.emoji {
+	margin-right: 10px;
 }
 .collapsible-faq {
 	border: none;

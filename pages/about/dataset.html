@@ -1,17 +1,19 @@
 ---
 layout: simple-no-hero-materialize
-title: Tips & Tricks
+title: About the Dataset
 drift: true
 donorbox-popup: false
-permalink: /about/tips-and-tricks/
+redirect_from:
+  - /about/tips-and-tricks/
+permalink: /about/the-dataset/
 ---
 <main>
   <div class="header header-filter" style="background-image: url('{{ site.baseurl }}/assets/img/files.jpg')">
     <div class="container valign-wrapper">
       <div class="row">
         <div class="col s12 center-align">
-          <h1 class="title">Tips & Tricks</h1>
-          <h6>Understanding Grantmakers.io</h6>
+          <h1 class="title">The Dataset</h1>
+          <h6>A public IRS dataset of foundation tax filings</h6>
         </div>
       </div>
     </div>
@@ -25,32 +27,43 @@ permalink: /about/tips-and-tricks/
       <div class="section section-simple-page section-about">
         <div id="main-content" class="row">
           <div class="col s12 m9 offset-m1 l10 offset-l1 xl8 offset-xl1">
-            
-            <div class="section">              
-              <div class="card-panel blue-grey white-text">
-                <h6 class="white-text text-bold text-uppercase">Key takeaways:</h6>
-                <ul class="browser-default">
-                  <li><h6 class="white-text">Focused on private foundations</h6></li>
-                  <li><h6 class="white-text">50-60% of private foundations appear on Grantmakers.io</h6></li>
-                  <li><h6 class="white-text">Electronic tax filers only</h6></li>
-                  <li><h6 class="white-text">Form 990-PF filers only</h6></li>
-                </ul>
-              </div>
-            </div>
             <div class="section section-about">
-              <p>The best way to get to know Grantmakers.io is to first understand the public dataset from which profiles and search results are derived.</p>
+              <p class="summary blue-grey-text text-darken-3">The best way to get to know Grantmakers.io is to first understand the public dataset from which the site is derived.</p>
             </div>
             <div id="toc-dataset" class="section section-about scrollspy">
               <h4>Public IRS dataset</h4>
               <p>The IRS started publishing foundation tax returns in "machine-readable format" for the first time in 2016. Grantmakers.io pulls data exclusively from this dataset. It's open...it's free...it's awesome.</p>
               <p>It does have its limitations though. The dataset only contains <strong>electronically filed tax returns</strong>. Currently, approximately 50-60% of private foundations file in this manner, which means Grantmakers.io covers approximately half of all private foundations.</p>
-              <p>The good news is recent legislation requires tax-exempt organizations to file electronically, starting in the near future. Specifically, filings for tax years ending July 31, 2020 and later must be filed electronically. Practically speaking, 2021 will be a great year for visitors to Grantmakers.io, as nearly 100% of private foundations should be represented in results by then.</p>
+              <div class="card info-card grey lighten-4">
+                <div class="card-content">
+                  <p><span class="emoji">✅</span>Electronically filed tax returns</p>
+                  <p><span class="emoji">🔲</span>Paper filed tax returns</p>
+                </div>
+              </div>
+              <p>The good news is recent legislation requires tax-exempt organizations to file electronically, starting in the near future. Specifically, filings for tax years ending July 31, 2020 and later must be filed electronically. Practically speaking, 2021 will be a great year for visitors to Grantmakers.io, as nearly 100% of private foundations should be represented by year's end.</p>
               <p>Also, keep in mind Grantmakers.io focuses exclusively on <strong>Form 990-PF</strong>, the tax filing used by private foundations. If a foundation files a different tax form, they will not be included in search results and will not have a profile on Grantmakers.io. Consider community foundations, for example. Most community foundations file Form 990 (not Form 990-PF), so they will not appear on Grantmakers.io.</p>
+              <div class="card info-card grey lighten-4">
+                <div class="card-content">
+                  <p><span class="emoji">✅</span>Private foundations</p>
+                  <p><span class="emoji">🔲</span>Community foundations</p>
+                  <p><span class="emoji">🔲</span>Operating foundations</p>
+                </div>
+              </div>
             </div>
             <div id="toc-research" class="section section-about scrollspy">
               <h4>Great for basic research, improving as a prospecting tool</h4>
               <p>Grantmakers.io was originally built to help a friend find information on a specific funding prospect previously identified. <a class="text-bold" href="{{ site.baseurl }}/search/profiles/">Profiles Search</a> was the first search tool created and is optimized to quickly find a funder's profile (if one exists). If you don't find your target in results, the foundation likely does not file electronically, or they do not file Form 990PF.</p>
+              <div class="card info-card grey lighten-4">
+                <div class="card-content">
+                  <p>Quickly find a foundation profile using <a class="text-bold" href="{{ site.baseurl }}/search/profiles/">Profiles Search</a>.</p>
+                </div>
+              </div>
               <p>The <a class="text-bold blue-grey-text" href="{{ site.baseurl }}/search/grants/">Grants Search</a> tool was developed to allow fundraisers to do basic prospecting by exploring which foundations have donated to similar grantees in the past. Just remember the limitations mentioned above, specifically that the dataset only covers 50-60% of private foundations.</p>
+              <div class="card info-card grey lighten-4">
+                <div class="card-content">
+                  <p>Discover foundations that have donated to similar organizations in the past using <a class="text-bold blue-grey-text" href="{{ site.baseurl }}/search/grants/">Grants Search</a>.</p>
+                </div>
+              </div>
             </div>
             <div id="toc-updates" class="section scrollspy">
               <h4>IRS controls the frequency of updates</h4>
@@ -68,6 +81,15 @@ permalink: /about/tips-and-tricks/
               <p>If you're new to Grantmakers.io, welcome! I love surprising new visitors by implementing suggestions within hours whenever possible, so if you have any thoughts or ideas on how the site can be improved to help other non-profit professionals, <a href="mailto:feedback@grantmakers.io">I'd love to connect</a>.</p>
               <p></p>
             </div>
+            <div id="next" class="section section-about scrollspy">
+							<div class="card info-card grey lighten-3">
+								<div class="card-content">
+                  <h6 class="text-uppercase">Explore the dataset</h6>
+                  <p>Think about organizations similar to yours, then <a href="{{ site.baseurl }}/search/grants">try searching for them here</a>.</p>
+								<p></p>
+								</div>
+							</div>
+						</div>
           </div>
           <div class="col m2 l1 xl2 offset-xl1 hide-on-small-only">
             <div class="toc-wrapper pushpin pin-top">
