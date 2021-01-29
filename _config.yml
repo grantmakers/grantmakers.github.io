@@ -25,12 +25,12 @@ algolia_public_key_grants: 96a419d65f67ff3b4c54939f8e90c220
 algolia_public_key_profiles: ce4d584b0de36ca3f8b4727fdb83c658
 
 # Sitewide helpers
-last_updated: '2021-01-19T17:00:38.806Z'
+last_updated: '2021-01-29T22:40:26.303Z'
 
-number_of_filings: 458272
-number_of_foundations: 93360
-number_of_grants: 5784695
-number_of_searchable_grants: 4871598
+number_of_filings: 463339
+number_of_foundations: 93977
+number_of_grants: 5843614
+number_of_searchable_grants: 4930517
 # searchable grants figure pulled directly from Algolia
 
 # Donation links
