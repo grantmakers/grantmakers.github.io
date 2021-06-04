@@ -12,10 +12,15 @@
             </li>
             <li class="left">
               {{#website}}
-              <i class="material-icons material-icons-active website tooltipped" data-tooltip="Website available">public</i>
+                {{#website_is_an_email}}
+                <i class="material-icons tooltipped" data-tooltip="No website available">public</i>
+                {{/website_is_an_email}}
+                {{^website_is_an_email}}
+                <i class="material-icons material-icons-active website tooltipped" data-tooltip="Website available">public</i>
+                {{/website_is_an_email}}
               {{/website}}
               {{^website}}
-              <i class="material-icons tooltipped" data-tooltip="No website listed">public</i>
+              <i class="material-icons tooltipped" data-tooltip="No website available">public</i>
               {{/website}}
             </li>
             <li class="left">
