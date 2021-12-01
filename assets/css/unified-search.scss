@@ -681,6 +681,8 @@ $parallax-height: 75vh;
     &:hover {
       @extend .grey, .lighten-3;
     }
+    // TODO Make the dropdown active state more conspicuous
+    // TODO Enable when other prospecting / advanced search features are enabled
     &.adjusted {
       @extend .z-depth-1;
       @extend .grey, .lighten-3;

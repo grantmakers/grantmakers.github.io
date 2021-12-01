@@ -181,7 +181,8 @@ ready(function() {
       const searchDropdownItems = document.getElementById('dropdown-body');
       const searchDropDownOnlyButtons = document.querySelectorAll('.checkbox-only');
       
-      // Dropdown "only" link
+      */
+      // Create event listener for "Only" link clicks
       searchDropDownOnlyButtons.forEach(element => {
         element.addEventListener('click', e => {
           e.preventDefault(); // Prevent Materialize Dropdown from taking over
@@ -210,7 +211,7 @@ ready(function() {
         });
       });
 
-      // Dropdown "Select All" link
+      // Create event listener for "Select All" link clicks
       document.getElementById('select-all').addEventListener('click', e => {
         e.preventDefault(); // Prevent Materialize Dropdown from taking over
 
@@ -230,8 +231,7 @@ ready(function() {
         });
       });
       
-
-      // Dropdown individual checkbox selections
+      // Create event listener for individual checkbox selections
       searchDropdownItems.addEventListener('change', (e) => {
         const attribute = e.target.id;
         const isChecked = e.target.checked; // Note: this is the status AFTER the change
