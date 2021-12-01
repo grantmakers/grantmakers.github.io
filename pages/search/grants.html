@@ -259,11 +259,11 @@ redirect_from:
       </div>
     </div>
     <!-- End Modals-->
-    {% unless jekyll.environment == 'staging' %}
+    {% if jekyll.environment == 'production' %}
       {% include ga.html %}
       {% include cloudflare-analytics.js %}
-    {% endunless %}
+    {% endif %}
     <!-- Drift -->
-    {% include drift.html %}
+    <!-- End Drift -->
   </body>
 </html>
