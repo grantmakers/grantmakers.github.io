@@ -57,6 +57,7 @@ ready(function() {
   // ALGOLIA
   // ==============
   const searchClient = algoliasearch('QA1231C5W9', '{{ site.algolia_public_key_grants }}');
+  const algoliaIndex = 'grantmakers_io';
   const facets = [
     {
       'facet': 'grantee_name',
@@ -103,54 +104,61 @@ ready(function() {
   const toggleAdvancedElem = document.querySelector('.search-toggle-advanced input[type="checkbox"]');
 
   const search = instantsearch({
-    'indexName': 'grantmakers_io',
+    'indexName': algoliaIndex,
     searchClient,
     'numberLocale': 'en-US',
-    'searchParameters': {
-      'hitsPerPage': 12,
-    },
-    // 'routing': true,
     'routing': {
       'stateMapping': {
-        stateToRoute({query, refinementList, range, page}) { // could also use stateToRoute(uiState)
+        stateToRoute(uiState) {
+          /**
+           * State to Route updates the url from whatever is happening in Instantsearch
+           * We use the character ~ as it is one that is rarely present in data and renders well in URLs
+           */
+          const indexUiState = uiState[algoliaIndex];
           return {
-            'query': query,
+            'query': indexUiState.query,
             'grantee_name':
-              refinementList &&
-              refinementList.grantee_name &&
-              refinementList.grantee_name.join('~'),
+              indexUiState.refinementList &&
+              indexUiState.refinementList.grantee_name &&
+              indexUiState.refinementList.grantee_name.join('~'),
             'organization_name':
-              refinementList &&
-              refinementList.organization_name &&
-              refinementList.organization_name.join('~'),
+              indexUiState.refinementList &&
+              indexUiState.refinementList.organization_name &&
+              indexUiState.refinementList.organization_name.join('~'),
             'grantee_city':
-              refinementList &&
-              refinementList.grantee_city &&
-              refinementList.grantee_city.join('~'),
+              indexUiState.refinementList &&
+              indexUiState.refinementList.grantee_city &&
+              indexUiState.refinementList.grantee_city.join('~'),
             'grantee_state':
-              refinementList &&
-              refinementList.grantee_state &&
-              refinementList.grantee_state.join('~'),
+              indexUiState.refinementList &&
+              indexUiState.refinementList.grantee_state &&
+              indexUiState.refinementList.grantee_state.join('~'),
             'grant_amount':
-              range &&
-              range.grant_amount &&
-              range.grant_amount.replace(':', '~'),
-            'page': page,
+              indexUiState.range &&
+              indexUiState.range.grant_amount &&
+              indexUiState.range.grant_amount.replace(':', '~'),
+            'page': indexUiState.page,
           };
         },
         routeToState(routeState) {
+          /**
+           * Route to State takes the url and parses it
+           * The object it creates is sent to the widgets
+           */
           return {
-            'query': routeState.query,
-            'refinementList': {
-              'grantee_name': routeState.grantee_name && routeState.grantee_name.split('~'),
-              'organization_name': routeState.organization_name && routeState.organization_name.split('~'),
-              'grantee_city': routeState.grantee_city && routeState.grantee_city.split('~'),
-              'grantee_state': routeState.grantee_state && routeState.grantee_state.split('~'),
+            [algoliaIndex]: {
+              'query': routeState.query,
+              'refinementList': {
+                'grantee_name': routeState.grantee_name && routeState.grantee_name.split('~'),
+                'organization_name': routeState.organization_name && routeState.organization_name.split('~'),
+                'grantee_city': routeState.grantee_city && routeState.grantee_city.split('~'),
+                'grantee_state': routeState.grantee_state && routeState.grantee_state.split('~'),
+              },
+              'range': {
+                'grant_amount': routeState.grant_amount && routeState.grant_amount.replace('~', ':'),
+              },
+              'page': routeState.page,
             },
-            'range': {
-              'grant_amount': routeState.grant_amount && routeState.grant_amount.replace('~', ':'),
-            },
-            'page': routeState.page,
           };
         },
       },
@@ -173,13 +181,9 @@ ready(function() {
     'grant_purpose',
   ];
 
-  // Construct widgets
-
-  /* ------------------- */
-  /* Search Box Dropdown */
-  /* ------------------- */
-  // Limits attributes to search
-  // Create the render function
+  /* ---------------------------- */
+  /* Connector - Configure Widget */
+  /* ---------------------------- */
   const renderConfigure = (renderOptions, isFirstRender) => {
     const { refine, widgetParams } = renderOptions;
     const arr = widgetParams.searchParameters.restrictSearchableAttributes;
@@ -188,7 +192,7 @@ ready(function() {
       const searchDropdownItems = document.getElementById('dropdown-body');
       const searchDropDownOnlyButtons = document.querySelectorAll('.checkbox-only');
 
-      // Dropdown "only" link
+      // Create event listener for "Only" link clicks
       searchDropDownOnlyButtons.forEach(element => {
         element.addEventListener('click', e => {
           e.preventDefault(); // Prevent Materialize Dropdown from taking over
@@ -218,7 +222,7 @@ ready(function() {
         });
       });
 
-      // Dropdown "Select All" link
+      // Create event listener for "Select All" link clicks
       document.getElementById('select-all').addEventListener('click', e => {
         e.preventDefault(); // Prevent Materialize Dropdown from taking over
 
@@ -237,6 +241,7 @@ ready(function() {
         });
       });
 
+      // Create event listener for individual checkbox selections
       searchDropdownItems.addEventListener('change', (e) => {
         const attribute = e.target.id;
         const isChecked = e.target.checked; // Note: this is the status AFTER the change
@@ -276,88 +281,9 @@ ready(function() {
     () => {},
   );
 
-  // Instantiate the custom widget
-  search.addWidget(
-    customConfigure({
-      'container': document.querySelector('#search-box-dropdown'),
-      'searchParameters': {
-        'restrictSearchableAttributes': [
-          'grantee_name',
-          'grant_purpose',
-          'grantee_city',
-          'grantee_state',
-          'organization_name',
-        ],
-      },
-    }),
-  );
-
-  /* ---------- */
-  /* Search Box */
-  /* ---------- */
-  search.addWidget(
-    instantsearch.widgets.searchBox({
-      'container': '#ais-widget-search-box',
-      'placeholder': 'Search by keywords, location, or grantee name',
-      'showSubmit': true,
-      'showReset': true,
-      'showLoadingIndicator': false,
-      'queryHook': function(query, searchInstance) {
-        const queryCleaned = checkForEIN(query);
-        readyToSearchScrollPosition();
-        searchInstance(queryCleaned);
-        initTooltips();
-      },
-    }),
-  );
-
-  search.addWidget(
-    instantsearch.widgets.poweredBy({
-      'container': '#powered-by',
-    }),
-  );
-
-  /* ---- */
-  /* Hits */
-  /* ---- */
-  search.addWidget(
-    instantsearch.widgets.hits({
-      'container': '#ais-widget-hits',
-      'templates': {
-        'item': templateHits,
-        'empty': templateHitsEmpty,
-      },
-      'cssClasses': {
-        'root': '',
-        'list': 'striped row',
-        'item': ['col', 's12', 'li-grants-search'],
-      },
-      transformItems(items) {
-        return items.map(item => ({
-          ...item,
-          'grant_amount': `$${item.grant_amount.toLocaleString()}`,
-        }));
-      },
-    }),
-  );
-
-  search.addWidget(
-    instantsearch.widgets.stats({
-      'container': '#ais-widget-stats',
-      'templates': {
-        'text': templateStats,
-      },
-      'cssClasses': {
-        'text': 'text-muted',
-      },
-    }),
-  );
-
-  /* ----------- */
-  /* Range Input */
-  /* ----------- */
-
-  // Create the render function
+  /* ----------------------- */
+  /* Connector - Range Input */
+  /* ----------------------- */
   const renderRangeInput = (renderOptions, isFirstRender) => {
     const { start, refine, widgetParams } = renderOptions; // Not using 'range' argument
     const [min, max] = start;
@@ -456,7 +382,7 @@ ready(function() {
   }
 
   // Create the panel widget wrapper
-  const rangeInputWithPanel = instantsearch.widgets.panel({
+  const customRangeInputWithPanel = instantsearch.widgets.panel({
     'templates': {
       'header': 'Grant Amount',
       footer(options) {
@@ -492,14 +418,6 @@ ready(function() {
       'footer': 'small',
     },
   })(customRangeInput);
-
-  // Instantiate the custom widget
-  search.addWidget(
-    rangeInputWithPanel({
-      'container': document.querySelector('#ais-widget-range-input'),
-      'attribute': 'grant_amount',
-    }),
-  );
 
   /* ---------------------------- */
   /* Create all other refinements */
@@ -588,9 +506,9 @@ ready(function() {
     */
   });
 
-  /* ------------------- */
-  /* Current Refinements */
-  /* ------------------- */
+  /* ------------------------------- */
+  /* Connector - Current Refinements */
+  /* ------------------------------- */
   const createDataAttribtues = refinement =>
     Object.keys(refinement)
       .map(key => `data-${key}="${refinement[key]}"`)
@@ -628,16 +546,80 @@ ready(function() {
     renderCurrentRefinements,
   );
 
-  search.addWidget(
+  /* ---------------------------- */
+  /* Instantiate all Widgets
+  /* ---------------------------- */
+  search.addWidgets([
+    instantsearch.widgets.searchBox({
+      'container': '#ais-widget-search-box',
+      'placeholder': 'Search by keywords, location, or grantee name',
+      'showSubmit': true,
+      'showReset': true,
+      'showLoadingIndicator': false,
+      'queryHook': function(query, searchInstance) {
+        const queryCleaned = checkForEIN(query);
+        readyToSearchScrollPosition();
+        searchInstance(queryCleaned);
+        initTooltips();
+      },
+    }),
+
+    customConfigure({
+      'container': document.querySelector('#search-box-dropdown'),
+      'searchParameters': {
+        'hitsPerPage': 12,
+        'restrictSearchableAttributes': [
+          'grantee_name',
+          'grant_purpose',
+          'grantee_city',
+          'grantee_state',
+          'organization_name',
+        ],
+      },
+    }),
+
+    instantsearch.widgets.poweredBy({
+      'container': '#powered-by',
+    }),
+
+    instantsearch.widgets.hits({
+      'container': '#ais-widget-hits',
+      'templates': {
+        'item': templateHits,
+        'empty': templateHitsEmpty,
+      },
+      'cssClasses': {
+        'root': '',
+        'list': 'striped row',
+        'item': ['col', 's12', 'li-grants-search'],
+      },
+      transformItems(items) {
+        return items.map(item => ({
+          ...item,
+          'grant_amount': `$${item.grant_amount.toLocaleString()}`,
+        }));
+      },
+    }),
+
+    instantsearch.widgets.stats({
+      'container': '#ais-widget-stats',
+      'templates': {
+        'text': templateStats,
+      },
+      'cssClasses': {
+        'text': 'text-muted',
+      },
+    }),
+
+    customRangeInputWithPanel({
+      'container': document.querySelector('#ais-widget-range-input'),
+      'attribute': 'grant_amount',
+    }),
+
     customCurrentRefinements({
       'container': document.querySelector('#ais-widget-current-refined-values'),
     }),
-  );
 
-  /* ----------------- */
-  /* Clear Refinements */
-  /* ----------------- */
-  search.addWidget(
     instantsearch.widgets.clearRefinements({
       'container': '#ais-widget-clear-all',
       'cssClasses': {
@@ -647,12 +629,7 @@ ready(function() {
         'resetLabel': 'Clear filters',
       },
     }),
-  );
 
-  /* ---------- */
-  /* Pagination */
-  /* ---------- */
-  search.addWidget(
     instantsearch.widgets.pagination({
       'container': '#ais-widget-pagination',
       'maxPages': 20,
@@ -664,8 +641,11 @@ ready(function() {
         'disabledItem': 'disabled',
       },
     }),
-  );
+  ]);
 
+  /* ---------------------------- */
+  /* Render Widgets
+  /* ---------------------------- */
   search.once('render', function() {
     // Initialize static Materialize JS components created by Instantsearch widgets
     initSelect();
@@ -697,7 +677,9 @@ ready(function() {
     // console.log(e);
   });
 
-  // Initialize search
+  /* ---------------------------- */
+  /* Start Search
+  /* ---------------------------- */
   search.start();
 
   // Materialize init helpers
@@ -898,8 +880,8 @@ ready(function() {
     let observer;
     let anchor = document.querySelector('footer');
     let config = {
-      rootMargin: '0px 0px',
-      threshold: 0.01,
+      'rootMargin': '0px 0px',
+      'threshold': 0.01,
     };
     // Initiate observer using Footer as anchor
     observer = new IntersectionObserver(enableIubenda, config);
