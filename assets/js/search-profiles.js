@@ -192,7 +192,7 @@ ready(function() {
     if (isFirstRender) {
       const searchDropdownItems = document.getElementById('dropdown-body');
       const searchDropDownOnlyButtons = document.querySelectorAll('.checkbox-only');
-
+      
       // Create event listener for "Only" link clicks
       searchDropDownOnlyButtons.forEach(element => {
         element.addEventListener('click', e => {
