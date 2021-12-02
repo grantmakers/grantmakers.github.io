@@ -88,7 +88,6 @@ ready(function() {
 
   // Toggle search type
   toggleSelect.onchange = function() {
-    console.log('switch');
     window.location.href = '/search/grants/';
   };
 
@@ -103,47 +102,61 @@ ready(function() {
     'indexName': algoliaIndex,
     searchClient,
     'numberLocale': 'en-US',
-    'searchParameters': {
-      'hitsPerPage': 8,
-    },
     'routing': {
       'stateMapping': {
-        stateToRoute({query, refinementList, toggle, range, page}) {
+        stateToRoute(uiState) {
+          /**
+           * State to Route updates the url from whatever is happening in Instantsearch
+           * We use the character ~ as it is one that is rarely present in data and renders well in URLs
+           */
+          const indexUiState = uiState[algoliaIndex];
           return {
-            'query': query,
-            // we use the character ~ as it is one that is rarely present in data and renders well in URLs
+            'query': indexUiState.query,
+            'restrict_to':
+              indexUiState.configure &&
+              indexUiState.configure.restrictSearchableAttributes &&
+              indexUiState.configure.restrictSearchableAttributes.join('~'),
             'city':
-              refinementList &&
-              refinementList.city &&
-              refinementList.city.join('~'),
+              indexUiState.refinementList &&
+              indexUiState.refinementList.city &&
+              indexUiState.refinementList.city.join('~'),
             'state':
-              refinementList &&
-              refinementList.state &&
-              refinementList.state.join('~'),
+              indexUiState.refinementList &&
+              indexUiState.refinementList.state &&
+              indexUiState.refinementList.state.join('~'),
             'exclude_grants_to_preselected_only':
-              toggle &&
-              toggle.grants_to_preselected_only,
+              indexUiState.toggle &&
+              indexUiState.toggle.grants_to_preselected_only,
             'assets':
-              range &&
-              range.assets &&
-              range.assets.replace(':', '~'),
-            'page': page,
+              indexUiState.range &&
+              indexUiState.range.assets &&
+              indexUiState.range.assets.replace(':', '~'),
+            'page': indexUiState.page,
           };
         },
         routeToState(routeState) {
+          /**
+           * Route to State takes the url and parses it
+           * The object it creates is sent to the widgets
+           */
           return {
-            'query': routeState.query,
-            'refinementList': {
-              'city': routeState.city && routeState.city.split('~'),
-              'state': routeState.state && routeState.state.split('~'),
+            [algoliaIndex]: {
+              'query': routeState.query,
+              'configure': {
+                'restrictSearchableAttributes': routeState.restrict_to && routeState.restrict_to.split('~'),
+              },
+              'refinementList': {
+                'city': routeState.city && routeState.city.split('~'),
+                'state': routeState.state && routeState.state.split('~'),
+              },
+              'toggle': {
+                'grants_to_preselected_only': routeState.exclude_grants_to_preselected_only,
+              },
+              'range': {
+                'assets': routeState.assets && routeState.assets.replace('~', ':'),
+              },
+              'page': routeState.page,
             },
-            'toggle': {
-              'grants_to_preselected_only': routeState.exclude_grants_to_preselected_only,
-            },
-            'range': {
-              'assets': routeState.assets && routeState.assets.replace('~', ':'),
-            },
-            'page': routeState.page,
           };
         },
       },
@@ -171,17 +184,15 @@ ready(function() {
     'people.title',
   ];
 
-  // Construct widgets
-  /* --------- */
-  /* Configure */
-  /* --------- */
+  /* ---------------------------- */
+  /* Connector - Configure Widget */
+  /* ---------------------------- */
   const renderConfigure = (renderOptions, isFirstRender) => {
     const { refine, widgetParams } = renderOptions;
     if (isFirstRender) {
       const searchDropdownItems = document.getElementById('dropdown-body');
       const searchDropDownOnlyButtons = document.querySelectorAll('.checkbox-only');
-      
-      */
+
       // Create event listener for "Only" link clicks
       searchDropDownOnlyButtons.forEach(element => {
         element.addEventListener('click', e => {
@@ -280,103 +291,9 @@ ready(function() {
     () => {},
   );
 
-  // Instantiate the custom widget
-  search.addWidget(
-    customConfigure({
-      'container': document.querySelector('#search-box-dropdown'),
-      'searchParameters': {
-        'restrictSearchableAttributes': defaultSearchableAttributes,
-        'attributesToHighlight': defaultAttributesToHighlight,
-      },
-    }),
-  );
-
-  /* --------- */
-  /* SearchBox */
-  /* --------- */
-  search.addWidget(
-    instantsearch.widgets.searchBox({
-      'container': '#ais-widget-search-box',
-      'placeholder': 'Search by foundation name, location, trustees, or EIN',
-      'autofocus': true,
-      'showSubmit': true,
-      'showReset': true,
-      'showLoadingIndicator': false,
-      'queryHook': function(query, searchInstance) {
-        const queryCleaned = checkForEIN(query);
-        readyToSearchScrollPosition();
-        searchInstance(queryCleaned);
-        initTooltips();
-      },
-    }),
-  );
-
-  search.addWidget(
-    instantsearch.widgets.poweredBy({
-      'container': '#powered-by',
-    }),
-  );
-
-  /* ----- */
-  /* Hits */
-  /* ----- */
-  search.addWidget(
-    instantsearch.widgets.hits({
-      'container': '#ais-widget-hits',
-      'templates': {
-        'item': templateHits,
-        empty(results) {
-          let params = results._state.restrictSearchableAttributes;
-          if (params.length === defaultSearchableAttributes.length) {
-            paramsText = `across foundation names, locations, trustees, and EINs`;
-          } else {
-            paramsText = `and narrowed Fields to Search`;
-          }
-          const templateHitsEmpty = `{% include search/profiles/algolia-template-hits-empty.html %}`;
-          return templateHitsEmpty;
-        },
-      },
-      'cssClasses': {
-        'list': 'row',
-        'item': ['col', 's12'],
-      },
-      transformItems(items) {
-        return items.map(item => ({
-          ...item,
-          'ein_formatted': item.ein.replace(/(\d{2})(\d{7})/, '$1-$2'),
-          'grant_median': `$${item.grant_median.toLocaleString(undefined, {
-            'minimumFractionDigits': 0,
-            'maximumFractionDigits': 0,
-          })}`,
-          'grant_min': `$${item.grant_min.toLocaleString()}`,
-          'grant_max': `$${item.grant_max.toLocaleString()}`,
-          'grant_count': `${item.grant_count.toLocaleString()}`,
-          'grant_count_only_one': item.grant_count === 1 ? true : false,
-          'assets': `$${numberHuman(item.assets, 0)}`,
-          'hits_people': hitsPeople(item._highlightResult.people),
-        }));
-      },
-    }),
-  );
-
-  /* ----- */
-  /* Stats */
-  /* ----- */
-  search.addWidget(
-    instantsearch.widgets.stats({
-      'container': '#ais-widget-stats',
-      'templates': {
-        'text': templateStats,
-      },
-      'cssClasses': {
-        'text': 'text-muted',
-      },
-    }),
-  );
-
-  /* ------------------- */
-  /* Current Refinements */
-  /* ------------------- */
+  /* ------------------------------- */
+  /* Connector - Current Refinements */
+  /* ------------------------------- */
   const createDataAttribtues = refinement =>
     Object.keys(refinement)
       .map(key => `data-${key}="${refinement[key]}"`)
@@ -420,9 +337,9 @@ ready(function() {
     }),
   );
 
-  /* ----------  */
-  /* Range Input */
-  /* ----------- */
+  /* ----------------------- */
+  /* Connector - Range Input */
+  /* ----------------------- */
   // Create the render function
   const renderRangeInput = (renderOptions, isFirstRender) => {
     const { start, refine, widgetParams } = renderOptions; // Not using 'range' argument
@@ -507,7 +424,7 @@ ready(function() {
   );
 
   // Create the panel widget wrapper
-  const rangeInputWithPanel = instantsearch.widgets.panel({
+  const customRangeInputWithPanel = instantsearch.widgets.panel({
     'templates': {
       'header': 'Assets',
       'footer': '&nbsp;',
@@ -524,14 +441,6 @@ ready(function() {
       'footer': 'small',
     },
   })(customRangeInput);
-
-  // Instantiate the custom widget
-  search.addWidget(
-    rangeInputWithPanel({
-      'container': document.querySelector('#ais-widget-range-input'),
-      'attribute': 'assets',
-    }),
-  );
 
   /* ---------------------------- */
   /* Create all other refinements */
@@ -643,7 +552,91 @@ ready(function() {
     },
   })(instantsearch.widgets.toggleRefinement);
 
-  search.addWidget(
+  /* ---------------------------- */
+  /* Instantiate all Widgets
+  /* ---------------------------- */
+  search.addWidgets([
+
+    instantsearch.widgets.searchBox({
+      'container': '#ais-widget-search-box',
+      'placeholder': 'Search by foundation name, location, trustees, or EIN',
+      'autofocus': true,
+      'showSubmit': true,
+      'showReset': true,
+      'showLoadingIndicator': false,
+      'queryHook': function(query, searchInstance) {
+        const queryCleaned = checkForEIN(query);
+        readyToSearchScrollPosition();
+        searchInstance(queryCleaned);
+        initTooltips();
+      },
+    }),
+
+    customConfigure({
+      'container': document.querySelector('#search-box-dropdown'),
+      'searchParameters': {
+        'hitsPerPage': 8,
+        'restrictSearchableAttributes': defaultSearchableAttributes,
+        'attributesToHighlight': defaultAttributesToHighlight,
+      },
+    }),
+
+    instantsearch.widgets.poweredBy({
+      'container': '#powered-by',
+    }),
+
+    instantsearch.widgets.hits({
+      'container': '#ais-widget-hits',
+      'templates': {
+        'item': templateHits,
+        empty(results) {
+          let params = results._state.restrictSearchableAttributes;
+          if (params.length === defaultSearchableAttributes.length) {
+            paramsText = `across foundation names, locations, trustees, and EINs`;
+          } else {
+            paramsText = `and narrowed Fields to Search`;
+          }
+          const templateHitsEmpty = `{% include search/profiles/algolia-template-hits-empty.html %}`;
+          return templateHitsEmpty;
+        },
+      },
+      'cssClasses': {
+        'list': 'row',
+        'item': ['col', 's12'],
+      },
+      transformItems(items) {
+        return items.map(item => ({
+          ...item,
+          'ein_formatted': item.ein.replace(/(\d{2})(\d{7})/, '$1-$2'),
+          'grant_median': `$${item.grant_median.toLocaleString(undefined, {
+            'minimumFractionDigits': 0,
+            'maximumFractionDigits': 0,
+          })}`,
+          'grant_min': `$${item.grant_min.toLocaleString()}`,
+          'grant_max': `$${item.grant_max.toLocaleString()}`,
+          'grant_count': `${item.grant_count.toLocaleString()}`,
+          'grant_count_only_one': item.grant_count === 1 ? true : false,
+          'assets': `$${numberHuman(item.assets, 0)}`,
+          'hits_people': hitsPeople(item._highlightResult.people),
+        }));
+      },
+    }),
+
+    instantsearch.widgets.stats({
+      'container': '#ais-widget-stats',
+      'templates': {
+        'text': templateStats,
+      },
+      'cssClasses': {
+        'text': 'text-muted',
+      },
+    }),
+
+    customRangeInputWithPanel({
+      'container': document.querySelector('#ais-widget-range-input'),
+      'attribute': 'assets',
+    }),
+
     toggleRefinementWithPanel({
       'container': '#ais-widget-refinement-list--grants_to_preselected_only',
       'attribute': 'grants_to_preselected_only',
@@ -656,12 +649,7 @@ ready(function() {
         'labelText': 'small',
       },
     }),
-  );
-  
-  /* ----------------- */
-  /* Clear Refinements */
-  /* ----------------- */
-  search.addWidget(
+
     instantsearch.widgets.clearRefinements({
       'container': '#ais-widget-clear-all',
       'cssClasses': {
@@ -671,9 +659,7 @@ ready(function() {
         'resetLabel': 'Clear filters',
       },
     }),
-  );
 
-  search.addWidget(
     instantsearch.widgets.clearRefinements({
       'container': '#ais-widget-mobile-clear-all',
       'cssClasses': {
@@ -684,12 +670,7 @@ ready(function() {
         'resetLabel': 'Clear filters',
       },
     }),
-  );
 
-  /* ---------- */
-  /* Pagination */
-  /* ---------- */
-  search.addWidget(
     instantsearch.widgets.pagination({
       'container': '#ais-widget-pagination',
       'maxPages': 20,
@@ -701,9 +682,11 @@ ready(function() {
         'disabledItem': 'disabled',
       },
     }),
-  );
+  ]);
 
-  // Initialize Materialize JS components created by Instantsearch widgets
+  /* ---------------------------- */
+  /* Render Widgets
+  /* ---------------------------- */
   search.once('render', function() {
     // Search toggle
     initSelect();
@@ -734,7 +717,9 @@ ready(function() {
     console.log(e);
   });
 
-  // Initialize search
+  /* ---------------------------- */
+  /* Start Search
+  /* ---------------------------- */
   search.start();
 
   // Materialize init helpers
@@ -1024,8 +1009,8 @@ ready(function() {
     let observer;
     let anchor = document.querySelector('footer');
     let config = {
-      rootMargin: '0px 0px',
-      threshold: 0.01,
+      'rootMargin': '0px 0px',
+      'threshold': 0.01,
     };
     // Initiate observer using Footer as anchor
     observer = new IntersectionObserver(enableIubenda, config);
