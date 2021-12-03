@@ -112,10 +112,12 @@ ready(function() {
           const indexUiState = uiState[algoliaIndex];
           return {
             'query': indexUiState.query,
+            /*
             'restrict_to':
               indexUiState.configure &&
               indexUiState.configure.restrictSearchableAttributes &&
               indexUiState.configure.restrictSearchableAttributes.join('~'),
+              */
             'city':
               indexUiState.refinementList &&
               indexUiState.refinementList.city &&
@@ -142,9 +144,11 @@ ready(function() {
           return {
             [algoliaIndex]: {
               'query': routeState.query,
+              /*
               'configure': {
                 'restrictSearchableAttributes': routeState.restrict_to && routeState.restrict_to.split('~'),
               },
+              */
               'refinementList': {
                 'city': routeState.city && routeState.city.split('~'),
                 'state': routeState.state && routeState.state.split('~'),
