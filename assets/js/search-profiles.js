@@ -569,10 +569,11 @@ ready(function() {
       'showReset': true,
       'showLoadingIndicator': false,
       'queryHook': function(query, searchInstance) {
+        // Query hook is called just before search is triggered
+        destroyTooltips();
         const queryCleaned = checkForEIN(query);
         readyToSearchScrollPosition();
         searchInstance(queryCleaned);
-        initTooltips();
       },
     }),
 
@@ -701,7 +702,7 @@ ready(function() {
   });
 
   search.on('render', function() {
-    // Tooltips
+    // Init Materialize items
     initTooltips();
     initModals();
     // Google Analytics events
@@ -737,6 +738,14 @@ ready(function() {
       'outDuration': 250, // Default is 250
     };
     M.Tooltip.init(elems, options);
+  }
+
+  function destroyTooltips() {
+    const elems = document.querySelectorAll('.tooltipped');
+    elems.forEach(elem => {
+      const instance = M.Tooltip.getInstance(elem);
+      instance.destroy();
+    });
   }
 
   function initModals() {
