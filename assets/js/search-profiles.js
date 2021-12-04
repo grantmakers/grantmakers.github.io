@@ -91,13 +91,9 @@ ready(function() {
     window.location.href = '/search/grants/';
   };
 
-  // Toogle Advanced Search tools
-  // Advanced search features are hidden by default via css
-  // Could handle initial show/hide directly in Instantsearch via cssClasses, but too many side effects
-  // Event listener set in search.once InstantSearch event
-  const toggleAdvancedElem = document.querySelector('.search-toggle-advanced input[type="checkbox"]');
-  setInitialAdvancedSearchToggleState();
-
+  /* ---------------------------- */
+  /* Algolia configuration        */
+  /* ---------------------------- */
   const search = instantsearch({
     'indexName': algoliaIndex,
     searchClient,
@@ -542,7 +538,7 @@ ready(function() {
   /* -------------------- */
   const toggleRefinementWithPanel = instantsearch.widgets.panel({
     'templates': {
-      'header': 'Grant Guidelines <i class="material-icons right text-muted-max modal-trigger" href="#modal-grants-to-preselected">info</i>',
+      'header': 'Grant Guidelines <i class="material-icons right text-muted-max modal-trigger" href="#modal-grants-to-preselected" title="Click to learn more">info</i>',
     },
     hidden(options) {
       return options.results.nbHits === 0;
@@ -695,10 +691,6 @@ ready(function() {
   search.once('render', function() {
     // Search toggle
     initSelect();
-    // Show range input if initial URL contains an amount refinement
-    setAdvancedSearchToggleStateAfterRender();
-    // Create advanced search toggle listener
-    toggleAdvancedElem.addEventListener('change', toggleAdvancedListener, false);
   });
 
   search.on('render', function() {
@@ -727,7 +719,9 @@ ready(function() {
   /* ---------------------------- */
   search.start();
 
-  // Materialize init helpers
+  /* ---------------------------- */
+  /* Materialize init helpers
+  /* ---------------------------- */
   function initTooltips() {
     const elems = document.querySelectorAll('.tooltipped');
     const options = {
@@ -761,72 +755,9 @@ ready(function() {
     M.FormSelect.init(elem, options);
   }
 
-  function setInitialAdvancedSearchToggleState() {
-    const check = window.localStorage.getItem('persist_advanced_search_tools');
-    if (check === 'true') {
-      // Show tools
-      showAdvancedSearchTools();
-      // Toggle switch to on
-      toggleAdvancedElem.checked = true;
-    }
-  }
-
-  function setAdvancedSearchToggleStateAfterRender() {
-    // If any numeric refinements, automatically show ALL advanced tools, not just range input
-    const obj = search.helper.state.numericRefinements;
-    const check = Object.keys(obj).length;
-
-    // If any exclusionary facet refinements made, automatically show ALL advanced tools
-    const objExclusionary = search.helper.state.disjunctiveFacetsRefinements;
-    const checkExclusionary = objExclusionary.hasOwnProperty('grants_to_preselected_only');
-
-    // Do checks
-    if (check > 0 || checkExclusionary) {
-      // Show advanced search elements
-      document.getElementById('algolia-hits-wrapper').classList.remove('js-hide-advanced-tools');
-      // Flip switch to on position
-      toggleAdvancedElem.checked = true;
-    }
-  }
-
-  function toggleAdvancedListener(e) {
-    if (e.target.checked) {
-      showAdvancedSearchTools();
-      gaEventsToggledAdvanced('on');
-    } else {
-      hideAdvancedSearchTools();
-      gaEventsToggledAdvanced('off');
-    }
-  }
-
-  function showAdvancedSearchTools() {
-    document.getElementById('algolia-hits-wrapper').classList.remove('js-hide-advanced-tools');
-    if (storageTest) {
-      window.localStorage.setItem('persist_advanced_search_tools', 'true');
-    }
-  }
-
-  function hideAdvancedSearchTools() {
-    document.getElementById('algolia-hits-wrapper').classList.add('js-hide-advanced-tools');
-    window.localStorage.removeItem('persist_advanced_search_tools');
-  }
-
   // GOOGLE ANALYTICS EVENTS
   // =======================
   let gaCheck = window[window['GoogleAnalyticsObject'] || 'ga']; // eslint-disable-line dot-notation
-  function gaEventsToggledAdvanced(outcome) {
-    let gaCount = 0;
-
-    if (typeof gaCheck === 'function' && gaCount === 0) {
-      ga('send', 'event', {
-        'eventCategory': 'Profiles Search Events',
-        'eventAction': 'Clicked Toggle Advanced Tools',
-        'eventLabel': 'Advanced Tools Toggled ' + outcome,
-      });
-    }
-
-    gaCount++;
-  }
 
   function gaEventsSearchBoxNarrow() {
     let gaCount = 0;
@@ -978,14 +909,6 @@ ready(function() {
       }
     });
     return arr;
-  }
-
-  function storageTest() {
-    if (typeof Storage !== 'undefined') {
-      return true;
-    } else {
-      return false;
-    }
   }
 
   function getLabel(item) {
