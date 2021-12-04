@@ -593,9 +593,9 @@ ready(function() {
         empty(results) {
           let params = results._state.restrictSearchableAttributes;
           if (params.length === defaultSearchableAttributes.length) {
-            paramsText = `across foundation names, locations, trustees, and EINs`;
+            paramsText = `across foundation names, locations, trustees, and EINs`; // eslint-disable-line no-undef
           } else {
-            paramsText = `and narrowed Fields to Search`;
+            paramsText = `and narrowed Fields to Search`; // eslint-disable-line no-undef
           }
           const templateHitsEmpty = `{% include search/profiles/algolia-template-hits-empty.html %}`;
           return templateHitsEmpty;
