@@ -1080,6 +1080,13 @@ a.hit-name {
   }
 }
 
+// Set initial Advanced Tools toggle state
+#algolia-hits-wrapper.js-hide-advanced-tools {
+  #ais-widget-range-input {
+    display: none;
+  }
+}
+
 .section-refinements {
   .ais-Panel-header {
     i.material-icons {
