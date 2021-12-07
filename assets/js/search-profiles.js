@@ -566,7 +566,6 @@ ready(function() {
       'showLoadingIndicator': false,
       'queryHook': function(query, searchInstance) {
         // Query hook is called just before search is triggered
-        destroyTooltips();
         const queryCleaned = checkForEIN(query);
         readyToSearchScrollPosition();
         searchInstance(queryCleaned);
@@ -694,6 +693,8 @@ ready(function() {
   });
 
   search.on('render', function() {
+    // Destory any existing tooltips
+    destroyTooltips();
     // Init Materialize items
     initTooltips();
     initModals();
@@ -735,11 +736,12 @@ ready(function() {
   }
 
   function destroyTooltips() {
-    const elems = document.querySelectorAll('.tooltipped');
-    elems.forEach(elem => {
-      const instance = M.Tooltip.getInstance(elem);
-      instance.destroy();
-    });
+    // Note: Cannot use Materialize tooltip destroy() method due to apparent bug in v1.0.0
+    // Note: This likely to be brittle if swtiching to Vue due to async
+    const elems = document.getElementsByClassName('material-tooltip');
+    while (elems.length > 0) {
+      elems[0].parentNode.removeChild(elems[0]);
+    }
   }
 
   function initModals() {
