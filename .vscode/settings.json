@@ -1,0 +1,8 @@
+{
+  "files.associations": {
+    "*.md": "liquid",
+    "*.markdown": "liquid",
+    "*.html": "liquid",
+    "*.liquid": "liquid",
+},
+}
