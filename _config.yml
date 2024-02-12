@@ -14,9 +14,6 @@ sass:
 plugins:
   - jekyll-redirect-from
 
-# Google Analytics
-google_analytics: UA-84268197-1
-
 # Algolia Link
 algolia_link: https://www.algolia.com/?utm_source=grantmakersio&utm_medium=referral
 
