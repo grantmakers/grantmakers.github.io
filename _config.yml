@@ -18,7 +18,7 @@ plugins:
 google_analytics: UA-84268197-1
 
 # Algolia Link
-algolia_link: http://goto.algolia.com/l/139121/2017-10-24/26gc84
+algolia_link: https://www.algolia.com/?utm_source=grantmakersio&utm_medium=referral
 
 # Algolia Public API Search Keys
 algolia_public_key_grants: 96a419d65f67ff3b4c54939f8e90c220
