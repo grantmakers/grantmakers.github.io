@@ -711,12 +711,6 @@ body.main-landing {
     vertical-align: sub;
 	}
 	.section-feature-grants-search {
-		background: 
-		linear-gradient(
-			rgba(0, 0, 0, 0.8), 
-			rgba(0, 0, 0, 0.2)
-		),
-		url('{{ site.url }}/{{ site.baseurl }}/assets/img/bridge.jpg');
 		background-size: cover; 
 		h4.title {
 			color: white;
