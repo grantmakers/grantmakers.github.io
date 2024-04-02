@@ -62,6 +62,14 @@ $gray-lightest: 				 #f5f5f5;
 	color: $grantmakers !important;
 }
 
+.grantmakers-color-light {
+	color: $grantmakers-light !important;
+}
+
+.grantmakers-color-lightest {
+	color: $grantmakers-lightest !important;
+}
+
 .disable-primary-color {
 	color: inherit !important;
 }
@@ -523,6 +531,9 @@ i.suffix {
 /****************************
 Page styling
 *****************************/
+.top-cta {
+	padding: 0.5rem;
+}
 .btn-cta {
 	margin-top: 36px; // btn height is 36px, btn-large height is 54px
 }
