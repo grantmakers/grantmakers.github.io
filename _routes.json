@@ -1,0 +1,10 @@
+[
+  {
+    "source": "/profiles(/*)",
+    "destination": "https://next.grantmakers.io/$1",
+    "status_code": 200,
+    "headers": {
+    "x-sveltekit-base": "/profiles"
+    }
+  }
+]
